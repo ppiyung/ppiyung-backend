@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+
+   <context:property-placeholder
+      location="classpath:config/database.properties" />
+    <!-- property-placeholder를 잡으면 내용물을 변수처럼 사용할 수 있게 된다 -->
+
+   <!-- dataSource를 Bean으로 등록 -->
+   <bean id="dataSource"
+      class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+      <property name="driverClassName" value="${db.driverClassName}" />
+      <property name="url" value="${db.url}" />
+      <property name="username" value="${db.username}" />
+      <property name="password" value="${db.password}" />
+   </bean>
+
+   	<!-- 스프링 트랜잭션 -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<constructor-arg ref="dataSource" />
+	</bean>
+
+   <!-- sqlSessionFactory를 Bean으로 등록 -->
+   <bean id="sqlSessionFactory"
+      class="org.mybatis.spring.SqlSessionFactoryBean">
+      <property name="dataSource" ref="dataSource" />
+      <property name="configLocation"
+         value="classpath:mybatis-config.xml" />
+      <property name="mapperLocations">
+         <list> <!-- 매퍼 XML은 여기에 등록 -->
+            <value>classpath:mappers/testMapper.xml</value>
+         </list>
+      </property>
+   </bean>
+
+   <!-- sqlSession를 Bean으로 등록 -->
+   <bean id="sqlSession"
+      class="org.mybatis.spring.SqlSessionTemplate"> <!-- sqlSession은 쓰레드간 공유되어서는 안된다. 동기화 문제가 발생할 수 있다. 대신에 스프링에 맞게 새로 만든 SqlSessionTemplate을 제공하고 있으며, 이를 사용하면 쓰레드 세이프하다. -->
+      <constructor-arg ref="sqlSessionFactory" />
+   </bean>
+
+</beans>

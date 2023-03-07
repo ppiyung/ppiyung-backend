@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+	
+	<!-- Root Context: defines shared resources visible to all other web components -->
+	
+	<!-- @Controller를 제외한 모든 컴포넌트 스캔 -->
+	<context:component-scan base-package="org.ppiyung.ppiyung" use-default-filters="true"> <!-- true로 지정 -->
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/> <!-- @Controller는 제외 -->
+	</context:component-scan>
+</beans>

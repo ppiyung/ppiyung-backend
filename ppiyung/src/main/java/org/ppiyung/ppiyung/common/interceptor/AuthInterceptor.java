@@ -8,7 +8,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.ppiyung.ppiyung.test.MemberTestVO;
+import org.ppiyung.ppiyung.member.vo.Member;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -23,11 +23,11 @@ public class AuthInterceptor implements HandlerInterceptor {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 		HttpSession session = request.getSession();
-		MemberTestVO currentMember = (MemberTestVO)session.getAttribute("currentMember");
+		Member currentMember = (Member)session.getAttribute("currentMember");
 		
 		log.debug("세션 로그인 정보:" + currentMember);
 		
-		if(currentMember == null || currentMember.getMemberId() == null) {
+		if(currentMember == null || currentMember.getMember_id() == null) {
 			response.setContentType("application/json; charset=UTF-8"); 
 			response.setHeader("Access-Control-Allow-Origin", allowOrigin);
 			response.setStatus(HttpServletResponse.SC_FORBIDDEN);

@@ -28,4 +28,20 @@
 		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
 	</context:component-scan>
 	
+	<!-- Interceptors -->
+	<interceptors>
+         <interceptor>
+           <mapping path="/**" />
+           <exclude-mapping path="/test/session"/>
+           <exclude-mapping path="/member/register"/>
+           <beans:bean class="org.ppiyung.ppiyung.common.interceptor.AuthInterceptor" />
+         </interceptor>
+	</interceptors>
+	
+	<!-- 프로퍼티 불러오기 -->
+	<beans:bean class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
+		<beans:property name="locations">
+			<beans:value>classpath:config/auth.properties</beans:value>
+		</beans:property>
+	</beans:bean>
 </beans:beans>

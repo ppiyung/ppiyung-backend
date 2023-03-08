@@ -1,9 +1,0 @@
-Manifest-Version: 1.0
-<<<<<<< HEAD
-Built-By: wash8
-=======
-Built-By: KOSA
->>>>>>> b0cb8f1d060acc5b49d8c499b71cb00d9edfec7e
-Build-Jdk: 1.8.0_361
-Created-By: Maven Integration for Eclipse
-

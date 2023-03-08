@@ -32,6 +32,7 @@ public class AuthInterceptor implements HandlerInterceptor {
 			response.setHeader("Access-Control-Allow-Origin", allowOrigin);
 			response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 			
+			
 			PrintWriter out = response.getWriter();
 			out.print("{ \"success\": \"false\", \"msg\": \"로그인이 필요한 서비스입니다.\" }");
 			out.close();

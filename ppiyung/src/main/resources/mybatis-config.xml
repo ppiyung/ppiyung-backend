@@ -9,6 +9,6 @@
 	 </settings>
 	 
 	 <typeAliases>
-	 	<typeAlias type="org.ppiyung.ppiyung.test.MemberTestVO" alias="Member"/>
+	 	<typeAlias type="org.ppiyung.ppiyung.member.vo.Member" alias="Member"/>
 	 </typeAliases>
 </configuration>

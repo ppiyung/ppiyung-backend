@@ -32,7 +32,7 @@
 	<interceptors>
          <interceptor>
            <mapping path="/**" />
-           <exclude-mapping path="/test/session"/>
+           <exclude-mapping path="/auth/login"/>
            <exclude-mapping path="/member/register"/>
            <beans:bean class="org.ppiyung.ppiyung.common.interceptor.AuthInterceptor" />
          </interceptor>

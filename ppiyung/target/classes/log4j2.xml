@@ -40,6 +40,9 @@
 			<AppenderRef ref="stdout_1" />
 			<AppenderRef ref="File_1" />
 		</Logger>
+		
+		<Logger name="org.ppiyung.ppiyung.member" level="trace">
+		</Logger>
   
         <Root level="INFO">
             <AppenderRef ref="stdout_2" />

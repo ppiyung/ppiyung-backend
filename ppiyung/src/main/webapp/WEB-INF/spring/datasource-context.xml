@@ -32,7 +32,7 @@
          value="classpath:mybatis-config.xml" />
       <property name="mapperLocations">
          <list> <!-- 매퍼 XML은 여기에 등록 -->
-            <value>classpath:mappers/testMapper.xml</value>
+            <value>classpath:mappers/MemberMapper.xml</value>
          </list>
       </property>
    </bean>

@@ -1,5 +1,9 @@
 Manifest-Version: 1.0
+<<<<<<< HEAD
 Built-By: han
+=======
+Built-By: wash8
+>>>>>>> fa5395895529520edc5ca781c49db41431ae8973
 Build-Jdk: 1.8.0_361
 Created-By: Maven Integration for Eclipse
 

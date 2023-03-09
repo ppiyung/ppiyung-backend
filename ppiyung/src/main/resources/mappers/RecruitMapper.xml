@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="org.ppiyung.ppiyung.recruit">
+  
+      <insert id="insert" parameterType="Recruit" >
+         <![CDATA[
+			INSERT INTO recruit_tb (company_id, recruit_title, recruit_detail, work_area_id, recruit_start_at, recruit_end_at)
+			VALUES(#{company_id}, #{recruit_title}, #{recruit_detail}, #{work_area_id}, #{recruit_start_at}, #{recruit_end_at})
+		  ]]>
+      </insert>
+  
+  
+  </mapper>
+  
+  

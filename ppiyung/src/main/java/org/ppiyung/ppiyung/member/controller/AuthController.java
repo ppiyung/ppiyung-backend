@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(value = "/auth")
-@CrossOrigin(origins = "http://localhost:9090", allowCredentials = "true")
+@CrossOrigin(origins = "${auth.allowOrigin}", allowCredentials = "true")
 public class AuthController {
 	
 	private Logger log = LogManager.getLogger("base");

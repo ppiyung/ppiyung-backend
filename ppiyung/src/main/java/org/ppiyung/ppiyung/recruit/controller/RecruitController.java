@@ -28,7 +28,7 @@ public class RecruitController {
 	@Autowired
 	private RecruitService service; 
 	
-	@GetMapping(value = "/")
+	@GetMapping(value = "")
 	public ResponseEntity<BasicResponseEntity<String>>
 		getRecruitHomeHandler() {
 		
@@ -42,7 +42,7 @@ public class RecruitController {
 	}
 	
 	
-	@PostMapping(value="/")
+	@PostMapping(value="")
 	public ResponseEntity<BasicResponseEntity<Object>> insertRecruitNotice(@RequestBody Recruit recruitNoticeContent){ 
   		log.debug(recruitNoticeContent);
 		boolean result = service.insertRecruitNotice(recruitNoticeContent);

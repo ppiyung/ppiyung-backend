@@ -12,13 +12,11 @@ public class RecruitDaoImpl implements RecruitDao {
 	SqlSession session;
 	
 	@Override
-	public boolean insertRecruitNotice(Recruit param) throws Exception {
-		boolean result = true;
+	public void insertRecruitNotice(Recruit param) throws Exception {
 		int count = session.insert("org.ppiyung.ppiyung.recruit.insert", param);
 		if (count != 1) {
 			throw new Exception();
 		}
-		return result;
 	}
 	
 }

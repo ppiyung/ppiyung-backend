@@ -16,4 +16,17 @@ public class MemberDaoImpl implements MemberDao {
 		return session.selectOne("org.ppiyung.ppiyung.member.login", param);
 	}
 
+	
+	@Override
+	public Member selectMemberId(Member param) {
+		
+		return session.selectOne("org.ppiyung.ppiyung.member.select", param);
+	}
+	
+	@Override
+	public int signin(Member param) {
+		return session.insert("org.ppiyung.ppiyung.member.signin", param);
+	}
+
+
 }

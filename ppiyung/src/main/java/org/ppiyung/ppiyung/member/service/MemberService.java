@@ -7,4 +7,6 @@ public interface MemberService {
 	public Member login(Member param);
 	
 	public boolean logout();
+
+	public int signin(Member param);
 }

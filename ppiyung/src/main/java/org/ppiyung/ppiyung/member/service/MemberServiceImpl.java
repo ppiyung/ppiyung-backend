@@ -27,4 +27,16 @@ public class MemberServiceImpl implements MemberService {
 		return false;
 	}
 
+	@Override
+	public int signin(Member member) {
+		int result = 0;
+		try {
+			result= dao.signin(member);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+		return result;
+	}
+
 }

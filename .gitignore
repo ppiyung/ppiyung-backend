@@ -48,10 +48,12 @@ local.properties
 .springBeans
 
 # Spring
-.classpath
-.project
-.settings/
-target/
+ppiyung/.classpath
+ppiyung/.project
+ppiyung/.settings/
+ppiyung/target/
+ppiyung/Servers/
+ppiyung/Users/
 
 # Code Recommenders
 .recommenders/

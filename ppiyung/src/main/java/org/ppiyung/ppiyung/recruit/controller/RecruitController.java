@@ -9,10 +9,13 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.ppiyung.ppiyung.common.entity.BasicResponseEntity;
 import org.ppiyung.ppiyung.member.vo.Member;
+import org.ppiyung.recruit.vo.Recruit;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,6 +37,23 @@ public class RecruitController {
 				Charset.forName("UTF-8")));
 		
 		return new ResponseEntity<BasicResponseEntity<String>>(respBody, headers, HttpServletResponse.SC_OK);
+	}
+	
+	@ModelAttribute("newRecruitNotice")
+	public Recruit createRecruit() {
+		
+		Recruit recruit = new Recruit();
+		return recruit;
+	}
+	
+	@PostMapping(value="/")
+	public String insertRecruitNotice(@ModelAttribute("newRecruitNotice" Recruit recruit)){ 
+		
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(new MediaType("application", "json",
+				Charset.forName("UTF-8")));
+		return new ResponseEntity<Recruit>(respBody, headers, HttpServletResponse.SC_OK);
+		
 	}
 	
 }

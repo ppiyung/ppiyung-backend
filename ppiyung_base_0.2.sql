@@ -1,6 +1,11 @@
 -- 삐융 베이스 SQL 스크립트
--- Version: v0.1
+-- Version: v0.2
 -- Author: @initbyran, @silver-hee, @schdevv, @0tak2, @gkswotjd45
+--
+-- 변경 사항
+-- v0.2 member_tb.member_gender의 타입을 CHAR(1)로 수정
+--        member_tb.member_type의 타입을 CHAR(1)로 수정
+--        resume_tb.resume_open 속성 추가
 
 -- 데이터베이스 생성
 DROP DATABASE IF EXISTS ppiyung;
@@ -25,14 +30,14 @@ CREATE TABLE `member_tb` (
     `member_pw`          varchar(128)            NOT NULL,
     `member_name`        varchar(20)             NOT NULL,
     `member_birth`       date                    NOT NULL,
-    `member_gender`      boolean                 NULL    COMMENT '기업회원은  NULL',
+    `member_gender`      char(1)                 NULL    COMMENT '기업회원은  NULL',
     `member_phone`       varchar(20)             NOT NULL,
     `member_addr`        varchar(256)            NULL,
     `member_coord_x`     float                   NULL    COMMENT '위도 (일반회원은 NULL)',
     `member_coord_y`     float                   NULL    COMMENT '경도  (일반회원은 NULL)',
     `member_nickname`    varchar(20)             NOT NULL,
     `member_email`       varchar(128)            NOT NULL,
-    `member_type`        tinyint                 NOT NULL    COMMENT '일반회원, 기업회원, 관리자',
+    `member_type`        char(1)                 NOT NULL    COMMENT '일반회원, 기업회원, 관리자',
     `member_reg_num`     varchar(32)             NULL    COMMENT '일반회원은 NULL',
     `member_info`        varchar(512)            NULL,
     `member_active`      boolean                 NULL    COMMENT 'true면 활성 회원. false면 탈퇴',
@@ -94,10 +99,11 @@ CREATE TABLE `resume_tb` (
     `resume_filename`    varchar(128)                 NOT NULL,
     `resume_filetype`    varchar(10)                  NOT NULL,
     `resume_updated_at`  datetime  DEFAULT now()      NOT NULL,
+	`resume_open`        boolean                      NOT NULL,
     PRIMARY KEY (member_id),
     FOREIGN KEY (member_id) REFERENCES member_tb (member_id)
 );
-insert into resume_tb values ('hong', 'where', '이력서', 'pdf', '2023-03-05 00:00:00');
+insert into resume_tb values ('hong', 'where', '이력서', 'pdf', '2023-03-05 00:00:00', false);
 select * from resume_tb;
 
 -- 입사제안
@@ -162,4 +168,5 @@ CREATE TABLE `community_reply_tb` (
 );
 insert into community_reply_tb values (default, '좋은 게시글이네요' , 1, 'hong', default);
 select * from community_reply_tb;
+
 

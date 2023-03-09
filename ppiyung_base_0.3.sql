@@ -1,8 +1,9 @@
 -- 삐융 베이스 SQL 스크립트
--- Version: v0.2
+-- Version: v0.3
 -- Author: @initbyran, @silver-hee, @schdevv, @0tak2, @gkswotjd45
 --
 -- 변경 사항
+-- v0.3 member_tb.member_verified 속성 추가
 -- v0.2 member_tb.member_gender의 타입을 CHAR(1)로 수정
 --        member_tb.member_type의 타입을 CHAR(1)로 수정
 --        resume_tb.resume_open 속성 추가
@@ -44,11 +45,13 @@ CREATE TABLE `member_tb` (
     `member_created_at`  datetime   DEFAULT now()  NULL,
     `work_area_id`       int                     NOT NULL,
     `member_img`         varchar(128)            NULL,
+    `member_verified`      boolean                 NULL,
     FOREIGN KEY (work_area_id) REFERENCES work_area_tb (work_area_id)
 );
-insert into member_tb values ('hong','1111','홍길동','2000-01-01',false,'010-1234-5678','서울',null,null,'홍홍홍','hong@gmail.com',1,null,'홍길동입니당~잘부탁드려요홍홍홍',true,null,1,null);
-insert into member_tb values ('carrot','1111','당근마켓','2000-01-01',null,'010-1234-5678','서울',null,null,'당근당근','carrot@gmail.com',2,'000-00-00000','바니바니당근당근',true,null,1,null);
-insert into member_tb values ('admin','1111','관리자','2000-01-01',null, '010-1234-5678',null,null,null,'관리자','admin@gmail.com',3,null, null,true,null,1,null);
+insert into member_tb values ('hong','1111','홍길동','2000-01-01', 'M','010-1234-5678','서울',null,null,'홍홍홍','hong@gmail.com', 'N',null,'홍길동입니당~잘부탁드려요홍홍홍',true,null,1,NULL, null);
+insert into member_tb values ('carrot','1111','당근마켓','2000-01-01',null,'010-1234-5678','서울',null,null,'당근당근','carrot@gmail.com','C','000-00-00000','바니바니당근당근',true,null,1,NULL, true);
+insert into member_tb values ('hello','1111','헬로마켓','2000-01-01',null,'010-1234-5678','경기',null,null,'헬로헬로','hello@gmail.com','C','000-00-00000','바니바니당근당근',true,null,1,NULL, true);
+insert into member_tb values ('admin','1111','관리자','2000-01-01',null, '010-1234-5678',null,null,null,'관리자','admin@gmail.com', 'A',null, null,true,null,1, null, null);
 select * from member_tb;
 
  

@@ -20,7 +20,7 @@ public class BoardDaoImpl implements BoardDao {
 	@Override
 	public List<Board> getCurrentBoard() {
 		// TODO Auto-generated method stub
-		return session.selectList("myBoard.getCurrentPost");
+		return session.selectList("org.ppiyung.ppiyung.board.allBoard");
 	}
 
 }

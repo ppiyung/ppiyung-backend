@@ -43,6 +43,9 @@
 		
 		<Logger name="org.ppiyung.ppiyung.member" level="trace">
 		</Logger>
+		
+		<Logger name="org.ppiyung.ppiyung.recruit" level="trace">
+		</Logger>
   
         <Root level="INFO">
             <AppenderRef ref="stdout_2" />

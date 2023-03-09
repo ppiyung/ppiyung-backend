@@ -1,5 +1,9 @@
 package org.ppiyung.ppiyung.board.controller;
 
+import java.nio.charset.Charset;
+import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.logging.log4j.LogManager;
@@ -8,6 +12,8 @@ import org.ppiyung.ppiyung.board.service.BoardService;
 import org.ppiyung.ppiyung.board.vo.Board;
 import org.ppiyung.ppiyung.common.entity.BasicResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,10 +31,15 @@ public class BoardController {
 	private BoardService bservice;
 
 	@GetMapping(value = "/artcle")
-	public ResponseEntity<BasicResponseEntity<Board>> getCurrentHandler(){
+	public ResponseEntity<BasicResponseEntity<List<Board>>> getCurrentHandler(){
 		
-		bservice.getCurrentlyBoard();
-		return null;
+		BasicResponseEntity<List<Board>> respBody = new BasicResponseEntity<List<Board>>(true, "테스트용 컨트롤러입니다.", bservice.getCurrentlyBoard());
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(new MediaType("application", "json",Charset.forName("UTF-8")));
+		
+		log.debug(bservice.getCurrentlyBoard());
+		
+		return new ResponseEntity<BasicResponseEntity<List<Board>>>(respBody, headers, HttpServletResponse.SC_OK);
 	}
 	
 	
@@ -38,7 +49,7 @@ public class BoardController {
 //	public String CurrentBoard(Model model) {
 //		
 //		model.addAttribute("board",bservice.getCurrentlyBoard());
-//		
+//		bservice.getCurrentlyBoard()
 //		log.debug(bservice.getCurrentlyBoard());
 //		return model;
 //		

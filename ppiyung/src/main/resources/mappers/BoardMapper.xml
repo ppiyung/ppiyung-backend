@@ -5,9 +5,9 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="org.ppiyung.ppiyung.board">
-	<select id="allBoard" parameterType="Board" resultType="Board">		
+	<select id="allBoard" resultType="Board">		
 		<![CDATA[
-	SELECT Distinct B.article_id, B.article_title, B.article_content, B.article_created_at,
+	SELECT Distinct B.article_id, B.article_title, B.article_content, B.member_id, B.article_created_at,
 	(SELECT count(*) FROM community_reply_tb as C   WHERE B.article_id = C.article_id) AS comment_cnt,
 	(SELECT count(*) FROM community_like_tb as L WHERE L.article_id = B.article_id) AS like_cnt
 	FROM community_article_tb as B, community_reply_tb as C

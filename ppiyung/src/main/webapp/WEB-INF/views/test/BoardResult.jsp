@@ -11,16 +11,16 @@
 
 	<c:forEach var="board" items="${board}">
 
-		<tr>
-			<!-- 한 행  -->
-			<td>${board.boardNum}</td>
-			<td>${board.boardTitle}</td>
-			<td>${board.boardContent}</td>
-			<td>${board.boardAuthor}</td>
-			<td>${board.commentCount}</td>
-			<td>${board.boardDate}</td>
-			<td>${board.boardLike}</td>
-		<tr>
+
+		<!-- 한 행  -->
+		<td>${board.boardNum}</td>
+		<td>${board.boardTitle}</td>
+		<td>${board.boardContent}</td>
+		<td>${board.boardAuthor}</td>
+		<td>${board.commentCount}</td>
+		<td>${board.boardDate}</td>
+		<td>${board.boardLike}</td>
+
 	</c:forEach>
 
 </body>

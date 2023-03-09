@@ -11,7 +11,7 @@
 			SELECT member_id, member_pw, member_name, member_birth,
 					member_gender, member_phone, member_addr, member_coord_x, member_coord_y,
 					member_nickname, member_email, member_type, member_reg_num, member_info,
-					member_active, member_created_at, work_area_id, member_img
+					member_active, member_created_at, work_area_id, member_img, member_verified
 			FROM member_tb 
 			WHERE member_id = #{member_id} AND member_pw = #{member_pw}
 		]]>
@@ -23,7 +23,7 @@
 			SELECT member_id, member_pw, member_name, member_birth,
 					member_gender, member_phone, member_addr, member_coord_x, member_coord_y,
 					member_nickname, member_email, member_type, member_reg_num, member_info,
-					member_active, member_created_at, work_area_id, member_img
+					member_active, member_created_at, work_area_id, member_img, member_verified
 			FROM member_tb 
 			WHERE member_id = #{member_id}
 		]]>

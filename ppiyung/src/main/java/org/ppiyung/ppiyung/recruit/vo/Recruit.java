@@ -1,7 +1,6 @@
 package org.ppiyung.ppiyung.recruit.vo;
 
 
-import java.sql.Timestamp;
 import java.util.Date;
 
 import lombok.AllArgsConstructor;

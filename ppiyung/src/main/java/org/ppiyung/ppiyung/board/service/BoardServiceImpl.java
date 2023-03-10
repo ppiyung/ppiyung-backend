@@ -1,5 +1,7 @@
 package org.ppiyung.ppiyung.board.service;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.ppiyung.ppiyung.board.dao.BoardDao;
 import org.ppiyung.ppiyung.board.vo.Reply;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +10,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class BoardServiceImpl implements BoardService{
 
+	private Logger log = LogManager.getLogger("base");
 	@Autowired
 	private BoardDao dao;
 	
@@ -26,9 +29,9 @@ public class BoardServiceImpl implements BoardService{
 	
 	// 댓글 삭제
 	@Override
-	public boolean deleteReply(Reply reply) {
+	public boolean deleteReply(int reply_id) {
 		try {
-			dao.deleteReply(reply);
+			dao.deleteReply(reply_id);
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -43,6 +46,7 @@ public class BoardServiceImpl implements BoardService{
 			dao.updateReply(reply);
 			return true;
 		} catch (Exception e) {
+			log.debug("서비스단 오류 확인");
 			e.printStackTrace();
 			return false;
 		}

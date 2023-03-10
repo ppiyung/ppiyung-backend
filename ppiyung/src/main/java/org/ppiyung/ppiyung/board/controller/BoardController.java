@@ -13,8 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,12 +31,10 @@ public class BoardController {
 	private BoardService service;
 
 	// 댓글 생성
-	@PostMapping(value = "/insert")
+	@PostMapping(value = "")
 	public ResponseEntity<BasicResponseEntity<Object>>
 			insertReplyHandler(@RequestBody Reply replyContent){
-		
-			log.debug(replyContent);
-		
+
 			boolean result = service.insertReply(replyContent);
 		
 			BasicResponseEntity<Object> respBody = null;
@@ -61,12 +61,12 @@ public class BoardController {
 	}
 	
 	// 댓글 삭제
-	@PostMapping(value = "/delete")
+	@DeleteMapping(value="/{reply_id}")
 	public ResponseEntity<BasicResponseEntity<Object>>
-		deleteReplyHandler(@RequestBody Reply replyContent){
+		deleteReplyHandler(@PathVariable("reply_id") int reply_id){
 		
-		log.debug(replyContent);
-		boolean result = service.deleteReply(replyContent);
+		log.debug(reply_id);
+		boolean result = service.deleteReply(reply_id);
 		
 		BasicResponseEntity<Object> respBody = null;
 		
@@ -91,9 +91,11 @@ public class BoardController {
 	}
 	
 	// 댓글 수정
-	@PostMapping(value= "/update")
+	@PutMapping(value="/{reply_id}")
 	public ResponseEntity<BasicResponseEntity<Object>>
-		updateReply(@RequestBody Reply replyContent){
+		updateReply(@RequestBody Reply replyContent,@PathVariable("reply_id") int reply_id){
+		
+		replyContent.setReply_id(reply_id);
 		
 		boolean result = service.updateReply(replyContent);
 		

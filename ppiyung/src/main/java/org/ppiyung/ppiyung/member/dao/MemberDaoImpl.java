@@ -1,5 +1,7 @@
 package org.ppiyung.ppiyung.member.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 import org.ppiyung.ppiyung.member.vo.Member;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +21,8 @@ public class MemberDaoImpl implements MemberDao {
 	
 	@Override
 	public Member selectMemberId(Member param) {
-		
-		return session.selectOne("org.ppiyung.ppiyung.member.select", param);
+		Member member = session.selectOne("org.ppiyung.ppiyung.member.select", param);
+		return member;
 	}
 	
 	@Override
@@ -42,4 +44,11 @@ public class MemberDaoImpl implements MemberDao {
 	}
 
 
+	@Override
+	public List<Member> getAllMember() {
+		List<Member> list = session.selectList("org.ppiyung.ppiyung.member.selectAll");
+
+		return list;
+
+	}
 }

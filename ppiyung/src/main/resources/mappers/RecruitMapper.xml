@@ -31,14 +31,14 @@
 	   </update>
 	   
 	   <!-- 전체 채용 공고 조회 -->
-	   <select id="selectAll" resultType="java.util.HashMap">
+	   <select id="selectAll" resultType="Recruit">
 	      <![CDATA[
 	         SELECT * FROM recruit_tb
 	      ]]>
 	   </select>
 	   
 	   <!-- 직무별 채용 공고 조회 -->
-	   <select id="selectByWorkAreaId" parameterType="Integer" resultType="java.util.HashMap">
+	   <select id="selectByWorkAreaId" parameterType="Integer" resultType="Recruit">
 	      <![CDATA[
 	         SELECT * FROM recruit_tb
 	         WHERE work_area_id=#{work_area_id}
@@ -46,7 +46,7 @@
 	   </select>
 	   
 	   <!-- 키워드로 채용 공고 조회 -->
-	   <select id="selectByKeyword" parameterType="String" resultType="java.util.HashMap">
+	   <select id="selectByKeyword" parameterType="String" resultType="Recruit">
 	      <![CDATA[
 	         SELECT * FROM recruit_tb
 	         WHERE recruit_title LIKE CONCAT ('%',#{keyword},'%') OR recruit_detail LIKE CONCAT ('%',#{keyword},'%')

@@ -67,9 +67,13 @@ public class RecruitController {
 	// 기업회원 - 공고 수정
 	@PutMapping(value="/{recruit_id}")
 	public ResponseEntity<BasicResponseEntity<Object>> 
-		updateRecruitNotice(@RequestBody Recruit recruitNoticeContent, @PathVariable("recruit_id") int recruit_id){ 
+		
+	    updateRecruitNotice(@RequestBody Recruit recruitNoticeContent, @PathVariable("recruit_id") int recruit_id){ 
+		
 		log.debug(recruitNoticeContent);
-		boolean result = service.updateRecruitNotice(recruitNoticeContent, recruit_id);
+		
+		recruitNoticeContent.setRecruit_id(recruit_id);
+		boolean result = service.updateRecruitNotice(recruitNoticeContent);
 		
 		BasicResponseEntity<Object> respBody = null;
 		int respCode=0;
@@ -83,8 +87,7 @@ public class RecruitController {
 			respBody = new BasicResponseEntity<Object> (false, "공고 수정 실패", result);
 			respCode = HttpServletResponse.SC_BAD_REQUEST;
 		}
-		
-		
+				
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(new MediaType("application", "json",
 				Charset.forName("UTF-8")));

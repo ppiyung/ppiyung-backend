@@ -5,6 +5,8 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="org.ppiyung.ppiyung.board">
+
+	<!-- 커뮤니티 게시글 전체 목록 출력-->
 	<select id="allBoard" resultType="BoardList">		
 		<![CDATA[
 		SELECT Distinct B.article_id, B.article_title, B.article_content, B.member_id, B.article_created_at,
@@ -15,10 +17,20 @@
 		]]>
 	</select>
 	
+	<!-- 커뮤니티 게시글 삽입 -->
 	<insert id="insert" parameterType="Board">
 		<![CDATA[
-		insert into community_article_tb (article_title, article_content, member_id, article_created_at)
-		values (#{article_title},#{article_content}, #{member_id},#{article_created_at});
+		INSERT INTO community_article_tb (article_title, article_content, member_id, article_created_at)
+		VALUES (#{article_title},#{article_content}, #{member_id},#{article_created_at});
 		]]>
 	</insert>
+	
+	<!-- 커뮤니티 게시글 삭제 -->
+	<delete id="delete" parameterType="Board">
+		<![CDATA[
+		DELETE FROM community_article_tb
+		WHERE article_id=#{article_id}
+		]]>
+	</delete>
+	
 </mapper>

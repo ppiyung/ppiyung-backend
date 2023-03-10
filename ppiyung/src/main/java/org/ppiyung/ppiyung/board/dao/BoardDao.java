@@ -11,4 +11,6 @@ public interface BoardDao {
 
 	void insertBoardpost(Board boardContent) throws Exception;
 
+	void deleteBoardPost(int article_id) throws Exception;
+
 }

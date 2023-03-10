@@ -18,15 +18,30 @@ public class BoardDaoImpl implements BoardDao {
 	@Autowired
 	private SqlSession session;
 	
+	
+	// 커뮤니티 전체 게시글 목록
 	@Override
 	public List<BoardList> getCurrentBoard() {
 		// TODO Auto-generated method stub
 		return session.selectList("org.ppiyung.ppiyung.board.allBoard");
 	}
-
+	
+	// 커뮤니티 게시글 삽입
 	@Override
 	public void insertBoardpost(Board param) throws Exception {
 		int count = session.insert("org.ppiyung.ppiyung.board.insert",param);
+		
+		if(count != 1) {
+			throw new Exception();
+		}
+		
+	}
+
+	
+	// 커뮤니티 게시글 삭제
+	@Override
+	public void deleteBoardPost(int param) throws Exception {
+		int count = session.delete("org.ppiyung.ppiyung.board.delete", param);
 		
 		if(count != 1) {
 			throw new Exception();

@@ -26,5 +26,33 @@ public class MemberServiceImpl implements MemberService {
 		// TODO Auto-generated method stub
 		return false;
 	}
+	
+	
+
+	@Override
+	public boolean signin(Member member) {
+
+		try {
+			dao.insertMember(member);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	
+	}
+
+	@Override
+	public boolean modifyMember(Member member) {
+		try {
+			dao.updateInfo(member);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+		
+	
+	}
 
 }

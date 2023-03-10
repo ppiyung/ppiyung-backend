@@ -1,7 +1,6 @@
 package org.ppiyung.ppiyung.recruit.vo;
 
 
-import java.sql.Timestamp;
 import java.util.Date;
 
 import lombok.AllArgsConstructor;
@@ -18,7 +17,7 @@ public class Recruit {
 	private String recruit_title;
 	private String recruit_detail;
 	private int work_area_id;
-	private Date recruit_start_at ;
+	private Date recruit_start_at ; 
 	private Date recruit_end_at;
 	
 }

@@ -1,5 +1,7 @@
 package org.ppiyung.ppiyung.recruit.service;
 
+import java.util.List;
+
 import org.ppiyung.ppiyung.recruit.dao.RecruitDaoImpl;
 import org.ppiyung.ppiyung.recruit.vo.Recruit;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,5 +44,13 @@ public class RecruitServiceImpl implements RecruitService{
 			e.printStackTrace();
 			return false;
 		}
+	}
+	
+	@Override
+	public  List<Recruit> getRecruitListByWorkAreaId(int work_area_id) {
+		List<Recruit> list = dao.selectByWorkAreaId(work_area_id);
+			
+		
+		return list;
 	}
 }

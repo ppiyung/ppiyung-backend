@@ -1,10 +1,10 @@
 package org.ppiyung.ppiyung.recruit.controller;
 
 import java.nio.charset.Charset;
+import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.ibatis.annotations.Delete;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.ppiyung.ppiyung.common.entity.BasicResponseEntity;
@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import lombok.Builder.Default;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @RestController
 @RequestMapping(value = "/recruit")
@@ -134,5 +134,36 @@ public class RecruitController {
 		return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
 	
 	}
+	
+	// 직무별 채용공고 조회
+	@GetMapping(value="/{work_area_id}")
+	public ResponseEntity<BasicResponseEntity<Object>> 
+		getRecruitListByWorkAreaId(@PathVariable("work_area_id") int work_area_id){ 
+		
+		log.debug(work_area_id);
+		
+		List<Recruit> result = service.getRecruitListByWorkAreaId( work_area_id );
+		
+		BasicResponseEntity<Object> respBody = null;
+		int respCode=0;
+		
+		if(result != null) {
+			log.debug("직무별 공고 조회 성공");
+			respBody = new BasicResponseEntity<Object> (true, "직무별 공고 조회 완료", result);
+			respCode = HttpServletResponse.SC_OK;
+		} else {
+			log.debug("직무별 공고 조회 실패");
+			respBody = new BasicResponseEntity<Object> (false, "직무별 공고 조회 실패", result);
+			respCode = HttpServletResponse.SC_BAD_REQUEST;
+		}
+		
+		
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(new MediaType("application", "json",
+				Charset.forName("UTF-8")));
+		
+		return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
+
+}
 }
 

@@ -29,6 +29,14 @@
 			WHERE recruit_id=#{recruit_id}
 		  ]]>
 	   </update>
+	   
+	   <!-- 직무별 채용 공고 조회 -->
+	   <select id="selectByWorkAreaId" parameterType="Integer" resultType="java.util.HashMap">
+	      <![CDATA[
+	         SELECT * FROM recruit_tb
+	         WHERE work_area_id=#{work_area_id}
+	      ]]>
+	   </select>
   </mapper>
   
   

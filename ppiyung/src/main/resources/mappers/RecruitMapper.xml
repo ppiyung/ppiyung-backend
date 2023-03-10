@@ -12,7 +12,6 @@
 			VALUES(#{company_id}, #{recruit_title}, #{recruit_detail}, #{work_area_id}, #{recruit_start_at}, #{recruit_end_at})
 		  ]]>
       </insert>
-  
        <!-- 기업회원 - 공고 수정 -->
        <update id ="update" parameterType="Recruit">
           <![CDATA[

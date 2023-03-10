@@ -33,6 +33,7 @@
       <property name="mapperLocations">
          <list> <!-- 매퍼 XML은 여기에 등록 -->
             <value>classpath:mappers/MemberMapper.xml</value>
+            <value>classpath:mappers/BoardMapper.xml</value>
             <value>classpath:mappers/RecruitMapper.xml</value>
          </list>
       </property>

@@ -24,11 +24,21 @@ public class MemberDaoImpl implements MemberDao {
 	}
 	
 	@Override
-	public void signin(Member param) throws Exception {
+	public void insertMember(Member param) throws Exception {
 		int count = session.insert("org.ppiyung.ppiyung.member.signin", param);
 		if (count != 1) {
 			throw new Exception();
 		}
+	}
+
+
+	@Override
+	public void updateInfo(Member param) throws Exception {
+		int count = session.update("org.ppiyung.ppiyung.member.updateMember",param);
+		if (count != 1) {
+			throw new Exception();
+		}
+		
 	}
 
 

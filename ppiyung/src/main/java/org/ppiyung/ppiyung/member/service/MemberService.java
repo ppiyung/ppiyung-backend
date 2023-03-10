@@ -9,4 +9,6 @@ public interface MemberService {
 	public boolean logout();
 
 	public boolean signin(Member param);
+
+	public boolean modifyMember(Member param);
 }

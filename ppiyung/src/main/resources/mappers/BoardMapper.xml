@@ -18,7 +18,7 @@
 	</select>
 	
 	<!-- 커뮤니티 게시글 삽입 -->
-	<insert id="insert" parameterType="Board">
+	<insert id="insertBoard" parameterType="Board">
 		<![CDATA[
 		INSERT INTO community_article_tb (article_title, article_content, member_id, article_created_at)
 		VALUES (#{article_title},#{article_content}, #{member_id},#{article_created_at});
@@ -26,7 +26,7 @@
 	</insert>
 	
 	<!-- 커뮤니티 게시글 삭제 -->
-	<delete id="delete" parameterType="Board">
+	<delete id="deleteBoard" parameterType="Board">
 		<![CDATA[
 		DELETE FROM community_article_tb
 		WHERE article_id=#{article_id}
@@ -35,7 +35,7 @@
 	
 
 	<!-- 댓글 생성 -->
-	<insert id="insert" parameterType="Reply">
+	<insert id="insertReply" parameterType="Reply">
 		<![CDATA[
 			INSERT INTO community_reply_tb (reply_content, article_id, member_id, reply_created_at)
 			VALUES(#{reply_content}, #{article_id}, #{member_id}, #{reply_created_at})
@@ -43,7 +43,7 @@
 	</insert>
 	
 	<!-- 댓글 삭제 -->
-	<delete id="delete" parameterType="Reply">
+	<delete id="deleteReply" parameterType="Reply">
 		<![CDATA[
 			DELETE FROM community_reply_tb 
 			WHERE reply_id = #{reply_id}
@@ -51,7 +51,7 @@
 	</delete>
 	
 	<!-- 댓글 수정 -->
-	<update id="update" parameterType="Reply">
+	<update id="updateReply" parameterType="Reply">
 		<![CDATA[
 			UPDATE community_reply_tb
 			SET reply_content = #{reply_content}, reply_created_at = #{reply_created_at}

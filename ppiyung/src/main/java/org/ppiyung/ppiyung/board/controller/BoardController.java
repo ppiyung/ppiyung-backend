@@ -38,17 +38,27 @@ public class BoardController {
 
 	// 커뮤니티 전체 게시글 가져오기
 	@GetMapping("")
-	public ResponseEntity<BasicResponseEntity<List<BoardList>>> getCurrentHandler() {
-
-		BasicResponseEntity<List<BoardList>> respBody = new BasicResponseEntity<List<BoardList>>(true, "테스트용 컨트롤러입니다.",
-				bservice.getCurrentlyBoard());
-		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-
-		log.debug(bservice.getCurrentlyBoard());
-
+	public ResponseEntity<BasicResponseEntity<Object>> getCommunityList() {
 		
-		return new ResponseEntity<BasicResponseEntity<List<BoardList>>>(respBody, headers, HttpServletResponse.SC_OK);
+		List<BoardList> result = bservice.getCurrentlyBoard();
+		BasicResponseEntity<Object> respBody = null;
+		int respCode = 0;
+		
+		if(result != null) {
+			log.debug("전체 게시글 조회 성공");
+			respBody = new BasicResponseEntity<Object>(true,"전체 커뮤니티 게시글 완료",result);
+			respCode = HttpServletResponse.SC_OK;
+		} else {
+			log.debug("전체 게시글 조회 실폐");
+			respBody = new BasicResponseEntity<Object>(false,"전체 커뮤니티 게시글 실패",result);
+			respCode = HttpServletResponse.SC_BAD_REQUEST;
+		}
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(new MediaType("application", "json",
+				Charset.forName("UTF-8")));
+		
+		return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
 	}
 
 	// 커뮤니티 게시글 삽입
@@ -104,5 +114,6 @@ public class BoardController {
 
 		return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
 	}
-
+	
+	
 }

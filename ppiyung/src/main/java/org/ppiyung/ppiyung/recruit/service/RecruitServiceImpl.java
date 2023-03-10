@@ -13,14 +13,12 @@ public class RecruitServiceImpl implements RecruitService{
 	
 	@Override
 	public boolean insertRecruitNotice(Recruit recruit) {
-		boolean result = false;
 		try {
-			result = dao.insertRecruitNotice(recruit);
+			dao.insertRecruitNotice(recruit);
+			return true;
 		} catch (Exception e) {
-			e.printStackTrace();	
+			e.printStackTrace();
+			return false;
 		}
-		
-		return result;
 	}
- 
 }

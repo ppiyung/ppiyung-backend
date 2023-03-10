@@ -47,6 +47,7 @@ public class BoardController {
 
 		log.debug(bservice.getCurrentlyBoard());
 
+		
 		return new ResponseEntity<BasicResponseEntity<List<BoardList>>>(respBody, headers, HttpServletResponse.SC_OK);
 	}
 

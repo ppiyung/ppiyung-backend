@@ -25,11 +25,18 @@
        <!-- 기업회원 - 공고 삭제 -->
        <update id ="delete" parameterType="Recruit">
           <![CDATA[
-			UPDATE  recruit_tb 
-			SET recruit_title=#{recruit_title},recruit_detail=#{recruit_detail}, work_area_id=#{work_area_id}, recruit_start_at=#{recruit_start_at}, recruit_end_at=#{recruit_end_at}
-		    WHERE recruit_id=#{recruit_id}
+			DELETE FROM recruit_tb 
+			WHERE recruit_id=#{recruit_id}
 		  ]]>
 	   </update>
+	   
+	   <!-- 직무별 채용 공고 조회 -->
+	   <select id="selectByWorkAreaId" parameterType="Integer" resultType="java.util.HashMap">
+	      <![CDATA[
+	         SELECT * FROM recruit_tb
+	         WHERE work_area_id=#{work_area_id}
+	      ]]>
+	   </select>
   </mapper>
   
   

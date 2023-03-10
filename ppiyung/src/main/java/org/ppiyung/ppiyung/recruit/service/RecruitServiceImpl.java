@@ -1,5 +1,7 @@
 package org.ppiyung.ppiyung.recruit.service;
 
+import java.util.List;
+
 import org.ppiyung.ppiyung.recruit.dao.RecruitDaoImpl;
 import org.ppiyung.ppiyung.recruit.vo.Recruit;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,13 +36,21 @@ public class RecruitServiceImpl implements RecruitService{
 	}
 	
 	@Override
-	public boolean deleteRecruitNotice(Recruit recruit, int recruit_id) {
+	public boolean deleteRecruitNotice(int recruit_id) {
 		try {
-			dao.updateRecruitNotice(recruit, recruit_id);
+			dao.deleteRecruitNotice(recruit_id);
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
 		}
+	}
+	
+	@Override
+	public  List<Recruit> getRecruitListByWorkAreaId(int work_area_id) {
+		List<Recruit> list = dao.selectByWorkAreaId(work_area_id);
+			
+		
+		return list;
 	}
 }

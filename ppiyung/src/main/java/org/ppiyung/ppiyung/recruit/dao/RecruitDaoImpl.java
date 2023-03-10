@@ -27,5 +27,13 @@ public class RecruitDaoImpl implements RecruitDao {
 		}
 		
 	}
+
+	public void deleteRecruitNotice(Recruit param, int recruit_id) throws Exception{
+		int count = session.update("org.ppiyung.ppiyung.recruit.delete", param);
+		if (count != 1) {
+			throw new Exception();
+		}
+		
+	}
 	
 }

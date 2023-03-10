@@ -7,6 +7,8 @@ public interface RecruitService {
 	public boolean insertRecruitNotice(Recruit recruit);
 
 	public boolean updateRecruitNotice(Recruit recruit, int recruit_id);
+
+	public boolean deleteRecruitNotice(Recruit recruit, int recruit_id);
 	
 	
 }

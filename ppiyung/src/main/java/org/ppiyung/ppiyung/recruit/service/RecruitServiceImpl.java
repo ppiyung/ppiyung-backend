@@ -32,4 +32,15 @@ public class RecruitServiceImpl implements RecruitService{
 			return false;
 		}
 	}
+	
+	@Override
+	public boolean deleteRecruitNotice(Recruit recruit, int recruit_id) {
+		try {
+			dao.updateRecruitNotice(recruit, recruit_id);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
 }

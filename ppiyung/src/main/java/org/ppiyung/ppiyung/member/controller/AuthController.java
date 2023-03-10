@@ -1,6 +1,7 @@
 package org.ppiyung.ppiyung.member.controller;
 
 import java.nio.charset.Charset;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 
 @RestController
 @RequestMapping(value = "/auth")
@@ -56,4 +58,22 @@ public class AuthController {
 		
 		return new ResponseEntity<BasicResponseEntity<Member>>(respBody, headers, respCode);
 	}
-}
+	
+	@PostMapping(value = "/logout")
+	public ResponseEntity<HashMap<String, Object>>
+		loginHandler(HttpSession session) {
+		session.invalidate();
+		
+		HashMap<String, Object> respBody = new HashMap<String, Object>();
+		respBody.put("success", true);
+		respBody.put("msg", "로그아웃에 성공하셨습니다.");
+		
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(new MediaType("application", "json",
+				Charset.forName("UTF-8")));
+		
+		return new ResponseEntity<HashMap<String, Object>>(respBody, headers, HttpServletResponse.SC_OK);
+	}
+		
+	}
+

@@ -51,5 +51,15 @@
 			WHERE memberId = #{memberId}
 		]]>
 	</update>
+	
+	
+	<!-- 회원가입 -->
+	<insert id="signin" parameterType = "Member">
+		<![CDATA[
+			INSERT INTO member_tb (member_id,member_pw,member_name,member_birth, member_phone, member_nickname, member_email,member_type, work_area_id) values (#{member_id},#{member_pw},#{member_name},#{member_birth},
+			#{member_phone},#{member_nickname},#{member_email},#{member_type},#{work_area_id})
+		]]>
+	
+	</insert>
 
 </mapper>

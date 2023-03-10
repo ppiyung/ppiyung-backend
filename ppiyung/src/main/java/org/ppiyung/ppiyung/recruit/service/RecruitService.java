@@ -16,6 +16,8 @@ public interface RecruitService {
 	
     public List<Recruit> getRecruitListByWorkAreaId(int work_area_id);
 
+	public List<Recruit> getRecruitListByKeyword(String keyword);
+
 	
 	
 	

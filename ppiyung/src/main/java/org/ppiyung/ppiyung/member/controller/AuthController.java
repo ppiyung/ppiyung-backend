@@ -74,6 +74,35 @@ public class AuthController {
 		
 		return new ResponseEntity<HashMap<String, Object>>(respBody, headers, HttpServletResponse.SC_OK);
 	}
+	
+	@PostMapping(value = "/verify")
+	public ResponseEntity<BasicResponseEntity<Member>>
+		verifyHandler(HttpSession session) {
 		
+		Member member = (Member)session.getAttribute("currentMember");
+		
+		BasicResponseEntity<Member> respBody = new BasicResponseEntity<Member>();
+		
+		int respCode = 0;
+		if(member == null || member.getMember_id() == null) {
+			respCode = HttpServletResponse.SC_FORBIDDEN;
+			respBody.setSuccess(false);
+			respBody.setMsg("로그인되지 않은 사용자입니다.");
+		} else {
+			respCode = HttpServletResponse.SC_OK;
+			
+			member.setMember_pw("");
+			respBody.setSuccess(true);
+			respBody.setMsg("로그인되어있는 사용자입니다.");
+			respBody.setPayload(member);
+		}
+		
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(new MediaType("application", "json",
+				Charset.forName("UTF-8")));
+		
+		return new ResponseEntity<BasicResponseEntity<Member>>(respBody, headers, respCode);
 	}
+		
+}
 

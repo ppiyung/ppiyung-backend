@@ -10,7 +10,10 @@
 	 
 	 <typeAliases>
 	 	<typeAlias type="org.ppiyung.ppiyung.member.vo.Member" alias="Member"/>
+
 	 	<typeAlias type="org.ppiyung.ppiyung.board.vo.Board" alias="Board" />
-	 	
+
+	 	<typeAlias type="org.ppiyung.ppiyung.recruit.vo.Recruit" alias="Recruit"/>
 	 </typeAliases>
+	 
 </configuration>

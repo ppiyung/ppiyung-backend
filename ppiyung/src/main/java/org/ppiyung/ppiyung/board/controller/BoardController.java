@@ -30,6 +30,7 @@ public class BoardController {
 	@Autowired
 	private BoardService bservice;
 
+	// 전체 게시글 가져오기
 	@GetMapping(value = "/artcle")
 	public ResponseEntity<BasicResponseEntity<List<Board>>> getCurrentHandler(){
 		

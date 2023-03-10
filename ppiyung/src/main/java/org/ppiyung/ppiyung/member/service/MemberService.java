@@ -8,5 +8,5 @@ public interface MemberService {
 	
 	public boolean logout();
 
-	public int signin(Member param);
+	public boolean signin(Member param);
 }

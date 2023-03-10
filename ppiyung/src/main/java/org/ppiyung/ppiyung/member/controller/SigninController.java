@@ -28,24 +28,29 @@ public class SigninController {
 	@Autowired
 	private MemberService service;
 	
+//회원가입
 	@PostMapping(value="/signin")
-	public ResponseEntity<BasicResponseEntity<Integer>>
+	public ResponseEntity<BasicResponseEntity<Object>>
 			signinHandler(@RequestBody Member reqSigninInfo ){
-		log.debug(reqSigninInfo);
 		
-		int result = service.signin(reqSigninInfo);
-		BasicResponseEntity<Integer> respBody = null;
+		
+		boolean result = service.signin(reqSigninInfo);
+		BasicResponseEntity<Object> respBody = null;
 		int respCode = 0;
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(new MediaType("application", "json",
 				Charset.forName("UTF-8")));
-		if(result == 1) {
-			
-			respBody = new BasicResponseEntity<Integer>(true, "회원가입에 성공하였습니다.", result);
+		if(result == true) {
+			log.debug("회원가입 성공");
+			respBody = new BasicResponseEntity<Object>(true, "회원가입에 성공하였습니다.", result);
 			respCode = HttpServletResponse.SC_OK;
+		}else {
+			log.debug("회원가입 실패");
+			respBody = new BasicResponseEntity<Object>(false, "회원가입에 실패하였습니다..", result);
+			respCode = HttpServletResponse.SC_BAD_REQUEST;
 		}
 	
-				return new ResponseEntity<BasicResponseEntity<Integer>>(respBody, headers, respCode);
+				return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
 	}
 	
 	

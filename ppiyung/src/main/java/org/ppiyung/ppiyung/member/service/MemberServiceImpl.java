@@ -26,17 +26,20 @@ public class MemberServiceImpl implements MemberService {
 		// TODO Auto-generated method stub
 		return false;
 	}
+	
+	
 
 	@Override
-	public int signin(Member member) {
-		int result = 0;
+	public boolean signin(Member member) {
+
 		try {
-			result= dao.signin(member);
+			dao.signin(member);
+			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
-			return 0;
+			return false;
 		}
-		return result;
+	
 	}
 
 }

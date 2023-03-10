@@ -25,9 +25,9 @@ public class RecruitServiceImpl implements RecruitService{
 	}
 	
 	@Override
-	public boolean updateRecruitNotice(Recruit recruit, int recruit_id) {
+	public boolean updateRecruitNotice(Recruit recruit) {
 		try {
-			dao.updateRecruitNotice(recruit, recruit_id);
+			dao.updateRecruitNotice(recruit);
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();

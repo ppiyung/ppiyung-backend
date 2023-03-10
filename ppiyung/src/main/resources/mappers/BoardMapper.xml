@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.ppiyung.ppiyung.board">
+	<select id="login" parameterType="Reply"
+	        resultType="Reply">		
+		<![CDATA[
+			SELECT reply_id, reply_content, article_id,
+					member_id, reply_created_at
+			FROM community_reply_tb 
+			WHERE reply_id = #{reply_id}
+		]]>
+	</select>
+	
+	<select id="select" parameterType="Reply"
+	        resultType="Reply">		
+		<![CDATA[
+			SELECT reply_id, reply_content, article_id,
+					member_id, reply_created_at
+			FROM community_reply_tb 
+			WHERE reply_id = #{reply_id}
+		]]>
+	</select>
+	
+	<insert id="insert" parameterType="Reply">
+		<![CDATA[
+			INSERT INTO community_reply_tb (reply_content, article_id, member_id, reply_created_at)
+			VALUES(#{reply_content}, #{article_id}, #{member_id}, #{reply_created_at})
+		]]>
+	</insert>
+	
+	<delete id="delete" parameterType="Reply">
+		<![CDATA[
+			DELETE FROM community_reply_tb 
+			WHERE article_id = #{article_id} AND member_id = #{member_id} AND reply_id = #{reply_id}
+		]]>
+	</delete>
+	
+	<update id="update" parameterType="Reply">
+		<![CDATA[
+			UPDATE community_reply_tb
+			SET reply_content = #{reply_content}, reply_created_at = #{reply_created_at}
+			WHERE member_id = #{member_id} AND article_id = #{article_id} AND reply_id = #{reply_id}
+		]]>
+	</update>
+	
+
+</mapper>

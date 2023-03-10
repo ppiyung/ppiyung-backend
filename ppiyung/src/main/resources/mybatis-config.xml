@@ -11,6 +11,7 @@
 	 <typeAliases>
 	 	<typeAlias type="org.ppiyung.ppiyung.member.vo.Member" alias="Member"/>
 	 	<typeAlias type="org.ppiyung.ppiyung.recruit.vo.Recruit" alias="Recruit"/>
+	 	<typeAlias type="org.ppiyung.ppiyung.board.vo.Reply" alias="Reply"/>
 	 </typeAliases>
 	 
 </configuration>

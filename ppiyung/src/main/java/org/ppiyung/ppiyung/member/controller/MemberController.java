@@ -30,7 +30,7 @@ public class MemberController {
 	private MemberService service;
 	
 //회원가입
-	@PostMapping(value="")
+	@PostMapping(value="signin")
 	public ResponseEntity<BasicResponseEntity<Object>>
 			signinHandler(@RequestBody Member reqSigninInfo ){
 		

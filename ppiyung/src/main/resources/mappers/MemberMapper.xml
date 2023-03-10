@@ -56,10 +56,33 @@
 	<!-- 회원가입 -->
 	<insert id="signin" parameterType = "Member">
 		<![CDATA[
-			INSERT INTO member_tb (member_id,member_pw,member_name,member_birth, member_phone, member_nickname, member_email,member_type, work_area_id) values (#{member_id},#{member_pw},#{member_name},#{member_birth},
-			#{member_phone},#{member_nickname},#{member_email},#{member_type},#{work_area_id})
-		]]>
+			INSERT INTO member_tb 
+			(member_id, member_pw, member_name, member_birth, member_gender, 
+			member_phone, member_addr, member_coord_x, member_coord_y, member_nickname, 
+			member_email,member_type,member_reg_num, member_info,member_active, 
+			work_area_id, member_img, member_verified) 
+			values 
+			(#{member_id},#{member_pw},#{member_name},#{member_birth},#{member_gender},
+			#{member_phone}, #{member_addr},#{member_coord_x},#{member_coord_y},#{member_nickname},
+			#{member_email},#{member_type},#{member_reg_num},#{member_info},#{member_active},
+			#{work_area_id},#{member_img},#{member_verified})
+			]]>
 	
 	</insert>
+	
+	<!-- 회원정보수정 -->
+	<update id="updateMember" parameterType="Member">
+		<![CDATA[ 
+			UPDATE member_tb 
+			SET 
+			member_pw= #{member_pw} , member_name=#{member_name}, member_birth= #{member_birth},
+			member_phone = #{member_phone}, member_addr = #{member_addr},
+			member_coord_x= #{member_coord_x} , member_coord_y = #{member_coord_y}, member_nickname = #{member_nickname},
+			member_email =  #{member_email}, member_info = #{member_info} ,work_area_id= #{work_area_id}, member_img=#{member_img},member_verified =#{member_verified}
+			WHERE
+		    member_id= #{member_id}
+		]]>
+	
+	</update>
 
 </mapper>

@@ -33,12 +33,25 @@ public class MemberServiceImpl implements MemberService {
 	public boolean signin(Member member) {
 
 		try {
-			dao.signin(member);
+			dao.insertMember(member);
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
 		}
+	
+	}
+
+	@Override
+	public boolean modifyMember(Member member) {
+		try {
+			dao.updateInfo(member);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+		
 	
 	}
 

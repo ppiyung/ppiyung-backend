@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.ppiyung.ppiyung.board.dao.BoardDao;
 import org.ppiyung.ppiyung.board.vo.Board;
+import org.ppiyung.ppiyung.board.vo.BoardList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,9 +15,26 @@ public class BoardServiceImpl implements BoardService {
 	private BoardDao dao;
 	
 	@Override
-	public List<Board> getCurrentlyBoard() {
+	public List<BoardList> getCurrentlyBoard() {
 		
 		return dao.getCurrentBoard();
+		
+	}
+	
+	// 커뮤니티 게시글 작성
+	@Override
+	public boolean writeCommunit(Board boardContent) {
+		
+		try {
+			dao.insertBoardpost(boardContent);
+			return true;
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+			return false;
+		}
+		
+		
 		
 	}
 

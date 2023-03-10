@@ -56,7 +56,7 @@ public class RecruitController {
 			respCode = HttpServletResponse.SC_OK;
 		} else {
 			log.debug("공고 업로드 실패");
-			respBody = new BasicResponseEntity<Object> (true, "공고 게시 실패", result);
+			respBody = new BasicResponseEntity<Object> (false, "공고 게시 실패", result);
 			respCode = HttpServletResponse.SC_BAD_REQUEST;
 		}
 		

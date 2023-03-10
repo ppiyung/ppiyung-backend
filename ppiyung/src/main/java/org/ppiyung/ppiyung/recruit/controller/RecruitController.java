@@ -34,19 +34,19 @@ public class RecruitController {
 	@Autowired
 	private RecruitService service; 
 	
-	@GetMapping(value = "")
-	public ResponseEntity<BasicResponseEntity<String>>
-		getRecruitHomeHandler() {
-		
-		BasicResponseEntity<String> respBody = new BasicResponseEntity<String>(true, "테스트용 컨트롤러입니다.", "테스트");
-		
-		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(new MediaType("application", "json",
-				Charset.forName("UTF-8")));
-		
-		return new ResponseEntity<BasicResponseEntity<String>>(respBody, headers, HttpServletResponse.SC_OK);
-	}
-	
+//	@GetMapping(value = "")
+//	public ResponseEntity<BasicResponseEntity<String>>
+//		getRecruitHomeHandler() {
+//		
+//		BasicResponseEntity<String> respBody = new BasicResponseEntity<String>(true, "테스트용 컨트롤러입니다.", "테스트");
+//		
+//		HttpHeaders headers = new HttpHeaders();
+//		headers.setContentType(new MediaType("application", "json",
+//				Charset.forName("UTF-8")));
+//		
+//		return new ResponseEntity<BasicResponseEntity<String>>(respBody, headers, HttpServletResponse.SC_OK);
+//	}
+//	
 	// 기업회원 - 새 공고 게시
 	@PostMapping(value="")
 	public ResponseEntity<BasicResponseEntity<Object>> insertRecruitNotice(@RequestBody Recruit recruitNoticeContent){ 
@@ -135,6 +135,33 @@ public class RecruitController {
 	
 	}
 	
+	// 전체 채용 공고 조히 
+	@GetMapping(value="")
+	public ResponseEntity<BasicResponseEntity<Object>> getRecruitList(){ 
+  		
+        List<Recruit> result = service.getRecruitList();
+		
+		BasicResponseEntity<Object> respBody = null;
+		int respCode=0;
+		
+		if(result != null) {
+			log.debug("전체 공고 조회 성공");
+			respBody = new BasicResponseEntity<Object> (true, "전체 공고 조회 완료", result);
+			respCode = HttpServletResponse.SC_OK;
+		} else {
+			log.debug("전체 공고 조회 실패");
+			respBody = new BasicResponseEntity<Object> (false, "전체 조회 실패", result);
+			respCode = HttpServletResponse.SC_BAD_REQUEST;
+		}
+		
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(new MediaType("application", "json",
+				Charset.forName("UTF-8")));
+		
+		return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
+		
+	}
+	
 	// 직무별 채용공고 조회
 	@GetMapping(value="/{work_area_id}")
 	public ResponseEntity<BasicResponseEntity<Object>> 
@@ -165,5 +192,6 @@ public class RecruitController {
 		return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
 
 }
+	
 }
 

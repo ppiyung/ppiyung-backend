@@ -47,6 +47,12 @@ public class RecruitServiceImpl implements RecruitService{
 	}
 	
 	@Override
+	public List<Recruit> getRecruitList() {
+		List<Recruit> list = dao.selectAll();
+		return list;
+	}
+	
+	@Override
 	public  List<Recruit> getRecruitListByWorkAreaId(int work_area_id) {
 		List<Recruit> list = dao.selectByWorkAreaId(work_area_id);
 			

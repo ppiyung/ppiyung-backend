@@ -37,6 +37,13 @@
 	         WHERE work_area_id=#{work_area_id}
 	      ]]>
 	   </select>
+	   
+	   <!-- 전체 채용 공고 조회 -->
+	   <select id="selectAll" resultType="java.util.HashMap">
+	      <![CDATA[
+	         SELECT * FROM recruit_tb
+	      ]]>
+	   </select>
   </mapper>
   
   

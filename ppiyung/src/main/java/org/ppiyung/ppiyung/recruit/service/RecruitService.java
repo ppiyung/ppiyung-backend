@@ -11,8 +11,12 @@ public interface RecruitService {
 	public boolean updateRecruitNotice(Recruit recruit, int recruit_id);
 
 	public boolean deleteRecruitNotice(int recruit_id);
+	
+    public List<Recruit> getRecruitList();
+	
+    public List<Recruit> getRecruitListByWorkAreaId(int work_area_id);
 
-	public List<Recruit> getRecruitListByWorkAreaId(int work_area_id);
+	
 	
 	
 }

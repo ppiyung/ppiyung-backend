@@ -44,5 +44,12 @@ public class RecruitDaoImpl implements RecruitDao {
 		
 		return list;
 	}
+
+	@Override
+	public List<Recruit> selectAll() {
+        List<Recruit> list = session.selectList("org.ppiyung.ppiyung.recruit.selectAll");
+		
+		return list;
+	}
 	
 }

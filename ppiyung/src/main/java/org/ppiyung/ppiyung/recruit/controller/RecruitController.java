@@ -4,6 +4,7 @@ import java.nio.charset.Charset;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.ppiyung.ppiyung.common.entity.BasicResponseEntity;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,6 +22,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import lombok.Builder.Default;
 
 @RestController
 @RequestMapping(value = "/recruit")
@@ -73,7 +77,8 @@ public class RecruitController {
 	
 	// 기업회원 - 공고 수정
 	@PutMapping(value="/{recruit_id}")
-	public ResponseEntity<BasicResponseEntity<Object>> updateRecruitNotice(@RequestBody Recruit recruitNoticeContent, @PathVariable("recruit_id") int recruit_id){ 
+	public ResponseEntity<BasicResponseEntity<Object>> 
+		updateRecruitNotice(@RequestBody Recruit recruitNoticeContent, @PathVariable("recruit_id") int recruit_id){ 
 		log.debug(recruitNoticeContent);
 		boolean result = service.updateRecruitNotice(recruitNoticeContent, recruit_id);
 		
@@ -98,6 +103,36 @@ public class RecruitController {
 		return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
 		
 
+	}
+	
+	// 기업회원- 공고 삭제
+	@DeleteMapping(value="/{recruit_id}")
+	public ResponseEntity<BasicResponseEntity<Object>> 
+		deleteRecruitNotice(@PathVariable("recruit_id") int recruit_id){ 
+		
+		log.debug(recruit_id);
+		boolean result = service.deleteRecruitNotice( recruit_id);
+		
+		BasicResponseEntity<Object> respBody = null;
+		int respCode=0;
+		
+		if(result == true) {
+			log.debug("공고 삭제 성공");
+			respBody = new BasicResponseEntity<Object> (true, "공고 삭제 완료", result);
+			respCode = HttpServletResponse.SC_OK;
+		} else {
+			log.debug("공고 삭제 실패");
+			respBody = new BasicResponseEntity<Object> (false, "공고 삭제 실패", result);
+			respCode = HttpServletResponse.SC_BAD_REQUEST;
+		}
+		
+		
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(new MediaType("application", "json",
+				Charset.forName("UTF-8")));
+		
+		return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
+	
 	}
 }
 

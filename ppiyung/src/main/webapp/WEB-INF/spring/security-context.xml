@@ -11,6 +11,9 @@
     <beans:bean id="userDetailService" class="org.ppiyung.ppiyung.member.service.SecurityUserDetailService" />
     <beans:bean id="jwtAuthenticationFilter" class="org.ppiyung.ppiyung.common.security.JwtAuthenticationFilter"/>
     <beans:bean id="jwtAuthenticationEntryPoint" class="org.ppiyung.ppiyung.common.security.JwtAuthenticationEntryPoint"/>
+    <beans:bean id="jwtTokenUtil" class="org.ppiyung.ppiyung.common.util.JwtTokenUtil">
+    	<beans:constructor-arg value="IyNAIXBwaXl1bmdiYWNrZW5kZGV2a2V5MjAyMzAzMTF0ZWFtcHBpeXVuZyMkJSoqKg"></beans:constructor-arg>
+    </beans:bean>
     
     <http pattern="/auth/**" security="none"></http>
     <http use-expressions="true" entry-point-ref="jwtAuthenticationEntryPoint" create-session="stateless">
@@ -26,5 +29,4 @@
     </authentication-manager>
     
     <global-method-security  pre-post-annotations="enabled" secured-annotations="enabled"/>
-
 </beans:beans>

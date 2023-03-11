@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 public class SecurityUserDetails extends User implements UserDetails {
@@ -30,6 +31,28 @@ public class SecurityUserDetails extends User implements UserDetails {
 						)
 				);
 		this.member = member;
+	}
+
+	public SecurityUserDetails(String memberId, Collection<? extends GrantedAuthority> authorities) {
+		super(memberId, "", authorities);
+		this.member = new Member();
+		member.setMember_id(memberId);
+		
+		String role = null;
+		for (GrantedAuthority authority : authorities) {
+			role = authority.getAuthority(); // 이 서비스에서는 1계정당 1권한이므로 한 번만 루프를 돌게 됨. 덮어써도 무방.
+		}
+			
+		char roleCode = 0;
+		if (role.contentEquals("ROLE_NORMAL")) { // enum 도입 고려
+			roleCode = 'N';
+		} else if (role.equals("ROLE_COMPANY")) {
+			roleCode = 'C';
+		} else if (role.equals("ROLE_ADMIN")) {
+			roleCode = 'A';
+		}
+		
+		member.setMember_type(roleCode);
 	}
 
 	@Override

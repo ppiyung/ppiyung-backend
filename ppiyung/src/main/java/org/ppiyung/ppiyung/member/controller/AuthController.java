@@ -13,6 +13,7 @@ import org.ppiyung.ppiyung.common.util.JwtTokenUtil;
 import org.ppiyung.ppiyung.member.service.MemberService;
 import org.ppiyung.ppiyung.member.vo.Member;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +31,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "/auth")
 @CrossOrigin(origins = "${auth.allowOrigin}", allowCredentials = "true")
 public class AuthController {
-	
 	private Logger log = LogManager.getLogger("base");
 	
 	@Autowired
@@ -39,7 +39,6 @@ public class AuthController {
 	@PostMapping(value = "/login")
 	public ResponseEntity<BasicResponseEntity<Object>>
 		loginHandler(@RequestBody Member reqLoginInfo) {
-		
 		BasicResponseEntity<Object> respBody = null;
 		int respCode = 0;
 		

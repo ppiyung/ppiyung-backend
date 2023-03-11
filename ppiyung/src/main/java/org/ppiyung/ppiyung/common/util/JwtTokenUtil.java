@@ -27,7 +27,6 @@ import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 
-@Component
 public class JwtTokenUtil {
 	
 	public static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60 * 1000;
@@ -42,8 +41,8 @@ public class JwtTokenUtil {
 //    }
 //    
 	// JWT 생성을 위해 사용하는 Key 객체를 생성
-    public JwtTokenUtil(@Value("${auth.jwtSecret:IyNAIXBwaXl1bmdiYWNrZW5kZGV2a2V5MjAyMzAzMTF0ZWFtcHBpeXVuZyMkJSoqKg}")
-    						String secretKey) {
+    public JwtTokenUtil(String secretKey) {
+    	System.out.println("secretKey: " + secretKey);
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
@@ -79,7 +78,7 @@ public class JwtTokenUtil {
     }
     
     // JWT로부터 계정 정보 얻기
-    public HashMap<String, String> getAuthentication(String accessToken) {
+    public Authentication getAuthentication(String accessToken) {
         Claims claims = parseClaims(accessToken);
  
         if (claims.get("memberType") == null) {
@@ -87,17 +86,13 @@ public class JwtTokenUtil {
         }
  
         // 클레임에서 권한 정보 가져오기
-//        Collection<? extends GrantedAuthority> authorities =
-//                Arrays.stream(claims.get("memberType").toString().split(","))
-//                        .map(SimpleGrantedAuthority::new)
-//                        .collect(Collectors.toList());
+        Collection<? extends GrantedAuthority> authorities =
+                Arrays.stream(claims.get("memberType").toString().split(","))
+                        .map(SimpleGrantedAuthority::new)
+                        .collect(Collectors.toList());
         
-        
-        HashMap<String, String> userInfo = new HashMap<String, String>();
-        userInfo.put("memberId", claims.getSubject().toString());
-        userInfo.put("memberType", claims.get("memberType").toString());
-        
-        return userInfo;
+        return new UsernamePasswordAuthenticationToken(new SecurityUserDetails(claims.getSubject(), authorities),
+        		"", authorities);
     }
     
     // 토큰 검증

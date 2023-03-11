@@ -40,14 +40,7 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
  
         // 토큰 Validation
         if (token != null && jwtTokenUtil.validateToken(token)) {
-            Map<String, String> userInfo = jwtTokenUtil.getAuthentication(token);
-            
-            Member param = new Member();
-            param.setMember_id(userInfo.get("memberId"));
-            SecurityUserDetails user = new SecurityUserDetails(memberService.getMemberInfo(param));
-            
-            Authentication authentication = new UsernamePasswordAuthenticationToken(user, "", user.getAuthorities());
-            
+        	Authentication authentication = jwtTokenUtil.getAuthentication(token);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
         chain.doFilter(request, response);

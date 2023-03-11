@@ -22,7 +22,8 @@ public class RecruitDaoImpl implements RecruitDao {
 	}
 
 	@Override
-	public void updateRecruitNotice(Recruit param, int recruit_id) throws Exception {
+	public void updateRecruitNotice(Recruit param) throws Exception {
+		
 		int count = session.update("org.ppiyung.ppiyung.recruit.update", param);
 		if (count != 1) {
 			throw new Exception();

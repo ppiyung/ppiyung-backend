@@ -7,6 +7,8 @@
 <mapper namespace="org.ppiyung.ppiyung.member">
 	<select id="login" parameterType="Member"
 	        resultType="Member">		
+	        
+	   <!-- 로그인 -->
 		<![CDATA[
 			SELECT member_id, member_pw, member_name, member_birth,
 					member_gender, member_phone, member_addr, member_coord_x, member_coord_y,
@@ -17,8 +19,20 @@
 		]]>
 	</select>
 	
+	<!-- 회원전체조회 -->
+		<select id="selectAll"  resultType="Member">		
+		<![CDATA[
+			SELECT member_id, member_pw, member_name, member_birth,
+					member_gender, member_phone, member_addr, member_coord_x, member_coord_y,
+					member_nickname, member_email, member_type, member_reg_num, member_info,
+					member_active, member_created_at, work_area_id, member_img, member_verified
+			FROM member_tb 
+		]]>
+	</select>
+	
+	<!-- 개별회원조회 -->
 	<select id="select" parameterType="Member"
-	        resultType="Member">		
+   resultType="Member">		
 		<![CDATA[
 			SELECT member_id, member_pw, member_name, member_birth,
 					member_gender, member_phone, member_addr, member_coord_x, member_coord_y,
@@ -82,7 +96,8 @@
 			WHERE
 		    member_id= #{member_id}
 		]]>
-	
 	</update>
+	
+	
 
 </mapper>

@@ -1,8 +1,10 @@
 -- 삐융 베이스 SQL 스크립트
--- Version: v0.3
+-- Version: v0.4
 -- Author: @initbyran, @silver-hee, @schdevv, @0tak2, @gkswotjd45
 --
 -- 변경 사항
+-- v0.4 community_like_tb, community_reply_tb의 article_id(FK)에 대한 제약조건 추가
+--      샘플 데이터 일부 추가
 -- v0.3 member_tb.member_verified 속성 추가
 -- v0.2 member_tb.member_gender의 타입을 CHAR(1)로 수정
 --        member_tb.member_type의 타입을 CHAR(1)로 수정
@@ -48,10 +50,13 @@ CREATE TABLE `member_tb` (
     `member_verified`      boolean                 NULL,
     FOREIGN KEY (work_area_id) REFERENCES work_area_tb (work_area_id)
 );
-insert into member_tb values ('hong','1111','홍길동','2000-01-01', 'M','010-1234-5678','서울',null,null,'홍홍홍','hong@gmail.com', 'N',null,'홍길동입니당~잘부탁드려요홍홍홍',true,null,1,NULL, null);
-insert into member_tb values ('carrot','1111','당근마켓','2000-01-01',null,'010-1234-5678','서울',null,null,'당근당근','carrot@gmail.com','C','000-00-00000','바니바니당근당근',true,null,1,NULL, true);
-insert into member_tb values ('hello','1111','헬로마켓','2000-01-01',null,'010-1234-5678','경기',null,null,'헬로헬로','hello@gmail.com','C','000-00-00000','바니바니당근당근',true,null,1,NULL, true);
-insert into member_tb values ('admin','1111','관리자','2000-01-01',null, '010-1234-5678',null,null,null,'관리자','admin@gmail.com', 'A',null, null,true,null,1, null, null);
+INSERT INTO `member_tb` VALUES ('admin','1111','관리자','2000-01-01',NULL,'010-1234-5678',NULL,NULL,NULL,'관리자','admin@gmail.com','A',NULL,NULL,1,NULL,1,NULL,NULL),
+        ('carrot','1111','당근마켓','2000-01-01',NULL,'010-1234-5678','서울',NULL,NULL,'당근당근','carrot@gmail.com','C','000-00-00000','바니바니당근당근',1,NULL,1,NULL,1),
+        ('gang','1111','강감찬','2000-01-01','M','010-1234-5678','인천',NULL,NULL,'강강강','gang@gmail.com','N',NULL,'강감찬입니다~~',1,NULL,1,NULL,NULL),
+        ('hello','1111','헬로마켓','2000-01-01',NULL,'010-1234-5678','경기',NULL,NULL,'헬로헬로','hello@gmail.com','C','000-00-00000','바니바니당근당근',1,NULL,1,NULL,1),
+        ('hong','1111','홍길동','2000-01-01','M','010-1234-5678','서울',NULL,NULL,'홍홍홍','hong@gmail.com','N',NULL,'홍길동입니당~잘부탁드려요홍홍홍',1,NULL,1,NULL,NULL),
+        ('Lee','1111','이순신','2000-01-01','M','010-1234-5678','인천',NULL,NULL,'강강강','Lee@gmail.com','N',NULL,'이순신입니다~~',1,NULL,1,NULL,NULL),
+        ('shin','1111','신사임당','2000-01-01','F','010-1234-5678','경기',NULL,NULL,'신신신','shin@gmail.com','N',NULL,'신사입니당~잘부탁드려요홍홍홍',1,NULL,1,NULL,NULL);
 select * from member_tb;
 
  
@@ -144,7 +149,16 @@ CREATE TABLE `community_article_tb` (
     `article_created_at`    datetime  DEFAULT now()   NOT NULL,
     FOREIGN KEY (member_id) REFERENCES member_tb (member_id)
 );
-insert into community_article_tb values (default, '게시글 제목', '게시글 내용입니다', 'hong', default);
+INSERT INTO `community_article_tb` VALUES  (default, '게시글 제목', '게시글 내용입니다', 'hong', default),
+        (default,'나는 이순신','한산도대첩','lee',default),
+        (default,'신사임당','율곡이이 어머니','shin',default),
+        (default,'가나다','한산도대첩','lee',default),
+        (default,'마바사','율곡이이 어머니','shin',default),
+        (default,'아자차','투붐','lee',default),
+        (default,'카타파','한산도대첩','lee',default),
+        (default,'하하하','율곡이이 어머니','shin',default),
+        (default,'도레미','투붐','lee',default),
+        (default,'파솔라','투붐','lee',default);
 select * from community_article_tb;
 
 -- 커뮤니티 좋아요
@@ -154,7 +168,7 @@ CREATE TABLE `community_like_tb` (
     `like_created_at`    datetime  DEFAULT now()   NOT NULL,
     PRIMARY KEY (article_id, member_id),
     FOREIGN KEY (member_id) REFERENCES member_tb (member_id),
-    FOREIGN KEY (article_id) REFERENCES community_article_tb (article_id)
+    FOREIGN KEY (article_id) REFERENCES community_article_tb (article_id) ON DELETE CASCADE
 );
 insert into community_like_tb values (1, 'hong', default);
 select * from community_like_tb;
@@ -167,7 +181,7 @@ CREATE TABLE `community_reply_tb` (
     `member_id`           varchar(20)               NOT NULL,
     `reply_created_at`    datetime  DEFAULT now()   NOT NULL,
     FOREIGN KEY (member_id) REFERENCES member_tb (member_id),
-    FOREIGN KEY (article_id) REFERENCES community_article_tb (article_id)
+    FOREIGN KEY (article_id) REFERENCES community_article_tb (article_id) ON DELETE CASCADE
 );
 insert into community_reply_tb values (default, '좋은 게시글이네요' , 1, 'hong', default);
 select * from community_reply_tb;

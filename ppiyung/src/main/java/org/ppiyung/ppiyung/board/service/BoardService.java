@@ -16,7 +16,6 @@ public interface BoardService {
 
 	// 게시글 삭제 service
 	public boolean deleteCommunit(int article_id);
-
 	
 	// 댓글 생성
 	public boolean insertReply(Reply reply);
@@ -27,5 +26,7 @@ public interface BoardService {
 	// 댓글 수정
 	public boolean updateReply(Reply reply);
 
+	// 게시글 수정
+	public boolean editCommunit(Board boardContent);
 
 }

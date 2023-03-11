@@ -5,17 +5,16 @@ import java.util.List;
 import org.ppiyung.ppiyung.board.dao.BoardDao;
 import org.ppiyung.ppiyung.board.vo.Board;
 import org.ppiyung.ppiyung.board.vo.BoardList;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.ppiyung.ppiyung.board.vo.Reply;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class BoardServiceImpl implements BoardService {
-
+public class BoardServiceImpl implements BoardService{
+	
 	@Autowired
 	private BoardDao dao;
+	
 
 	// 커뮤니티 게시글 전체 목록 출력 서비스
 	@Override
@@ -33,17 +32,14 @@ public class BoardServiceImpl implements BoardService {
 			dao.insertBoardpost(boardContent);
 			return true;
 		} catch (Exception e) {
-
-			e.printStackTrace();
 			return false;
 		}
-
 	}
 
+	
 	// 커뮤니티 게시글 삭제
 	@Override
 	public boolean deleteCommunit(int article_id) {
-
 		try {
 			dao.deleteBoardPost(article_id);
 			return true;
@@ -63,7 +59,6 @@ public class BoardServiceImpl implements BoardService {
 			e.printStackTrace();
 			return false;
 		}
-
 	}
 	
 	// 댓글 삭제
@@ -89,5 +84,19 @@ public class BoardServiceImpl implements BoardService {
 			return false;
 		}
 	}
-
+	
+	// 게시글 수정
+	@Override
+	public boolean editCommunit(Board boardContent) {
+		
+		try {
+			dao.updateBoardPost(boardContent);
+			return true;
+		}catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+		
+	}
+	
 }

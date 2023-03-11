@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+    xmlns:beans="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans 
+    https://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/security 
+    http://www.springframework.org/schema/security/spring-security.xsd">
+    
+    <beans:bean id ="bcryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
+    <beans:bean id="userDetailService" class="org.ppiyung.ppiyung.member.service.SecurityUserDetailService" />
+    <beans:bean id="jwtAuthenticationFilter" class="org.ppiyung.ppiyung.common.security.JwtAuthenticationFilter"/>
+    <beans:bean id="jwtAuthenticationEntryPoint" class="org.ppiyung.ppiyung.common.security.JwtAuthenticationEntryPoint"/>
+    <beans:bean id="jwtTokenUtil" class="org.ppiyung.ppiyung.common.util.JwtTokenUtil">
+    	<beans:constructor-arg
+    		index="0"
+    		value="IyNAIXBwaXl1bmdiYWNrZW5kZGV2a2V5MjAyMzAzMTF0ZWFtcHBpeXVuZyMkJSoqKg"></beans:constructor-arg>
+    	<beans:constructor-arg
+    		index="1"
+    		value="IyNAIXBwaXl1bmdiYWNrZW5kZGV2cmVmcmVzaGtleTIwMjMwMzEydGVhbXBwaXl1bmcjJCUqKio="></beans:constructor-arg>
+    </beans:bean>
+    
+    <http pattern="/auth/**" security="none"></http>
+    <http use-expressions="true" entry-point-ref="jwtAuthenticationEntryPoint" create-session="stateless">
+    	<csrf disabled="true"/>
+        <intercept-url pattern="/**" access="isAuthenticated()"/>
+        <custom-filter position="FORM_LOGIN_FILTER" ref="jwtAuthenticationFilter" />
+    </http>
+
+    <authentication-manager alias="authenticationManager">
+        <authentication-provider user-service-ref="userDetailService">
+            <password-encoder ref="bcryptPasswordEncoder"/>
+        </authentication-provider>
+    </authentication-manager>
+    
+    <global-method-security  pre-post-annotations="enabled" secured-annotations="enabled"/>
+</beans:beans>

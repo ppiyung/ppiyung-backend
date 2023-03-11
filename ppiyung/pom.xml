@@ -9,7 +9,8 @@
 	<version>1.0.0-BUILD-SNAPSHOT</version>
 	<properties>
 		<java-version>1.8</java-version>
-		<org.springframework-version>5.3.23</org.springframework-version>
+		<org.springframework-version>5.3.25</org.springframework-version>
+		<spring-security-version>5.8.2</spring-security-version>
 		<org.aspectj-version>1.9.9.1</org.aspectj-version>
 		<log4j2.version>2.17.1</log4j2.version> 
 	</properties>
@@ -160,6 +161,38 @@
 		    <version>2.14.2</version>
 		</dependency>
 		
+		<!-- Spring Security -->
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-web</artifactId>
+			<version>${spring-security-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-config</artifactId>
+			<version>${spring-security-version}</version>
+		</dependency>
+		
+		<!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-api -->
+		<dependency>
+		    <groupId>io.jsonwebtoken</groupId>
+		    <artifactId>jjwt-api</artifactId>
+		    <version>0.11.5</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-impl -->
+		<dependency>
+		    <groupId>io.jsonwebtoken</groupId>
+		    <artifactId>jjwt-impl</artifactId>
+		    <version>0.11.5</version>
+		    <scope>runtime</scope>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-jackson -->
+		<dependency>
+		    <groupId>io.jsonwebtoken</groupId>
+		    <artifactId>jjwt-jackson</artifactId>
+		    <version>0.11.5</version>
+		    <scope>runtime</scope>
+		</dependency>
 	</dependencies>
     <build>
         <plugins>

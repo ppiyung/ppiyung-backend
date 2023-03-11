@@ -39,6 +39,7 @@ public class MemberController {
 	public ResponseEntity<BasicResponseEntity<Object>> signinHandler(@RequestBody Member reqSigninInfo) {
 
 		boolean result = service.signin(reqSigninInfo);
+		
 		BasicResponseEntity<Object> respBody = null;
 		int respCode = 0;
 		HttpHeaders headers = new HttpHeaders();

@@ -29,4 +29,16 @@ public class Member {
 	private int work_area_id;
 	private String member_img;
 	private boolean member_verified;
+	
+	public String getRole() {
+		if (member_type == 'N') {
+			return "ROLE_NORMAL";
+		} else if (member_type == 'C') {
+			return "ROLE_COMPANY";
+		} else if (member_type == 'A') {
+			return "ROLE_ADMIN";
+		} else {
+			return null;
+		}
+	}
 }

@@ -1,10 +1,15 @@
 package org.ppiyung.ppiyung.member.service;
 
+import java.util.HashMap;
 import java.util.List;
 
+import org.ppiyung.ppiyung.common.util.JwtTokenUtil;
 import org.ppiyung.ppiyung.member.dao.MemberDao;
 import org.ppiyung.ppiyung.member.vo.Member;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -12,11 +17,23 @@ public class MemberServiceImpl implements MemberService {
 
 	@Autowired
 	private MemberDao dao;
+	
+	@Autowired
+    private AuthenticationManager authenticationManager;
+    
+	@Autowired
+    private JwtTokenUtil jwtTokenProvider;
 
 	@Override
-	public Member login(Member member) {
+	public HashMap<String, String> login(Member member) {
 		try {
-			return dao.login(member);
+			UsernamePasswordAuthenticationToken authenticationToken =
+					new UsernamePasswordAuthenticationToken(member.getMember_id(), member.getMember_pw());
+	        Authentication authentication = authenticationManager.authenticate(authenticationToken);
+	 
+	        // 3. 인증 정보를 기반으로 JWT 토큰 생성
+	        HashMap<String, String> result = jwtTokenProvider.generateToken(authentication);
+	        return result;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;

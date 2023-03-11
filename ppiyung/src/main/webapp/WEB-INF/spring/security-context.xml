@@ -21,6 +21,7 @@
     </beans:bean>
     
     <http pattern="/auth/**" security="none"></http>
+    <http pattern="/member/signin" security="none"></http>
     <http use-expressions="true" entry-point-ref="jwtAuthenticationEntryPoint" create-session="stateless">
     	<csrf disabled="true"/>
         <intercept-url pattern="/**" access="isAuthenticated()"/>

@@ -163,7 +163,7 @@ public class RecruitController {
 	}
 	
 	// 직무별 채용공고 조회
-	@GetMapping(value="/{work_area_id}")
+	@GetMapping(value="/workarea/{work_area_id}")
 	public ResponseEntity<BasicResponseEntity<Object>> 
 		getRecruitListByWorkAreaId(@PathVariable("work_area_id") int work_area_id){ 
 		
@@ -181,6 +181,37 @@ public class RecruitController {
 		} else {
 			log.debug("직무별 공고 조회 실패");
 			respBody = new BasicResponseEntity<Object> (false, "직무별 공고 조회 실패", result);
+			respCode = HttpServletResponse.SC_BAD_REQUEST;
+		}
+		
+		
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(new MediaType("application", "json",
+				Charset.forName("UTF-8")));
+		
+		return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
+
+      }
+	
+	// 키워드로 채용공고 조회(제목+본문 검색)
+	@GetMapping(value="/{keyword}")
+	public ResponseEntity<BasicResponseEntity<Object>> 
+		getRecruitListByKeyword(@PathVariable("keyword") String keyword){ 
+		
+		log.debug(keyword);
+		
+		List<Recruit> result = service.getRecruitListByKeyword(keyword);
+		
+		BasicResponseEntity<Object> respBody = null;
+		int respCode=0;
+		
+		if(result != null) {
+			log.debug("공고 조회 성공");
+			respBody = new BasicResponseEntity<Object> (true, "공고 조회 완료", result);
+			respCode = HttpServletResponse.SC_OK;
+		} else {
+			log.debug("공고 조회 실패");
+			respBody = new BasicResponseEntity<Object> (false, "공고 조회 실패", result);
 			respCode = HttpServletResponse.SC_BAD_REQUEST;
 		}
 		

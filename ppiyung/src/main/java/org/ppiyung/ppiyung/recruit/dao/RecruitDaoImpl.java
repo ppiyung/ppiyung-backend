@@ -51,5 +51,12 @@ public class RecruitDaoImpl implements RecruitDao {
 		
 		return list;
 	}
+
+	@Override
+	public List<Recruit> selectByKeyword(String keyword) {
+		List<Recruit> list = session.selectList("org.ppiyung.ppiyung.recruit.selectByKeyword", keyword);
+			
+		return list;
+	}
 	
 }

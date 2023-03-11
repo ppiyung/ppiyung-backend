@@ -6,31 +6,62 @@
 
 <mapper namespace="org.ppiyung.ppiyung.board">
 
-	<!-- 커뮤니티 게시글 전체 목록 출력-->
+	<!-- 커뮤니티 게시글 전체 목록 출력 -->
 	<select id="allBoard" resultType="BoardList">		
 		<![CDATA[
 		SELECT Distinct B.article_id, B.article_title, B.article_content, B.member_id, B.article_created_at,
-		(SELECT count(*) FROM community_reply_tb as C   WHERE B.article_id = C.article_id) AS comment_cnt,
+		(SELECT count(*) FROM community_reply_tb as C  WHERE B.article_id = C.article_id) AS comment_cnt,
 		(SELECT count(*) FROM community_like_tb as L WHERE L.article_id = B.article_id) AS like_cnt,
 		(SELECT M.member_nickname FROM member_tb as M where M.member_id = B.member_id) as member_nickname
-		FROM community_article_tb as B, community_reply_tb as C, member_tb as M
+		FROM community_article_tb as B
 		]]>
 	</select>
-	
+
 	<!-- 커뮤니티 게시글 삽입 -->
-	<insert id="insert" parameterType="Board">
+	<insert id="articleInsert" parameterType="Board">
 		<![CDATA[
 		INSERT INTO community_article_tb (article_title, article_content, member_id, article_created_at)
 		VALUES (#{article_title},#{article_content}, #{member_id},#{article_created_at});
 		]]>
 	</insert>
-	
+
 	<!-- 커뮤니티 게시글 삭제 -->
-	<delete id="delete" parameterType="Board">
+	<delete id="articleDelete" parameterType="Board">
 		<![CDATA[
 		DELETE FROM community_article_tb
 		WHERE article_id=#{article_id}
 		]]>
 	</delete>
-	
+
+	<select id="login" parameterType="Reply" resultType="Reply">		
+		<![CDATA[
+			SELECT reply_id, reply_content, article_id,
+					member_id, reply_created_at
+			FROM community_reply_tb 
+			WHERE reply_id = #{reply_id}
+		]]>
+	</select>
+
+	<insert id="insert" parameterType="Reply">
+		<![CDATA[
+			INSERT INTO community_reply_tb (reply_content, article_id, member_id, reply_created_at)
+			VALUES(#{reply_content}, #{article_id}, #{member_id}, #{reply_created_at})
+		]]>
+	</insert>
+
+	<delete id="delete" parameterType="Reply">
+		<![CDATA[
+			DELETE FROM community_reply_tb 
+			WHERE reply_id = #{reply_id}
+		]]>
+	</delete>
+
+	<update id="update" parameterType="Reply">
+		<![CDATA[
+			UPDATE community_reply_tb
+			SET reply_content = #{reply_content}, reply_created_at = #{reply_created_at}
+			WHERE reply_id = #{reply_id}
+		]]>
+	</update>
+
 </mapper>

@@ -2,24 +2,19 @@ package org.ppiyung.ppiyung.member.controller;
 
 import java.nio.charset.Charset;
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.ppiyung.ppiyung.common.entity.BasicResponseEntity;
-import org.ppiyung.ppiyung.common.util.JwtTokenUtil;
 import org.ppiyung.ppiyung.member.service.MemberService;
 import org.ppiyung.ppiyung.member.vo.Member;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -59,49 +54,32 @@ public class AuthController {
 		return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
 	}
 	
-	@PostMapping(value = "/logout")
-	public ResponseEntity<HashMap<String, Object>>
-		loginHandler(HttpSession session) {
-		session.invalidate();
+	@PostMapping(value = "/refresh")
+	public ResponseEntity<BasicResponseEntity<Map<String, String>>>
+		verifyHandler(@RequestBody HashMap<String, String> reqPayload) {
 		
-		HashMap<String, Object> respBody = new HashMap<String, Object>();
-		respBody.put("success", true);
-		respBody.put("msg", "로그아웃에 성공하셨습니다.");
+		String newToken = service.regenToken(reqPayload.get("refreshToken"));
 		
-		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(new MediaType("application", "json",
-				Charset.forName("UTF-8")));
-		
-		return new ResponseEntity<HashMap<String, Object>>(respBody, headers, HttpServletResponse.SC_OK);
-	}
-	
-	@PostMapping(value = "/verify")
-	public ResponseEntity<BasicResponseEntity<Member>>
-		verifyHandler(HttpSession session) {
-		
-		Member member = (Member)session.getAttribute("currentMember");
-		
-		BasicResponseEntity<Member> respBody = new BasicResponseEntity<Member>();
-		
+		BasicResponseEntity<Map<String, String>> respBody = null;
 		int respCode = 0;
-		if(member == null || member.getMember_id() == null) {
-			respCode = HttpServletResponse.SC_FORBIDDEN;
-			respBody.setSuccess(false);
-			respBody.setMsg("로그인되지 않은 사용자입니다.");
+		if (newToken == null) {
+			respBody = new BasicResponseEntity<Map<String, String>>(true, "토큰을 재발급하는데 실패했습니다.", null);
+			respCode = HttpServletResponse.SC_BAD_REQUEST;
 		} else {
-			respCode = HttpServletResponse.SC_OK;
+			Map<String, String> respPayload = new HashMap<String, String>();
+			respPayload.put("accessToken", newToken);
 			
-			member.setMember_pw("");
-			respBody.setSuccess(true);
-			respBody.setMsg("로그인되어있는 사용자입니다.");
-			respBody.setPayload(member);
+			respBody = new BasicResponseEntity<Map<String, String>>(true,
+						"토큰을 재발급하는데 성공했습니다.",
+						respPayload);
+			respCode = HttpServletResponse.SC_OK;
 		}
 		
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(new MediaType("application", "json",
 				Charset.forName("UTF-8")));
 		
-		return new ResponseEntity<BasicResponseEntity<Member>>(respBody, headers, respCode);
+		return new ResponseEntity<BasicResponseEntity<Map<String, String>>>(respBody, headers, respCode);
 	}
 		
 }

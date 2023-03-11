@@ -12,7 +12,12 @@
     <beans:bean id="jwtAuthenticationFilter" class="org.ppiyung.ppiyung.common.security.JwtAuthenticationFilter"/>
     <beans:bean id="jwtAuthenticationEntryPoint" class="org.ppiyung.ppiyung.common.security.JwtAuthenticationEntryPoint"/>
     <beans:bean id="jwtTokenUtil" class="org.ppiyung.ppiyung.common.util.JwtTokenUtil">
-    	<beans:constructor-arg value="IyNAIXBwaXl1bmdiYWNrZW5kZGV2a2V5MjAyMzAzMTF0ZWFtcHBpeXVuZyMkJSoqKg"></beans:constructor-arg>
+    	<beans:constructor-arg
+    		index="0"
+    		value="IyNAIXBwaXl1bmdiYWNrZW5kZGV2a2V5MjAyMzAzMTF0ZWFtcHBpeXVuZyMkJSoqKg"></beans:constructor-arg>
+    	<beans:constructor-arg
+    		index="1"
+    		value="IyNAIXBwaXl1bmdiYWNrZW5kZGV2cmVmcmVzaGtleTIwMjMwMzEydGVhbXBwaXl1bmcjJCUqKio="></beans:constructor-arg>
     </beans:bean>
     
     <http pattern="/auth/**" security="none"></http>

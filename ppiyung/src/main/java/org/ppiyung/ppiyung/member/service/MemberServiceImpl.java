@@ -22,7 +22,7 @@ public class MemberServiceImpl implements MemberService {
     private AuthenticationManager authenticationManager;
     
 	@Autowired
-    private JwtTokenUtil jwtTokenProvider;
+    private JwtTokenUtil jwtTokenUtil;
 
 	@Override
 	public HashMap<String, String> login(Member member) {
@@ -32,18 +32,12 @@ public class MemberServiceImpl implements MemberService {
 	        Authentication authentication = authenticationManager.authenticate(authenticationToken);
 	 
 	        // 3. 인증 정보를 기반으로 JWT 토큰 생성
-	        HashMap<String, String> result = jwtTokenProvider.generateToken(authentication);
+	        HashMap<String, String> result = jwtTokenUtil.generateToken(authentication);
 	        return result;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
 		}
-	}
-
-	@Override
-	public boolean logout() {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 	@Override
@@ -87,5 +81,15 @@ public class MemberServiceImpl implements MemberService {
 	public List<Member> getAllMember() {
 		List<Member> list = dao.getAllMember();
 		return list;
+	}
+
+	@Override
+	public String regenToken(String refreshToken) {
+		try {
+	        return jwtTokenUtil.reGenerateTokenFromRefreshToken(refreshToken);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 }

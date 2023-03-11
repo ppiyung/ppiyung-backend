@@ -29,8 +29,11 @@ import io.jsonwebtoken.security.Keys;
 
 public class JwtTokenUtil {
 	
-	public static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60 * 1000;
-	private final Key key;
+	public static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60 * 1000; // 5시간
+	public static final long REFRESH_TOKEN_VALIDITY = 24 * 60 * 60 * 14 * 1000; // 14일
+	
+	private final Key accesskey;
+	private final Key refreshkey;
 	
 	private Logger log = LogManager.getLogger("base");
     
@@ -41,10 +44,12 @@ public class JwtTokenUtil {
 //    }
 //    
 	// JWT 생성을 위해 사용하는 Key 객체를 생성
-    public JwtTokenUtil(String secretKey) {
-    	System.out.println("secretKey: " + secretKey);
-        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
-        this.key = Keys.hmacShaKeyFor(keyBytes);
+    public JwtTokenUtil(String accessSecret, String refreshSecret) {
+        byte[] keyBytes = Decoders.BASE64.decode(accessSecret);
+        this.accesskey = Keys.hmacShaKeyFor(keyBytes);
+        
+        keyBytes = Decoders.BASE64.decode(refreshSecret);
+        this.refreshkey = Keys.hmacShaKeyFor(keyBytes);
     }
     
     // JWT 생성
@@ -61,12 +66,15 @@ public class JwtTokenUtil {
                 .setSubject(authentication.getName())
                 .claim("memberType", authorities)
                 .setExpiration(accessTokenExpiresIn)
-                .signWith(key, SignatureAlgorithm.HS256)
+                .signWith(accesskey, SignatureAlgorithm.HS256)
                 .compact();
  
+        Date refreshTokenExpiresIn = new Date(now + REFRESH_TOKEN_VALIDITY);
         String refreshToken = Jwts.builder()
-                .setExpiration(new Date(now + JWT_TOKEN_VALIDITY))
-                .signWith(key, SignatureAlgorithm.HS256)
+                .setSubject(authentication.getName())
+                .claim("memberType", authorities)
+                .setExpiration(refreshTokenExpiresIn)
+                .signWith(refreshkey, SignatureAlgorithm.HS256)
                 .compact();
         
         HashMap<String, String> payload = new HashMap<String, String>();
@@ -95,11 +103,45 @@ public class JwtTokenUtil {
         		"", authorities);
     }
     
+    // 토큰 리프레시
+    public String reGenerateTokenFromRefreshToken(String refreshToken) {
+    	// 리프레시 토큰 검증
+    	if (!validateToken(refreshToken, true)) {
+    		return null;
+    	}
+    	
+    	// 리프레시 토큰으로부터 계정 정보 가져오기
+    	Claims claims = parseClaims(refreshToken, true);
+    	String userId = claims.getSubject();
+        String authorities = claims.get("memberType").toString();
+ 
+        long now = (new Date()).getTime();
+        
+        Date accessTokenExpiresIn = new Date(now + JWT_TOKEN_VALIDITY);
+        String accessToken = Jwts.builder()
+                .setSubject(userId)
+                .claim("memberType", authorities)
+                .setExpiration(accessTokenExpiresIn)
+                .signWith(accesskey, SignatureAlgorithm.HS256)
+                .compact();
+        
+        return accessToken;
+    }
+    
     // 토큰 검증
     public boolean validateToken(String token) {
+    	return validateToken(token, false);
+    }
+    
+    public boolean validateToken(String token, boolean isRefresh) {
         try {
-            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
-            return true;
+        	if (!isRefresh) {
+                Jwts.parserBuilder().setSigningKey(accesskey).build().parseClaimsJws(token);
+                return true;	
+        	} else {
+                Jwts.parserBuilder().setSigningKey(refreshkey).build().parseClaimsJws(token);
+                return true;
+        	}
         } catch (SecurityException | MalformedJwtException e) {
             log.info("Invalid JWT Token", e);
         } catch (ExpiredJwtException e) {
@@ -112,9 +154,18 @@ public class JwtTokenUtil {
         return false;
     }
     
+    // 클레임 정보 가져오기
     private Claims parseClaims(String accessToken) {
+    	return parseClaims(accessToken, false);
+    }
+    
+    private Claims parseClaims(String accessToken, boolean isRefresh) {
         try {
-            return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(accessToken).getBody();
+        	if(!isRefresh) {
+                return Jwts.parserBuilder().setSigningKey(accesskey).build().parseClaimsJws(accessToken).getBody();
+        	} else {
+                return Jwts.parserBuilder().setSigningKey(refreshkey).build().parseClaimsJws(accessToken).getBody();
+        	}
         } catch (ExpiredJwtException e) {
             return e.getClaims();
         }

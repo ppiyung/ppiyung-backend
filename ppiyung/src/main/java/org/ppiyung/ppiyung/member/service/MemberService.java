@@ -9,7 +9,7 @@ public interface MemberService {
 
 	public HashMap<String, String> login(Member param);
 	
-	public boolean logout();
+	public String regenToken(String refreshToken);
 
 	public boolean signin(Member param);
 

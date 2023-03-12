@@ -70,7 +70,7 @@ public class RecruitController {
 		
 		log.debug(recruitNoticeContent);
 		
-		recruitNoticeContent.setRecruit_id(recruit_id);
+		recruitNoticeContent.setRecruitId(recruit_id);
 		boolean result = service.updateRecruitNotice(recruitNoticeContent);
 		
 		BasicResponseEntity<Object> respBody = null;

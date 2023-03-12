@@ -12,12 +12,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Recruit {
 
-	private int recruit_id;
-	private String company_id;
-	private String recruit_title;
-	private String recruit_detail;
-	private int work_area_id;
-	private Date recruit_start_at ; 
-	private Date recruit_end_at;
+	private int recruitId;
+	private String companyId;
+	private String recruitTitle;
+	private String recruitDetail;
+	private int workAreaId;
+	private Date recruitStartAt ; 
+	private Date recruitEndAt;
 	
 }

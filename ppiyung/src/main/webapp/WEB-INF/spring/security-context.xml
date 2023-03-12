@@ -24,9 +24,9 @@
     	<csrf disabled="true"/>
     	<intercept-url pattern="/auth/**" access="permitAll" />
     	<intercept-url pattern="/member/signin" method="POST" access="permitAll" />
-    	<intercept-url pattern="/recruit" method="POST" access="hasRole('ROLE_ADMIN')" />
-    	<intercept-url pattern="/recruit" method="DELETE" access="hasRole('ROLE_ADMIN')" />
-    	<intercept-url pattern="/recruit" method="PUT" access="hasRole('ROLE_ADMIN')" />
+    	<intercept-url pattern="/recruit" method="POST" access="hasAnyRole('ROLE_COMPANY', 'ROLE_ADMIN')" />
+    	<intercept-url pattern="/recruit" method="DELETE" access="hasAnyRole('ROLE_COMPANY', 'ROLE_ADMIN')" />
+    	<intercept-url pattern="/recruit" method="PUT" access="hasAnyRole('ROLE_COMPANY', 'ROLE_ADMIN')" />
         <intercept-url pattern="/**" access="isAuthenticated()"/>
         <custom-filter position="FORM_LOGIN_FILTER" ref="jwtAuthenticationFilter" />
     </http>

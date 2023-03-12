@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -23,6 +24,9 @@ public class MemberServiceImpl implements MemberService {
     
 	@Autowired
     private JwtTokenUtil jwtTokenUtil;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
 	@Override
 	public HashMap<String, String> login(Member member) {
@@ -42,23 +46,22 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public boolean signin(Member member) {
-
 		try {
+			member.setMember_pw(passwordEncoder.encode(member.getMember_pw()));
 			dao.insertMember(member);
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
 		}
-
 	}
 
 	// 회원정보수정
 	@Override
 	public boolean modifyMember(Member member) {
 		try {
+			member.setMember_pw(passwordEncoder.encode(member.getMember_pw()));
 			dao.updateInfo(member);
-
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();

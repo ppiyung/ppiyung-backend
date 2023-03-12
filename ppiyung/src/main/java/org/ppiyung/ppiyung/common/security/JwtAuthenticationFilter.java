@@ -1,6 +1,7 @@
 package org.ppiyung.ppiyung.common.security;
 
 import java.io.IOException;
+
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
@@ -28,7 +29,7 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
  
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
- 
+    	
         // 헤더에서 토큰 추출
         String token = resolveToken((HttpServletRequest) request);
  

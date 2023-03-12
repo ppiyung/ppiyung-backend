@@ -11,10 +11,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Board {
 
-	private int article_id;
-	private String article_title; // 게시글 제목
-	private String article_content; // 게시글 내용
-	private String member_id;
-	private Date article_created_at;
+	private int articleId;
+	private String articleTitle; // 게시글 제목
+	private String articleContent; // 게시글 내용
+	private String memberId;
+	private Date articleCreatedAt;
 	
 }

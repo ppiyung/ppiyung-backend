@@ -11,11 +11,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Reply {
 	
-	   private int reply_id;
-	   private String reply_content;
-	   private int article_id;
-	   private String member_id;
-	   private Date reply_created_at;
+	   private int replyId;
+	   private String replyContent;
+	   private int articleId;
+	   private String memberId;
+	   private Date replyCreatedAt;
 	   
 
 

@@ -36,7 +36,7 @@ public class AuthController {
 		loginHandler(@RequestBody Member reqLoginInfo) {
 		BasicResponseEntity<Object> respBody = null;
 		int respCode = 0;
-		
+
 		final HashMap<String, String> payload = service.login(reqLoginInfo);
 		
 		if (payload == null) {

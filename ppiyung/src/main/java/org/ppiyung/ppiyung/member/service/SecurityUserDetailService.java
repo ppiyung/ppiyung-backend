@@ -17,7 +17,7 @@ public class SecurityUserDetailService implements UserDetailsService {
 	public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
 		try {
 			Member param = new Member();
-			param.setMember_id(userId);
+			param.setMemberId(userId);
 			return new SecurityUserDetails(dao.selectMemberId(param));
 		} catch (Exception e) {
 			e.printStackTrace();

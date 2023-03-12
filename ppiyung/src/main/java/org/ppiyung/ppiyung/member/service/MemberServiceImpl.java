@@ -32,7 +32,7 @@ public class MemberServiceImpl implements MemberService {
 	public HashMap<String, String> login(Member member) {
 		try {
 			UsernamePasswordAuthenticationToken authenticationToken =
-					new UsernamePasswordAuthenticationToken(member.getMember_id(), member.getMember_pw());
+					new UsernamePasswordAuthenticationToken(member.getMemberId(), member.getMemberPw());
 	        Authentication authentication = authenticationManager.authenticate(authenticationToken);
 	 
 	        // 3. 인증 정보를 기반으로 JWT 토큰 생성
@@ -47,7 +47,7 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public boolean signin(Member member) {
 		try {
-			member.setMember_pw(passwordEncoder.encode(member.getMember_pw()));
+			member.setMemberPw(passwordEncoder.encode(member.getMemberPw()));
 			dao.insertMember(member);
 			return true;
 		} catch (Exception e) {
@@ -60,7 +60,7 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public boolean modifyMember(Member member) {
 		try {
-			member.setMember_pw(passwordEncoder.encode(member.getMember_pw()));
+			member.setMemberPw(passwordEncoder.encode(member.getMemberPw()));
 			dao.updateInfo(member);
 			return true;
 		} catch (Exception e) {

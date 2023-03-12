@@ -12,7 +12,6 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 public class SecurityUserDetails extends User implements UserDetails {
@@ -22,8 +21,8 @@ public class SecurityUserDetails extends User implements UserDetails {
 	private Member member;
 	
 	public SecurityUserDetails(Member member) {
-		super(member.getMember_id(),
-				member.getMember_pw(),
+		super(member.getMemberId(),
+				member.getMemberPw(),
 				new ArrayList<GrantedAuthority>(
 						Arrays.asList(
 								new SimpleGrantedAuthority(member.getRole())
@@ -36,7 +35,7 @@ public class SecurityUserDetails extends User implements UserDetails {
 	public SecurityUserDetails(String memberId, Collection<? extends GrantedAuthority> authorities) {
 		super(memberId, "", authorities);
 		this.member = new Member();
-		member.setMember_id(memberId);
+		member.setMemberId(memberId);
 		
 		String role = null;
 		for (GrantedAuthority authority : authorities) {
@@ -52,7 +51,7 @@ public class SecurityUserDetails extends User implements UserDetails {
 			roleCode = 'A';
 		}
 		
-		member.setMember_type(roleCode);
+		member.setMemberType(roleCode);
 	}
 
 	@Override
@@ -67,31 +66,31 @@ public class SecurityUserDetails extends User implements UserDetails {
 
 	@Override
 	public String getPassword() {
-		return this.member.getMember_pw();
+		return this.member.getMemberPw();
 	}
 
 	@Override
 	public String getUsername() {
-		return this.member.getMember_id();
+		return this.member.getMemberId();
 	}
 
 	@Override
 	public boolean isAccountNonExpired() {
-		return this.member.isMember_active();
+		return this.member.isMemberActive();
 	}
 
 	@Override
 	public boolean isAccountNonLocked() {
-		return this.member.isMember_active();
+		return this.member.isMemberActive();
 	}
 
 	@Override
 	public boolean isCredentialsNonExpired() {
-		return this.member.isMember_active();
+		return this.member.isMemberActive();
 	}
 
 	@Override
 	public boolean isEnabled() {
-		return this.member.isMember_active();
+		return this.member.isMemberActive();
 	}
 }

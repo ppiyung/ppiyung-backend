@@ -1,7 +1,6 @@
 package org.ppiyung.ppiyung.member.controller;
 
 import java.nio.charset.Charset;
-import java.security.Principal;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -11,7 +10,6 @@ import org.apache.logging.log4j.Logger;
 import org.ppiyung.ppiyung.common.entity.BasicResponseEntity;
 import org.ppiyung.ppiyung.member.service.MemberService;
 import org.ppiyung.ppiyung.member.vo.Member;
-import org.ppiyung.ppiyung.member.vo.SecurityUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -75,7 +73,7 @@ public class MemberController {
 		if (userDetails.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
 			log.debug("개별회원조회 성공");
 			Member param = new Member();
-			param.setMember_id(memberIdFromUri);
+			param.setMemberId(memberIdFromUri);
 			result = service.getMemberInfo(param);
 			
 			respBody = new BasicResponseEntity<Object>(true, "개별회원조회 성공하였습니다.", result);
@@ -83,7 +81,7 @@ public class MemberController {
 
 		} else if (userDetails.getUsername().equals(memberIdFromUri)) {
 			Member param = new Member();
-			param.setMember_id(memberIdFromUri);
+			param.setMemberId(memberIdFromUri);
 			result = service.getMemberInfo(param);
 			
 			respBody = new BasicResponseEntity<Object>(true, "개별회원조회 성공하였습니다.", result);
@@ -140,7 +138,7 @@ public class MemberController {
 		if (userDetails.getUsername().equals(memberId) ||
 				hasAuthority) { // 자신의 정보를 수정하는 경우이거나 관리자인 경우
 			log.debug("회원정보수정 - 권한 확인됨");
-			reqUpdateInfo.setMember_id(memberId);
+			reqUpdateInfo.setMemberId(memberId);
 			result = service.modifyMember(reqUpdateInfo);
 		}
 		

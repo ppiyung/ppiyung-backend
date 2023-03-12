@@ -1,7 +1,6 @@
 package org.ppiyung.ppiyung.board.vo;
 
 import lombok.Getter;
-import lombok.Setter;
 
 // 특정 페이지 조회를 위한 Boardpage 클래스
 public class BoardPage {

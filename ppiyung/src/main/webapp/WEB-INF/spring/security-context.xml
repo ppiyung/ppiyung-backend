@@ -20,10 +20,13 @@
     		value="IyNAIXBwaXl1bmdiYWNrZW5kZGV2cmVmcmVzaGtleTIwMjMwMzEydGVhbXBwaXl1bmcjJCUqKio="></beans:constructor-arg>
     </beans:bean>
     
-    <http pattern="/auth/**" security="none"></http>
-    <http pattern="/member/signin" security="none"></http>
     <http use-expressions="true" entry-point-ref="jwtAuthenticationEntryPoint" create-session="stateless">
     	<csrf disabled="true"/>
+    	<intercept-url pattern="/auth/**" access="permitAll" />
+    	<intercept-url pattern="/member/signin" method="POST" access="permitAll" />
+    	<intercept-url pattern="/recruit" method="POST" access="hasRole('ROLE_ADMIN')" />
+    	<intercept-url pattern="/recruit" method="DELETE" access="hasRole('ROLE_ADMIN')" />
+    	<intercept-url pattern="/recruit" method="PUT" access="hasRole('ROLE_ADMIN')" />
         <intercept-url pattern="/**" access="isAuthenticated()"/>
         <custom-filter position="FORM_LOGIN_FILTER" ref="jwtAuthenticationFilter" />
     </http>

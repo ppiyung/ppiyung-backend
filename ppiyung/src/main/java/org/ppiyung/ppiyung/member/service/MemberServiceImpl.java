@@ -1,10 +1,16 @@
 package org.ppiyung.ppiyung.member.service;
 
+import java.util.HashMap;
 import java.util.List;
 
+import org.ppiyung.ppiyung.common.util.JwtTokenUtil;
 import org.ppiyung.ppiyung.member.dao.MemberDao;
 import org.ppiyung.ppiyung.member.vo.Member;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -12,11 +18,26 @@ public class MemberServiceImpl implements MemberService {
 
 	@Autowired
 	private MemberDao dao;
+	
+	@Autowired
+    private AuthenticationManager authenticationManager;
+    
+	@Autowired
+    private JwtTokenUtil jwtTokenUtil;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
 	@Override
-	public Member login(Member member) {
+	public HashMap<String, Object> login(Member member) {
 		try {
-			return dao.login(member);
+			UsernamePasswordAuthenticationToken authenticationToken =
+					new UsernamePasswordAuthenticationToken(member.getMemberId(), member.getMemberPw());
+	        Authentication authentication = authenticationManager.authenticate(authenticationToken);
+	 
+	        // 3. 인증 정보를 기반으로 JWT 토큰 생성
+	        HashMap<String, Object> result = jwtTokenUtil.generateToken(authentication);
+	        return result;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
@@ -24,30 +45,23 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public boolean logout() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
 	public boolean signin(Member member) {
-
 		try {
+			member.setMemberPw(passwordEncoder.encode(member.getMemberPw()));
 			dao.insertMember(member);
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
 		}
-
 	}
 
 	// 회원정보수정
 	@Override
 	public boolean modifyMember(Member member) {
 		try {
+			member.setMemberPw(passwordEncoder.encode(member.getMemberPw()));
 			dao.updateInfo(member);
-
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -70,5 +84,15 @@ public class MemberServiceImpl implements MemberService {
 	public List<Member> getAllMember() {
 		List<Member> list = dao.getAllMember();
 		return list;
+	}
+
+	@Override
+	public String regenToken(String refreshToken) {
+		try {
+	        return jwtTokenUtil.reGenerateTokenFromRefreshToken(refreshToken);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 }

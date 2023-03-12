@@ -1,14 +1,15 @@
 package org.ppiyung.ppiyung.member.service;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.ppiyung.ppiyung.member.vo.Member;
 
 public interface MemberService {
 
-	public Member login(Member param);
+	public HashMap<String, Object> login(Member param);
 	
-	public boolean logout();
+	public String regenToken(String refreshToken);
 
 	public boolean signin(Member param);
 

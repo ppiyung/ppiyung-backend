@@ -5,8 +5,30 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="org.ppiyung.ppiyung.member">
+	<resultMap id="MemberMapped" type="Member">
+	    <result property="memberId" column="member_id" />
+	    <result property="memberPw" column="member_pw" />
+	    <result property="memberName" column="member_name" />
+	    <result property="memberBirth" column="member_birth" />
+	    <result property="memberGender" column="member_gender" />
+	    <result property="memberPhone" column="member_phone" />
+   	    <result property="memberAddr" column="member_addr" />
+	    <result property="memberCoordX" column="member_coord_x" />
+	    <result property="memberCoordY" column="member_coord_y" />
+	    <result property="memberNickname" column="member_nickname" />
+	    <result property="memberEmail" column="member_email" />
+	    <result property="memberType" column="member_type" />
+   	    <result property="memberRegNum" column="member_reg_num" />
+	    <result property="memberInfo" column="member_info" />
+	    <result property="memberActive" column="member_active" />
+	    <result property="memberCreatedAt" column="member_created_at" />
+	    <result property="workAreaId" column="work_area_id" />
+	    <result property="memberImg" column="member_img" />
+   	    <result property="memberVerified" column="member_verified" />
+    </resultMap>
+
 	<select id="login" parameterType="Member"
-	        resultType="Member">		
+	        resultMap="MemberMapped">		
 	        
 	   <!-- 로그인 -->
 		<![CDATA[
@@ -15,12 +37,12 @@
 					member_nickname, member_email, member_type, member_reg_num, member_info,
 					member_active, member_created_at, work_area_id, member_img, member_verified
 			FROM member_tb 
-			WHERE member_id = #{member_id} AND member_pw = #{member_pw}
+			WHERE member_id = #{memberId} AND member_pw = #{memberPw}
 		]]>
 	</select>
 	
 	<!-- 회원전체조회 -->
-		<select id="selectAll"  resultType="Member">		
+		<select id="selectAll" resultMap="MemberMapped">		
 		<![CDATA[
 			SELECT member_id, member_pw, member_name, member_birth,
 					member_gender, member_phone, member_addr, member_coord_x, member_coord_y,
@@ -32,40 +54,16 @@
 	
 	<!-- 개별회원조회 -->
 	<select id="select" parameterType="Member"
-   resultType="Member">		
+   			resultMap="MemberMapped">		
 		<![CDATA[
 			SELECT member_id, member_pw, member_name, member_birth,
 					member_gender, member_phone, member_addr, member_coord_x, member_coord_y,
 					member_nickname, member_email, member_type, member_reg_num, member_info,
 					member_active, member_created_at, work_area_id, member_img, member_verified
 			FROM member_tb 
-			WHERE member_id = #{member_id}
+			WHERE member_id = #{memberId}
 		]]>
 	</select>
-	
-	<insert id="insert" parameterType="Member">
-		<![CDATA[
-			INSERT INTO members
-			VALUES(#{memberId}, #{memberName}, #{memberPw})
-		]]>
-	</insert>
-	
-	<update id="update" parameterType="Member">
-		<![CDATA[
-			UPDATE members
-			SET memberName=#{memberName}, memberPw=#{memberPw}
-			WHERE memberId = #{memberId}
-		]]>
-	</update>
-	
-	<update id="updateToEmpty" parameterType="Member">
-		<![CDATA[
-			UPDATE members
-			SET memberName='', memberPw=''
-			WHERE memberId = #{memberId}
-		]]>
-	</update>
-	
 	
 	<!-- 회원가입 -->
 	<insert id="signin" parameterType = "Member">
@@ -76,10 +74,10 @@
 			member_email,member_type,member_reg_num, member_info,member_active, 
 			work_area_id, member_img, member_verified) 
 			values 
-			(#{member_id},#{member_pw},#{member_name},#{member_birth},#{member_gender},
-			#{member_phone}, #{member_addr},#{member_coord_x},#{member_coord_y},#{member_nickname},
-			#{member_email},#{member_type},#{member_reg_num},#{member_info},#{member_active},
-			#{work_area_id},#{member_img},#{member_verified})
+			(#{memberId},#{memberPw},#{memberName},#{memberBirth},#{memberGender},
+			#{memberPhone}, #{memberAddr},#{memberCoordX},#{memberCoordY},#{memberNickname},
+			#{memberEmail},#{memberType},#{memberRegNum},#{memberInfo},#{memberActive},
+			#{workAreaId},#{memberImg},#{memberVerified})
 			]]>
 	
 	</insert>
@@ -89,12 +87,12 @@
 		<![CDATA[ 
 			UPDATE member_tb 
 			SET 
-			member_pw= #{member_pw} , member_name=#{member_name}, member_birth= #{member_birth},
-			member_phone = #{member_phone}, member_addr = #{member_addr},
-			member_coord_x= #{member_coord_x} , member_coord_y = #{member_coord_y}, member_nickname = #{member_nickname},
-			member_email =  #{member_email}, member_info = #{member_info} ,work_area_id= #{work_area_id}, member_img=#{member_img},member_verified =#{member_verified}
+			member_pw= #{memberPw} , member_name=#{memberName}, member_birth= #{memberBirth},
+			member_phone = #{memberPhone}, member_addr = #{memberAddr},
+			member_coord_x = #{memberCoordX} , member_coord_y = #{memberCoordY}, member_nickname = #{memberNickname},
+			member_email =  #{memberEmail}, member_info = #{memberInfo} ,work_area_id= #{workAreaId}, member_img=#{memberImg},member_verified = #{memberVerified}
 			WHERE
-		    member_id= #{member_id}
+		    member_id= #{memberId}
 		]]>
 	</update>
 	

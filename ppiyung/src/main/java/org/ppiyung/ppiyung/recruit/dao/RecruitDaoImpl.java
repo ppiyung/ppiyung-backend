@@ -40,8 +40,8 @@ public class RecruitDaoImpl implements RecruitDao {
 	}
 
     @Override
-	public List<Recruit> selectByWorkAreaId(int work_area_id) {
-		List<Recruit> list = session.selectList("org.ppiyung.ppiyung.recruit.selectByWorkAreaId", work_area_id);
+	public List<Recruit> selectByWorkAreaId(int workAreaId) {
+		List<Recruit> list = session.selectList("org.ppiyung.ppiyung.recruit.selectByWorkAreaId", workAreaId);
 		
 		return list;
 	}

@@ -29,7 +29,7 @@
 	</context:component-scan>
 	
 	<!-- Interceptors -->
-	<interceptors>
+<!-- 	<interceptors>
          <interceptor>
            <mapping path="/**" />
            <exclude-mapping path="/auth/login"/>
@@ -39,7 +39,7 @@
            <exclude-mapping path="/member/signin"/>
            <beans:bean class="org.ppiyung.ppiyung.common.interceptor.AuthInterceptor" />
          </interceptor>
-	</interceptors>
+	</interceptors> -->
 	
 	<!-- 프로퍼티 불러오기 -->
 	<beans:bean class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">

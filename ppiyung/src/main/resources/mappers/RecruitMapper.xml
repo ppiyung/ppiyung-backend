@@ -5,19 +5,29 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
   <mapper namespace="org.ppiyung.ppiyung.recruit">
+	<resultMap id="RecruitMapped" type="Recruit">
+		<result property="recruitId" column="recruit_id" />
+		<result property="companyId" column="company_id" />
+		<result property="recruitTitle" column="recruit_title" />
+		<result property="recruitDetail" column="recruit_detail" />
+		<result property="workAreaId" column="work_area_id" />
+		<result property="recruitStartAt" column="recruit_start_at" />
+		<result property="recruitEndAt" column="recruit_end_at" />
+	</resultMap>
+  
       <!-- 기업 회원 - 새 공고 게시 -->
       <insert id="insert" parameterType="Recruit" >
          <![CDATA[
 			INSERT INTO recruit_tb (company_id, recruit_title, recruit_detail, work_area_id, recruit_start_at, recruit_end_at)
-			VALUES(#{company_id}, #{recruit_title}, #{recruit_detail}, #{work_area_id}, #{recruit_start_at}, #{recruit_end_at})
+			VALUES(#{companyId}, #{recruitTitle}, #{recruitDetail}, #{workAreaId}, #{recruitStartAt}, #{recruitEndAt})
 		  ]]>
       </insert>
        <!-- 기업회원 - 공고 수정 -->
        <update id ="update" parameterType="Recruit">
           <![CDATA[
 			UPDATE  recruit_tb 
-			SET recruit_title=#{recruit_title},recruit_detail=#{recruit_detail}, work_area_id=#{work_area_id}, recruit_start_at=#{recruit_start_at}, recruit_end_at=#{recruit_end_at}
-		    WHERE recruit_id=#{recruit_id}
+			SET recruit_title=#{recruitTitle},recruit_detail=#{recruitDetail}, work_area_id=#{workAreaId}, recruit_start_at=#{recruitStartAt}, recruit_end_at=#{recruitEndAt}
+		    WHERE recruit_id=#{recruitId}
 		  ]]>
 	   </update>
   
@@ -25,27 +35,27 @@
        <update id ="delete" parameterType="Recruit">
           <![CDATA[
 			DELETE FROM recruit_tb 
-			WHERE recruit_id=#{recruit_id}
+			WHERE recruit_id=#{recruitId}
 		  ]]>
 	   </update>
 	   
 	   <!-- 전체 채용 공고 조회 -->
-	   <select id="selectAll" resultType="Recruit">
+	   <select id="selectAll" resultMap="RecruitMapped">
 	      <![CDATA[
 	         SELECT * FROM recruit_tb
 	      ]]>
 	   </select>
 	   
 	   <!-- 직무별 채용 공고 조회 -->
-	   <select id="selectByWorkAreaId" parameterType="Integer" resultType="Recruit">
+	   <select id="selectByWorkAreaId" parameterType="Integer" resultMap="RecruitMapped">
 	      <![CDATA[
 	         SELECT * FROM recruit_tb
-	         WHERE work_area_id=#{work_area_id}
+	         WHERE work_area_id=#{workAreaId}
 	      ]]>
 	   </select>
 	   
 	   <!-- 키워드로 채용 공고 조회 -->
-	   <select id="selectByKeyword" parameterType="String" resultType="Recruit">
+	   <select id="selectByKeyword" parameterType="String" resultMap="RecruitMapped">
 	      <![CDATA[
 	         SELECT * FROM recruit_tb
 	         WHERE recruit_title LIKE CONCAT ('%',#{keyword},'%') OR recruit_detail LIKE CONCAT ('%',#{keyword},'%')

@@ -7,7 +7,7 @@ import org.ppiyung.ppiyung.member.vo.Member;
 
 public interface MemberService {
 
-	public HashMap<String, String> login(Member param);
+	public HashMap<String, Object> login(Member param);
 	
 	public String regenToken(String refreshToken);
 

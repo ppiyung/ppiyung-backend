@@ -9,11 +9,13 @@ import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.ppiyung.ppiyung.member.vo.Member;
 import org.ppiyung.ppiyung.member.vo.SecurityUserDetails;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -49,7 +51,7 @@ public class JwtTokenUtil {
     }
     
     // JWT 생성
-    public HashMap<String, String> generateToken(Authentication authentication) {
+    public HashMap<String, Object> generateToken(Authentication authentication) {
         // 권한 가져오기
         String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
@@ -73,10 +75,14 @@ public class JwtTokenUtil {
                 .signWith(refreshkey, SignatureAlgorithm.HS256)
                 .compact();
         
-        HashMap<String, String> payload = new HashMap<String, String>();
+        HashMap<String, Object> payload = new HashMap<String, Object>();
         payload.put("authType", "Bearer");
         payload.put("accessToken", accessToken);
         payload.put("refreshToken", refreshToken);
+        
+        Member member = ((SecurityUserDetails)authentication.getPrincipal()).getMember();
+        member.setMemberPw("");
+        payload.put("memberInfo", member);
         
         return payload;
     }

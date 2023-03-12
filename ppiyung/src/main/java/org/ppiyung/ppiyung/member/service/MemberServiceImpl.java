@@ -29,14 +29,14 @@ public class MemberServiceImpl implements MemberService {
 	private PasswordEncoder passwordEncoder;
 
 	@Override
-	public HashMap<String, String> login(Member member) {
+	public HashMap<String, Object> login(Member member) {
 		try {
 			UsernamePasswordAuthenticationToken authenticationToken =
 					new UsernamePasswordAuthenticationToken(member.getMemberId(), member.getMemberPw());
 	        Authentication authentication = authenticationManager.authenticate(authenticationToken);
 	 
 	        // 3. 인증 정보를 기반으로 JWT 토큰 생성
-	        HashMap<String, String> result = jwtTokenUtil.generateToken(authentication);
+	        HashMap<String, Object> result = jwtTokenUtil.generateToken(authentication);
 	        return result;
 		} catch (Exception e) {
 			e.printStackTrace();

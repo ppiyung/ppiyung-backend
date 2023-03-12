@@ -37,7 +37,7 @@ public class AuthController {
 		BasicResponseEntity<Object> respBody = null;
 		int respCode = 0;
 
-		final HashMap<String, String> payload = service.login(reqLoginInfo);
+		final HashMap<String, Object> payload = service.login(reqLoginInfo);
 		
 		if (payload == null) {
 			respBody = new BasicResponseEntity<Object>(true, "로그인에 실패하였습니다.", null);

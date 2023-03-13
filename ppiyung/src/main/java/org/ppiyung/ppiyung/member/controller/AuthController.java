@@ -55,21 +55,18 @@ public class AuthController {
 	}
 	
 	@PostMapping(value = "/refresh")
-	public ResponseEntity<BasicResponseEntity<Map<String, String>>>
+	public ResponseEntity<BasicResponseEntity<Map<String, Object>>>
 		verifyHandler(@RequestBody HashMap<String, String> reqPayload) {
 		
-		String newToken = service.regenToken(reqPayload.get("refreshToken"));
+		Map<String, Object> respPayload = service.regenToken(reqPayload.get("refreshToken"));
 		
-		BasicResponseEntity<Map<String, String>> respBody = null;
+		BasicResponseEntity<Map<String, Object>> respBody = null;
 		int respCode = 0;
-		if (newToken == null) {
-			respBody = new BasicResponseEntity<Map<String, String>>(true, "토큰을 재발급하는데 실패했습니다.", null);
+		if (respPayload == null) {
+			respBody = new BasicResponseEntity<Map<String, Object>>(true, "토큰을 재발급하는데 실패했습니다.", null);
 			respCode = HttpServletResponse.SC_BAD_REQUEST;
 		} else {
-			Map<String, String> respPayload = new HashMap<String, String>();
-			respPayload.put("accessToken", newToken);
-			
-			respBody = new BasicResponseEntity<Map<String, String>>(true,
+			respBody = new BasicResponseEntity<Map<String, Object>>(true,
 						"토큰을 재발급하는데 성공했습니다.",
 						respPayload);
 			respCode = HttpServletResponse.SC_OK;
@@ -79,7 +76,7 @@ public class AuthController {
 		headers.setContentType(new MediaType("application", "json",
 				Charset.forName("UTF-8")));
 		
-		return new ResponseEntity<BasicResponseEntity<Map<String, String>>>(respBody, headers, respCode);
+		return new ResponseEntity<BasicResponseEntity<Map<String, Object>>>(respBody, headers, respCode);
 	}
 		
 }

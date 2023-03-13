@@ -18,4 +18,8 @@ public interface MemberService {
 	public Member getMemberInfo(Member member);
 
 	public List<Member> getAllMember();
+
+	public boolean leaveMember(String memberId);
+
+	public List<Member> getResumeOpenMember(String workAreaId);
 }

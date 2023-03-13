@@ -2,9 +2,7 @@ package org.ppiyung.ppiyung.member.controller;
 
 import java.nio.charset.Charset;
 import java.util.List;
-
 import javax.servlet.http.HttpServletResponse;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.ppiyung.ppiyung.common.entity.BasicResponseEntity;
@@ -17,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -138,6 +137,7 @@ public class MemberController {
 
 		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
 		boolean hasAuthority = userDetails.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"));
+		
 		if (userDetails.getUsername().equals(memberId) ||
 				hasAuthority) { // 자신의 정보를 수정하는 경우이거나 관리자인 경우
 			log.debug("회원정보수정 - 권한 확인됨");
@@ -156,5 +156,72 @@ public class MemberController {
 		}
 		return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
 	}
+	
+	
+	
+	//회원탈퇴 - 일반유저 + 관리자 회원탈퇴 가능
+	@DeleteMapping(value = "/{memberId}")
+	public ResponseEntity<BasicResponseEntity<Object>> dropMember(
+			@PathVariable("memberId") String memberId,
+			Authentication authentication) {
+		
+		boolean result = false;
+		BasicResponseEntity<Object> respBody = null;
+		int respCode = 0;
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+		
+		
+		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
+
+	
+		if (userDetails.getUsername().equals(memberId)) {
+			log.debug("회원탈퇴 - 권한 확인됨" + memberId);
+			result = service.leaveMember(memberId);
+			
+		}
+			if (result == true) {
+				log.debug("회원탈퇴 성공");
+				respBody = new BasicResponseEntity<Object>(true, "회원탈퇴에 성공하였습니다.", result);
+				respCode = HttpServletResponse.SC_OK;
+			} else {
+				log.debug("회원탈퇴 실패");
+				respBody = new BasicResponseEntity<Object>(false, "회원탈퇴에 실패하였습니다..", result);
+				respCode = HttpServletResponse.SC_BAD_REQUEST;
+			}
+			return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
+		
+	}
+	
+	//직무 분야별 이력서 공개한 회원 목록 조회 
+	@GetMapping(value="/resume/{workAreaId}")
+	public ResponseEntity<BasicResponseEntity<Object>> 
+				workAreaOpenMember(@PathVariable("workAreaId") String workAreaId ,Authentication authentication) {
+		BasicResponseEntity<Object> respBody = null;
+		int respCode = 0;
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+		
+		List<Member> list = service.getResumeOpenMember(workAreaId);
+		
+		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
+		boolean hasAutority = userDetails.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_COMPANY"));
+		if(list != null && hasAutority) {
+			log.debug(" 공개한 회원 목록 조회 성공");
+			respBody = new BasicResponseEntity<Object>(true, " 공개한 회원 목록 조회성공하였습니다.", list);
+			respCode = HttpServletResponse.SC_OK;
+		}else {
+			log.debug(" 공개한 회원 목록 조회 실패");
+			respBody = new BasicResponseEntity<Object>(false, " 공개한 회원 목록 조회 실패하였습니다.", null);
+			respCode = HttpServletResponse.SC_BAD_REQUEST;
+		}
+		return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
+		
+	}
+	
+	
+	
+	
+	
 
 }

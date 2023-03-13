@@ -27,7 +27,6 @@ public class Member {
 	private boolean memberActive;
 	private Date memberCreatedAt;
 	private int workAreaId;
-	private String memberImg;
 	private boolean memberVerified;
 	
 	public String getRole() {

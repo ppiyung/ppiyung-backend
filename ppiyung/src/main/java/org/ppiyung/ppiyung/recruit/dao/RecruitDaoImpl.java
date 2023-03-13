@@ -1,5 +1,6 @@
 package org.ppiyung.ppiyung.recruit.dao;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
@@ -59,4 +60,19 @@ public class RecruitDaoImpl implements RecruitDao {
 		return list;
 	}
 	
+	public HashMap<String, Object> selectByCompany(String companyId) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		
+		int closedRecruitNum = session.selectOne("org.ppiyung.ppiyung.recruit.selectClosedRecruit",companyId);
+		int recruitingNum = session.selectOne("org.ppiyung.ppiyung.recruit.selectRecruiting",companyId);
+		int applicantsNum = session.selectOne("org.ppiyung.ppiyung.recruit.selectAllApplicants", companyId);
+		int applicatnsPassedNum = session.selectOne("org.ppiyung.ppiyung.recruit.selectApplicantsPassed", companyId);
+		
+		map.put("closedRecruitNum", closedRecruitNum);
+		map.put("recruitingNum", recruitingNum);
+	 	map.put("applicantsNum", applicantsNum);
+	    map.put("applicantsPassed", applicatnsPassedNum);
+	    
+		return map;
+	}
 }

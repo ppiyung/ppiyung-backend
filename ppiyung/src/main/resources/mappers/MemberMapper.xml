@@ -23,7 +23,6 @@
 	    <result property="memberActive" column="member_active" />
 	    <result property="memberCreatedAt" column="member_created_at" />
 	    <result property="workAreaId" column="work_area_id" />
-	    <result property="memberImg" column="member_img" />
    	    <result property="memberVerified" column="member_verified" />
     </resultMap>
 
@@ -35,7 +34,7 @@
 			SELECT member_id, member_pw, member_name, member_birth,
 					member_gender, member_phone, member_addr, member_coord_x, member_coord_y,
 					member_nickname, member_email, member_type, member_reg_num, member_info,
-					member_active, member_created_at, work_area_id, member_img, member_verified
+					member_active, member_created_at, work_area_id, member_verified
 			FROM member_tb 
 			WHERE member_id = #{memberId} AND member_pw = #{memberPw}
 		]]>
@@ -47,7 +46,7 @@
 			SELECT member_id, member_pw, member_name, member_birth,
 					member_gender, member_phone, member_addr, member_coord_x, member_coord_y,
 					member_nickname, member_email, member_type, member_reg_num, member_info,
-					member_active, member_created_at, work_area_id, member_img, member_verified
+					member_active, member_created_at, work_area_id, member_verified
 			FROM member_tb 
 		]]>
 	</select>
@@ -59,7 +58,7 @@
 			SELECT member_id, member_pw, member_name, member_birth,
 					member_gender, member_phone, member_addr, member_coord_x, member_coord_y,
 					member_nickname, member_email, member_type, member_reg_num, member_info,
-					member_active, member_created_at, work_area_id, member_img, member_verified
+					member_active, member_created_at, work_area_id, member_verified
 			FROM member_tb 
 			WHERE member_id = #{memberId}
 		]]>
@@ -72,12 +71,12 @@
 			(member_id, member_pw, member_name, member_birth, member_gender, 
 			member_phone, member_addr, member_coord_x, member_coord_y, member_nickname, 
 			member_email,member_type,member_reg_num, member_info,member_active, 
-			work_area_id, member_img, member_verified) 
+			work_area_id, member_verified) 
 			values 
 			(#{memberId},#{memberPw},#{memberName},#{memberBirth},#{memberGender},
 			#{memberPhone}, #{memberAddr},#{memberCoordX},#{memberCoordY},#{memberNickname},
 			#{memberEmail},#{memberType},#{memberRegNum},#{memberInfo},#{memberActive},
-			#{workAreaId},#{memberImg},#{memberVerified})
+			#{workAreaId},#{memberVerified})
 			]]>
 	
 	</insert>
@@ -90,7 +89,7 @@
 			member_pw= #{memberPw} , member_name=#{memberName}, member_birth= #{memberBirth},
 			member_phone = #{memberPhone}, member_addr = #{memberAddr},
 			member_coord_x = #{memberCoordX} , member_coord_y = #{memberCoordY}, member_nickname = #{memberNickname},
-			member_email =  #{memberEmail}, member_info = #{memberInfo} ,work_area_id= #{workAreaId}, member_img=#{memberImg},member_verified = #{memberVerified}
+			member_email =  #{memberEmail}, member_info = #{memberInfo} ,work_area_id= #{workAreaId},member_verified = #{memberVerified}
 			WHERE
 		    member_id= #{memberId}
 		]]>

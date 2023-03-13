@@ -1,8 +1,9 @@
 -- 삐융 베이스 SQL 스크립트
--- Version: v0.4.1
+-- Version: v0.5
 -- Author: @initbyran, @silver-hee, @schdevv, @0tak2, @gkswotjd45
 --
 -- 변경 사항
+-- v0.5 member_tb에서 member_img 속성 삭제 및 img_tb 추가
 -- v0.4.1 member_tb의 샘플 데이터의 member_pw 값을 해싱된 값으로 교체
 -- v0.4 community_like_tb, community_reply_tb의 article_id(FK)에 대한 제약조건 추가
 --      샘플 데이터 일부 추가
@@ -47,17 +48,16 @@ CREATE TABLE `member_tb` (
     `member_active`      boolean                 NULL    COMMENT 'true면 활성 회원. false면 탈퇴',
     `member_created_at`  datetime   DEFAULT now()  NULL,
     `work_area_id`       int                     NOT NULL,
-    `member_img`         varchar(128)            NULL,
     `member_verified`      boolean                 NULL,
     FOREIGN KEY (work_area_id) REFERENCES work_area_tb (work_area_id)
 );
-INSERT INTO `member_tb` VALUES ('admin','$2y$04$G92ppy9s0BVNuuqbLjo.k.4M.EiVMOId0Dm2hYUJgJe13a.pa0lzS','관리자','2000-01-01',NULL,'010-1234-5678',NULL,NULL,NULL,'관리자','admin@gmail.com','A',NULL,NULL,1,NULL,1,NULL,NULL),
-        ('carrot','$2y$04$G92ppy9s0BVNuuqbLjo.k.4M.EiVMOId0Dm2hYUJgJe13a.pa0lzS','당근마켓','2000-01-01',NULL,'010-1234-5678','서울',NULL,NULL,'당근당근','carrot@gmail.com','C','000-00-00000','바니바니당근당근',1,NULL,1,NULL,1),
-        ('gang','$2y$04$G92ppy9s0BVNuuqbLjo.k.4M.EiVMOId0Dm2hYUJgJe13a.pa0lzS','강감찬','2000-01-01','M','010-1234-5678','인천',NULL,NULL,'강강강','gang@gmail.com','N',NULL,'강감찬입니다~~',1,NULL,1,NULL,NULL),
-        ('hello','$2y$04$G92ppy9s0BVNuuqbLjo.k.4M.EiVMOId0Dm2hYUJgJe13a.pa0lzS','헬로마켓','2000-01-01',NULL,'010-1234-5678','경기',NULL,NULL,'헬로헬로','hello@gmail.com','C','000-00-00000','바니바니당근당근',1,NULL,1,NULL,1),
-        ('hong','$2y$04$G92ppy9s0BVNuuqbLjo.k.4M.EiVMOId0Dm2hYUJgJe13a.pa0lzS','홍길동','2000-01-01','M','010-1234-5678','서울',NULL,NULL,'홍홍홍','hong@gmail.com','N',NULL,'홍길동입니당~잘부탁드려요홍홍홍',1,NULL,1,NULL,NULL),
-        ('Lee','$2y$04$G92ppy9s0BVNuuqbLjo.k.4M.EiVMOId0Dm2hYUJgJe13a.pa0lzS','이순신','2000-01-01','M','010-1234-5678','인천',NULL,NULL,'강강강','Lee@gmail.com','N',NULL,'이순신입니다~~',1,NULL,1,NULL,NULL),
-        ('shin','$2y$04$G92ppy9s0BVNuuqbLjo.k.4M.EiVMOId0Dm2hYUJgJe13a.pa0lzS','신사임당','2000-01-01','F','010-1234-5678','경기',NULL,NULL,'신신신','shin@gmail.com','N',NULL,'신사입니당~잘부탁드려요홍홍홍',1,NULL,1,NULL,NULL);
+INSERT INTO `member_tb` VALUES ('admin','$2y$04$G92ppy9s0BVNuuqbLjo.k.4M.EiVMOId0Dm2hYUJgJe13a.pa0lzS','관리자','2000-01-01',NULL,'010-1234-5678',NULL,NULL,NULL,'관리자','admin@gmail.com','A',NULL,NULL,1,NULL,1,NULL),
+        ('carrot','$2y$04$G92ppy9s0BVNuuqbLjo.k.4M.EiVMOId0Dm2hYUJgJe13a.pa0lzS','당근마켓','2000-01-01',NULL,'010-1234-5678','서울',NULL,NULL,'당근당근','carrot@gmail.com','C','000-00-00000','바니바니당근당근',1,NULL,1,1),
+        ('gang','$2y$04$G92ppy9s0BVNuuqbLjo.k.4M.EiVMOId0Dm2hYUJgJe13a.pa0lzS','강감찬','2000-01-01','M','010-1234-5678','인천',NULL,NULL,'강강강','gang@gmail.com','N',NULL,'강감찬입니다~~',1,NULL,1,NULL),
+        ('hello','$2y$04$G92ppy9s0BVNuuqbLjo.k.4M.EiVMOId0Dm2hYUJgJe13a.pa0lzS','헬로마켓','2000-01-01',NULL,'010-1234-5678','경기',NULL,NULL,'헬로헬로','hello@gmail.com','C','000-00-00000','바니바니당근당근',1,NULL,1,1),
+        ('hong','$2y$04$G92ppy9s0BVNuuqbLjo.k.4M.EiVMOId0Dm2hYUJgJe13a.pa0lzS','홍길동','2000-01-01','M','010-1234-5678','서울',NULL,NULL,'홍홍홍','hong@gmail.com','N',NULL,'홍길동입니당~잘부탁드려요홍홍홍',1,NULL,1,NULL),
+        ('Lee','$2y$04$G92ppy9s0BVNuuqbLjo.k.4M.EiVMOId0Dm2hYUJgJe13a.pa0lzS','이순신','2000-01-01','M','010-1234-5678','인천',NULL,NULL,'강강강','Lee@gmail.com','N',NULL,'이순신입니다~~',1,NULL,1,NULL),
+        ('shin','$2y$04$G92ppy9s0BVNuuqbLjo.k.4M.EiVMOId0Dm2hYUJgJe13a.pa0lzS','신사임당','2000-01-01','F','010-1234-5678','경기',NULL,NULL,'신신신','shin@gmail.com','N',NULL,'신사입니당~잘부탁드려요홍홍홍',1,NULL,1,NULL);
 select * from member_tb;
 
  
@@ -114,6 +114,17 @@ CREATE TABLE `resume_tb` (
 );
 insert into resume_tb values ('hong', 'where', '이력서', 'pdf', '2023-03-05 00:00:00', false);
 select * from resume_tb;
+
+-- 회원 이미지
+CREATE TABLE `img_tb` (
+	`member_id`	varchar(20)	NOT NULL,
+	`img_location`	varchar(128)	NOT NULL,
+	`img_filename`	varchar(128)	NOT NULL,
+	`img_filetype`	varchar(10)	NOT NULL,
+	`img_updated_at`	datetime	NOT NULL,
+	PRIMARY KEY (member_id),
+    FOREIGN KEY (member_id) REFERENCES member_tb (member_id)
+);
 
 -- 입사제안
 CREATE TABLE `suggest_tb` (
@@ -186,5 +197,6 @@ CREATE TABLE `community_reply_tb` (
 );
 insert into community_reply_tb values (default, '좋은 게시글이네요' , 1, 'hong', default);
 select * from community_reply_tb;
+
 
 

@@ -21,6 +21,8 @@ public interface RecruitService {
 
 	public HashMap<String, Object> getRecruitStatusOfCompany(String companyId);
 
+	public List<Recruit> getRecruitListOfCompany(String companyId);
+
 
 	
 	

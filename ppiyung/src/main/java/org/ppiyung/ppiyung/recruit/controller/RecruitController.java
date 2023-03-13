@@ -127,7 +127,7 @@ public class RecruitController {
 	
 	}
 	
-	// 전체 채용 공고 조히 
+	// 전체 채용 공고 조회 
 	@GetMapping(value="")
 	public ResponseEntity<BasicResponseEntity<Object>> getRecruitList(){ 
   		
@@ -214,9 +214,10 @@ public class RecruitController {
 		
 		return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
 
-}
+	}
+	
 	// 기업별 채용 공고 현황 조회 
-    @GetMapping(value="/companyinfo/{company_id}")
+    @GetMapping(value="/statistics/{company_id}")
     public ResponseEntity<BasicResponseEntity<Object>> 
     getRecruitStatusOfCompany(@PathVariable("company_id") String companyId, 
     		Authentication authentication) {
@@ -253,6 +254,37 @@ public class RecruitController {
 		
     	
     	return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
+
+    }
+    
+    // 기업별 채용 공고 조회
+    @GetMapping(value="/companyinfo/{company_id}")
+    public ResponseEntity<BasicResponseEntity<Object>> 
+    getRecruitListCompany(@PathVariable("company_id") String companyId) {
+       
+        List<Recruit> result = service.getRecruitListOfCompany(companyId);
+		log.debug(companyId);
+		
+		log.debug(result);
+		BasicResponseEntity<Object> respBody = null;
+		int respCode=0;
+		
+		if(result != null) {
+			log.debug("기업별 공고 조회 성공");
+			respBody = new BasicResponseEntity<Object> (true, "기업별 공고 조회 완료", result);
+			respCode = HttpServletResponse.SC_OK;
+		} else {
+			log.debug("기업별 공고 조회 실패");
+			respBody = new BasicResponseEntity<Object> (false, "기업별 조회 실패", result);
+			respCode = HttpServletResponse.SC_BAD_REQUEST;
+		}
+		
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(new MediaType("application", "json",
+				Charset.forName("UTF-8")));
+		
+		return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
+
 
     }
 	

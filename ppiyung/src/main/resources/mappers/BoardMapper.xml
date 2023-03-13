@@ -5,9 +5,49 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="org.ppiyung.ppiyung.board">
+  	<resultMap id="BoardMapped" type="Board">
+	    <result property="articleId" column="article_id" />
+	    <result property="memberNickname" column="member_nickname" />
+	    <result property="articleTitle" column="article_title" />
+	    <result property="articleContent" column="article_content" />
+	    <result property="memberId" column="member_id" />
+	    <result property="articleCreatedAt" column="article_created_at" />
+    </resultMap>
+ 
+ 	<resultMap id="BoardListMapped" type="BoardList">
+	    <result property="articleId" column="article_id" />
+	    <result property="memberNickname" column="member_nickname" />
+	    <result property="articleTitle" column="article_title" />
+	    <result property="articleContent" column="article_content" />
+	    <result property="memberId" column="member_id" />
+	    <result property="articleCreatedAt" column="article_created_at" />
+   	    <result property="commentCnt" column="comment_cnt" />
+	    <result property="likeCnt" column="like_cnt" />
+    </resultMap>
+    
+ 	<resultMap id="ReplyMapped" type="Reply">
+	    <result property="replyId" column="reply_id" />
+	    <result property="replyContent" column="reply_content" />
+	    <result property="articleId" column="article_id" />
+	    <result property="memberId" column="member_id" />
+	    <result property="replyCreatedAt" column="reply_created_at" />
+    </resultMap>
+    
+	<select id="getListPaging" parameterType="Criteria" resultMap="BoardListMapped">
+    	<![CDATA[
+        select * from (
+        SELECT Distinct B.article_id, B.article_title, B.article_content, B.member_id, B.article_created_at,
+		(SELECT count(*) FROM community_reply_tb as C  WHERE B.article_id = C.article_id) AS comment_cnt,
+		(SELECT count(*) FROM community_like_tb as L WHERE L.article_id = B.article_id) AS like_cnt,
+		(SELECT M.member_nickname FROM member_tb as M where M.member_id = B.member_id) as member_nickname
+		FROM community_article_tb as B order by B.article_id desc) as T1 
+        limit #{skip},#{amount}
+    	]]>
+    </select>
+	<!-- LIMIT {SKIP}, {amount} 의미 : LIMIT 0,10 이면 1번부터 10개 출력해주라는 의미, LIMIT 10,10 이면 11부터  + 10개 출력해달라는 뜻 -->
 
-	<!-- 커뮤니티 게시글 전체 목록 출력 -->
-	<select id="allBoard" resultType="BoardList">		
+	<!-- 커뮤니티 게시글 전체 목록 출력
+	<select id="allBoard" resultMap="BoardListMapped">		
 		<![CDATA[
 		SELECT Distinct B.article_id, B.article_title, B.article_content, B.member_id, B.article_created_at,
 		(SELECT count(*) FROM community_reply_tb as C  WHERE B.article_id = C.article_id) AS comment_cnt,
@@ -16,22 +56,21 @@
 		FROM community_article_tb as B
 		]]>
 	</select>
-
+	-->
 	<!-- 커뮤니티 게시글 삽입 -->
 	<insert id="insertBoard" parameterType="Board">
 	
 		<![CDATA[
 		INSERT INTO community_article_tb (article_title, article_content, member_id, article_created_at)
-		VALUES (#{article_title},#{article_content}, #{member_id},#{article_created_at});
+		VALUES (#{articleTitle},#{articleContent}, #{memberId},#{articleCreatedAt});
 		]]>
 	</insert>
 
 	<!-- 커뮤니티 게시글 삭제 -->
 	<delete id="deleteBoard" parameterType="Board">
-
 		<![CDATA[
 		DELETE FROM community_article_tb
-		WHERE article_id=#{article_id}
+		WHERE article_id=#{articleId}
 		]]>
 	</delete>
 
@@ -48,7 +87,7 @@
 	<insert id="insertReply" parameterType="Reply">
 		<![CDATA[
 			INSERT INTO community_reply_tb (reply_content, article_id, member_id, reply_created_at)
-			VALUES(#{reply_content}, #{article_id}, #{member_id}, #{reply_created_at})
+			VALUES(#{replyContent}, #{articleId}, #{memberId}, #{replyCreatedAt})
 		]]>
 	</insert>
 
@@ -56,7 +95,7 @@
 	<delete id="deleteReply" parameterType="Reply">
 		<![CDATA[
 			DELETE FROM community_reply_tb 
-			WHERE reply_id = #{reply_id}
+			WHERE reply_id = #{replyId}
 		]]>
 	</delete>
 	
@@ -65,8 +104,8 @@
 
 		<![CDATA[
 			UPDATE community_reply_tb
-			SET reply_content = #{reply_content}, reply_created_at = #{reply_created_at}
-			WHERE reply_id = #{reply_id}
+			SET reply_content = #{replyContent}, reply_created_at = #{replyCreatedAt}
+			WHERE reply_id = #{replyId}
 		]]>
 	</update>
 	
@@ -74,9 +113,11 @@
 	<update id="updateBoard" parameterType="Board">
 		<![CDATA[
 			UPDATE community_article_tb
-			SET article_title=#{article_title}, article_content=#{article_content}, article_created_at = #{article_created_at}
-			WHERE article_id = #{article_id}
+			SET article_title=#{articleTitle}, article_content=#{articleContent}, article_created_at = #{articleCreatedAt}
+			WHERE article_id = #{articleId}
 		]]>
 	</update>
-
+	
+	
+	
 </mapper>

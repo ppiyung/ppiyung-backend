@@ -6,6 +6,7 @@ import org.ppiyung.ppiyung.board.dao.BoardDao;
 import org.ppiyung.ppiyung.board.vo.Board;
 import org.ppiyung.ppiyung.board.vo.BoardList;
 import org.ppiyung.ppiyung.board.vo.Reply;
+import org.ppiyung.ppiyung.common.entity.Criteria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,10 +19,8 @@ public class BoardServiceImpl implements BoardService{
 
 	// 커뮤니티 게시글 전체 목록 출력 서비스
 	@Override
-	public List<BoardList> getCurrentlyBoard() {
-
-		return dao.getCurrentBoard();
-
+	public List<BoardList> getListPaging(Criteria criteria) {
+		return dao.pagingInsertBoard(criteria);
 	}
 
 	// 커뮤니티 게시글 작성
@@ -36,7 +35,6 @@ public class BoardServiceImpl implements BoardService{
 		}
 	}
 
-	
 	// 커뮤니티 게시글 삭제
 	@Override
 	public boolean deleteCommunit(int article_id) {
@@ -98,5 +96,7 @@ public class BoardServiceImpl implements BoardService{
 		}
 		
 	}
+
+	
 	
 }

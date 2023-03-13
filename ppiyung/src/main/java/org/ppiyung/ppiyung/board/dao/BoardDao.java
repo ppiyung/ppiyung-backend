@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.ppiyung.ppiyung.board.vo.Board;
 import org.ppiyung.ppiyung.board.vo.BoardList;
+import org.ppiyung.ppiyung.common.entity.Criteria;
 import org.ppiyung.ppiyung.board.vo.Reply;
 import org.ppiyung.ppiyung.board.vo.Board;
 import org.ppiyung.ppiyung.board.vo.BoardList;
@@ -21,8 +22,8 @@ public interface BoardDao  {
 	// 댓글 수정
 	public void updateReply(Reply reply) throws Exception;
 	
-
-	List<BoardList> getCurrentBoard();
+	// 커뮤니티 게시글 (페이징 수행)
+	public List<BoardList> pagingInsertBoard(Criteria criteria);
 
 	void insertBoardpost(Board boardContent) throws Exception;
 
@@ -30,6 +31,9 @@ public interface BoardDao  {
 
 	// 게시글 수정
 	public void updateBoardPost(Board boardContent) throws Exception;
+
+	
+	
 
 
 }

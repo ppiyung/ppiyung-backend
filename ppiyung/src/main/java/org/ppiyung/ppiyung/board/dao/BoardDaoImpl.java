@@ -8,6 +8,7 @@ import org.apache.logging.log4j.Logger;
 import org.ppiyung.ppiyung.board.vo.Board;
 import org.ppiyung.ppiyung.board.vo.BoardList;
 import org.ppiyung.ppiyung.board.vo.Reply;
+import org.ppiyung.ppiyung.common.entity.Criteria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -20,12 +21,14 @@ public class BoardDaoImpl implements BoardDao {
 	SqlSession session;
 	
 		
-	// 커뮤니티 전체 게시글 목록
+	// 커뮤니티 전체 게시글 목록 (페이징 수행)
 	@Override
-	public List<BoardList> getCurrentBoard() {
+	public List<BoardList> pagingInsertBoard(Criteria criteria) {
 		
-		return session.selectList("org.ppiyung.ppiyung.board.allBoard");
+		return session.selectList("org.ppiyung.ppiyung.board.getListPaging",criteria);
+
 	}
+	
 	
 	// 커뮤니티 게시글 삽입
 	@Override
@@ -91,6 +94,5 @@ public class BoardDaoImpl implements BoardDao {
 			throw new Exception();
 		}
 	}
-
-
+	
 }

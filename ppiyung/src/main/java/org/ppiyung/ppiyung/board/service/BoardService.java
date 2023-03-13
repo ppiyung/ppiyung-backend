@@ -4,13 +4,14 @@ import java.util.List;
 
 import org.ppiyung.ppiyung.board.vo.Board;
 import org.ppiyung.ppiyung.board.vo.BoardList;
+import org.ppiyung.ppiyung.common.entity.Criteria;
 import org.ppiyung.ppiyung.board.vo.Reply;
 
 public interface BoardService {
 
-	// 게시글 전체 리스트 불러오기 service
-	public List<BoardList> getCurrentlyBoard();
-
+	// 페이징 적용하는 게시물 출력
+	public List<BoardList> getListPaging(Criteria criteria);
+	
 	// 게시글 작성 service
 	public boolean writeCommunit(Board boardContent);
 
@@ -28,5 +29,7 @@ public interface BoardService {
 
 	// 게시글 수정
 	public boolean editCommunit(Board boardContent);
+
+
 
 }

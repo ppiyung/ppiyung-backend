@@ -126,6 +126,37 @@ public class BoardController {
 		return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
 	}
 
+	// 커뮤니티 게시글 수정
+	@PutMapping(value = "/article/{article_id}")
+	public ResponseEntity<BasicResponseEntity<Object>> editCommunityPosts(@RequestBody Board boardContent,
+			@PathVariable("article_id") int article_id) {
+	
+		Date date = java.sql.Timestamp.valueOf(LocalDateTime.now()); // 현재 시스템의 현재 시간 가져오기
+		log.debug(date);
+		boardContent.setArticleId(article_id);
+		boardContent.setArticleCreatedAt(date);
+
+		boolean result = service.editCommunit(boardContent);
+
+		BasicResponseEntity<Object> respBody = null;
+		int respCode = 0;
+
+		if (result == true) {
+			log.debug("커뮤니티 게시글 수정 완료");
+			respBody = new BasicResponseEntity<Object>(true, "게시글 수정 완료", result);
+			respCode = HttpServletResponse.SC_OK;
+
+		} else {
+			log.debug("커뮤니티 게시글 수정 실패");
+			respBody = new BasicResponseEntity<Object>(false, "게시글 수정 실퍠", result);
+			respCode = HttpServletResponse.SC_BAD_REQUEST;
+		}
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+		return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
+	}
 
 	// 커뮤니티 게시글의 댓글 생성
 	@PostMapping(value = "/reply")
@@ -185,8 +216,6 @@ public class BoardController {
 
 	
 	// 커뮤니티 게시글의 댓글 수정
-
-	// 댓글 수정
 	@PutMapping(value="/reply/{reply_id}")
 	public ResponseEntity<BasicResponseEntity<Object>>
 		updateReply(@RequestBody Reply replyContent,@PathVariable("reply_id") int reply_id){
@@ -215,6 +244,7 @@ public class BoardController {
 		return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
 	}
 	
+	// 좋아요 생성 기능
 	@PostMapping(value = "/like")
 	public ResponseEntity<BasicResponseEntity<Object>>
 			insertLikeHandler(@RequestBody Like likeContent){
@@ -238,40 +268,6 @@ public class BoardController {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 		
-		return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
-	}
-	
-	
-
-	// 커뮤니티 게시글 수정
-	@PutMapping(value = "/article/{article_id}")
-	public ResponseEntity<BasicResponseEntity<Object>> editCommunityPosts(@RequestBody Board boardContent,
-			@PathVariable("article_id") int article_id) {
-	
-		Date date = java.sql.Timestamp.valueOf(LocalDateTime.now()); // 현재 시스템의 현재 시간 가져오기
-		log.debug(date);
-		boardContent.setArticleId(article_id);
-		boardContent.setArticleCreatedAt(date);
-
-		boolean result = service.editCommunit(boardContent);
-
-		BasicResponseEntity<Object> respBody = null;
-		int respCode = 0;
-
-		if (result == true) {
-			log.debug("커뮤니티 게시글 수정 완료");
-			respBody = new BasicResponseEntity<Object>(true, "게시글 수정 완료", result);
-			respCode = HttpServletResponse.SC_OK;
-
-		} else {
-			log.debug("커뮤니티 게시글 수정 실패");
-			respBody = new BasicResponseEntity<Object>(false, "게시글 수정 실퍠", result);
-			respCode = HttpServletResponse.SC_BAD_REQUEST;
-		}
-
-		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-
 		return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
 	}
 	

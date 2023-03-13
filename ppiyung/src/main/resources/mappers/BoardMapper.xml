@@ -99,6 +99,15 @@
 			VALUES(#{articleId}, #{memberId}, #{likeCreatedAt})
 		]]>
 	</insert>
-
-
+	
+	<select id="selectOneBoard"  parameterType="Board">		
+		<![CDATA[
+		select a.article_id, a.article_title, a.article_content, a.article_created_at, r.reply_id, r.reply_content, r.reply_created_at, l.like_created_at
+		 from ppiyung.community_article_tb a
+		 join ppiyung.community_reply_tb r on a.article_id = r.article_id
+		 join ppiyung.community_like_tb l on a.article_id = l.article_id
+		]]>
+	</select>
+	
+	
 </mapper>

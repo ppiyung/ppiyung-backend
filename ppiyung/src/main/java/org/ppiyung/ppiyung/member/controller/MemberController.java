@@ -174,10 +174,8 @@ public class MemberController {
 		
 		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
 
-		boolean hasAuthority = userDetails.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"));
 	
-		if (userDetails.getUsername().equals(memberId) ||
-				hasAuthority) {
+		if (userDetails.getUsername().equals(memberId)) {
 			log.debug("회원탈퇴 - 권한 확인됨" + memberId);
 			result = service.leaveMember(memberId);
 			
@@ -194,6 +192,36 @@ public class MemberController {
 			return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
 		
 	}
+	
+	//직무 분야별 이력서 공개한 회원 목록 조회 
+	@GetMapping(value="/resume/{workAreaId}")
+	public ResponseEntity<BasicResponseEntity<Object>> 
+				workAreaOpenMember(@PathVariable("workAreaId") String workAreaId ,Authentication authentication) {
+		BasicResponseEntity<Object> respBody = null;
+		int respCode = 0;
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+		
+		List<Member> list = service.getResumeOpenMember(workAreaId);
+		
+		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
+		boolean hasAutority = userDetails.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_COMPANY"));
+		if(list != null && hasAutority) {
+			log.debug(" 공개한 회원 목록 조회 성공");
+			respBody = new BasicResponseEntity<Object>(true, " 공개한 회원 목록 조회성공하였습니다.", list);
+			respCode = HttpServletResponse.SC_OK;
+		}else {
+			log.debug(" 공개한 회원 목록 조회 실패");
+			respBody = new BasicResponseEntity<Object>(false, " 공개한 회원 목록 조회 실패하였습니다.", null);
+			respCode = HttpServletResponse.SC_BAD_REQUEST;
+		}
+		return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
+		
+	}
+	
+	
+	
+	
 	
 
 }

@@ -20,4 +20,6 @@ public interface MemberService {
 	public List<Member> getAllMember();
 
 	public boolean leaveMember(String memberId);
+
+	public List<Member> getResumeOpenMember(String workAreaId);
 }

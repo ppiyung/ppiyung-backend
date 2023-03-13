@@ -75,7 +75,7 @@
 			values 
 			(#{memberId},#{memberPw},#{memberName},#{memberBirth},#{memberGender},
 			#{memberPhone}, #{memberAddr},#{memberCoordX},#{memberCoordY},#{memberNickname},
-			#{memberEmail},#{memberType},#{memberRegNum},#{memberInfo}1,
+			#{memberEmail},#{memberType},#{memberRegNum},#{memberInfo},1,
 			#{workAreaId},#{memberVerified})
 
 			]]>
@@ -107,5 +107,23 @@
 			]]>
 	
 	</update>
+	
+	
+	<!-- 직무별 이력서 공개 회원 조회 -->
+	<select id="seletResumeOpenMember" parameterType="String" resultMap="MemberMapped">
+		<![CDATA[
+			 SELECT A.member_id, member_name, member_birth,
+				member_gender, member_phone, member_addr,
+				member_nickname, member_email, member_info,
+				work_area_id
+			FROM 
+			member_tb AS A JOIN resume_tb AS B
+			ON  A.member_id = B.member_id 
+			WHERE A.work_area_id= #{workAreaId}
+			AND B.resume_open=1
+		 ]]>
+	
+	
+	</select>
 
 </mapper>

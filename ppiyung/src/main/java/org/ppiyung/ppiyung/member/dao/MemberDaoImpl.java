@@ -60,4 +60,11 @@ public class MemberDaoImpl implements MemberDao {
 			throw new Exception();
 		}
 	}
+
+
+	@Override
+	public List<Member> getResumeOpenMember(String param) {
+		List<Member> list = session.selectList("org.ppiyung.ppiyung.member.seletResumeOpenMember" , param);
+		return list;
+	}
 }

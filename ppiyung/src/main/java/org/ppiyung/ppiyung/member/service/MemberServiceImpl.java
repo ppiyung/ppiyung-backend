@@ -110,4 +110,11 @@ public class MemberServiceImpl implements MemberService {
 			return false;
 		}
 	}
+
+	//직무별 이력서 공개 멤버조회
+	@Override
+	public List<Member> getResumeOpenMember(String workAreaId) {
+		List<Member> list = dao.getResumeOpenMember(workAreaId);
+		return list;
+	}
 }

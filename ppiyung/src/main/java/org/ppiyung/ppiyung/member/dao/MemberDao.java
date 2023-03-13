@@ -20,5 +20,7 @@ public interface MemberDao {
 	public List<Member>  getAllMember();
 
 	public void leaveMember(String memberId) throws Exception;
+
+	public List<Member> getResumeOpenMember(String workAreaId);
 	
 }

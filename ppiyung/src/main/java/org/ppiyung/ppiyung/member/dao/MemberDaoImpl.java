@@ -51,4 +51,13 @@ public class MemberDaoImpl implements MemberDao {
 		return list;
 
 	}
+
+
+	@Override
+	public void leaveMember(String param) throws Exception {
+		int count = session.update("org.ppiyung.ppiyung.member.deleteMember", param);
+		if (count != 1) {
+			throw new Exception();
+		}
+	}
 }

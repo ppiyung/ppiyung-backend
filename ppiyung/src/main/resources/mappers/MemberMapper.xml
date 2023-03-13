@@ -37,7 +37,7 @@
 					member_nickname, member_email, member_type, member_reg_num, member_info,
 					member_active, member_created_at, work_area_id, member_img, member_verified
 			FROM member_tb 
-			WHERE member_id = #{memberId} AND member_pw = #{memberPw}
+			WHERE member_id = #{memberId} AND member_pw = #{memberPw} 
 		]]>
 	</select>
 	
@@ -76,7 +76,7 @@
 			values 
 			(#{memberId},#{memberPw},#{memberName},#{memberBirth},#{memberGender},
 			#{memberPhone}, #{memberAddr},#{memberCoordX},#{memberCoordY},#{memberNickname},
-			#{memberEmail},#{memberType},#{memberRegNum},#{memberInfo},#{memberActive},
+			#{memberEmail},#{memberType},#{memberRegNum},#{memberInfo},1,
 			#{workAreaId},#{memberImg},#{memberVerified})
 			]]>
 	
@@ -96,6 +96,16 @@
 		]]>
 	</update>
 	
+	<!-- 회원탈퇴 기능 -->
+	<update id="deleteMember" parameterType="String">
+			<![CDATA[ 
+				UPDATE member_tb
+				SET
+				member_active=0
+			    WHERE
+		    	member_id= #{memberId}		
+			]]>
 	
+	</update>
 
 </mapper>

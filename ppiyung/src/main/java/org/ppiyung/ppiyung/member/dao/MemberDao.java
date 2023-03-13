@@ -13,10 +13,12 @@ public interface MemberDao {
 	//개별회원
 	public Member selectMemberId(Member member);
 	
-
+	
 	public void updateInfo(Member member) throws Exception;
 	
 	//관리자일경우 모든회원
 	public List<Member>  getAllMember();
+
+	public void leaveMember(String memberId) throws Exception;
 	
 }

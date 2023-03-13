@@ -18,32 +18,33 @@ public class MemberServiceImpl implements MemberService {
 
 	@Autowired
 	private MemberDao dao;
-	
+
 	@Autowired
-    private AuthenticationManager authenticationManager;
-    
+	private AuthenticationManager authenticationManager;
+
 	@Autowired
-    private JwtTokenUtil jwtTokenUtil;
-	
+	private JwtTokenUtil jwtTokenUtil;
+
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
 	@Override
 	public HashMap<String, Object> login(Member member) {
 		try {
-			UsernamePasswordAuthenticationToken authenticationToken =
-					new UsernamePasswordAuthenticationToken(member.getMemberId(), member.getMemberPw());
-	        Authentication authentication = authenticationManager.authenticate(authenticationToken);
-	 
-	        // 3. 인증 정보를 기반으로 JWT 토큰 생성
-	        HashMap<String, Object> result = jwtTokenUtil.generateToken(authentication);
-	        return result;
+			UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+					member.getMemberId(), member.getMemberPw());
+			Authentication authentication = authenticationManager.authenticate(authenticationToken);
+
+			// 3. 인증 정보를 기반으로 JWT 토큰 생성
+			HashMap<String, Object> result = jwtTokenUtil.generateToken(authentication);
+			return result;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
 		}
 	}
 
+	// 회원가입
 	@Override
 	public boolean signin(Member member) {
 		try {
@@ -75,24 +76,38 @@ public class MemberServiceImpl implements MemberService {
 	public Member getMemberInfo(Member member) {
 
 		Member result = dao.selectMemberId(member);
-		
+
 		return result;
 
 	}
 
+	// 모든 멤버 조회
 	@Override
 	public List<Member> getAllMember() {
 		List<Member> list = dao.getAllMember();
 		return list;
 	}
 
+	// 토큰
 	@Override
 	public String regenToken(String refreshToken) {
 		try {
-	        return jwtTokenUtil.reGenerateTokenFromRefreshToken(refreshToken);
+			return jwtTokenUtil.reGenerateTokenFromRefreshToken(refreshToken);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
+		}
+	}
+
+	// 회원탈퇴
+	@Override
+	public boolean leaveMember(String memberId) {
+		try {
+			dao.leaveMember(memberId);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
 		}
 	}
 }

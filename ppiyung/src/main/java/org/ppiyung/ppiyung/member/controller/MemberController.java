@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(value = "/member")
+@CrossOrigin(origins = "${auth.allowOrigin}", allowCredentials = "true")
 public class MemberController {
 
 	private Logger log = LogManager.getLogger("base");
@@ -70,6 +72,7 @@ public class MemberController {
 		
 		Member result = null;
 		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
+		
 		if (userDetails.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
 			log.debug("개별회원조회 성공");
 			Member param = new Member();

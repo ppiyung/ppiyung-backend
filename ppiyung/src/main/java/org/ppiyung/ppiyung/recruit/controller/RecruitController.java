@@ -1,6 +1,7 @@
 package org.ppiyung.ppiyung.recruit.controller;
 
 import java.nio.charset.Charset;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -14,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -95,27 +98,26 @@ public class RecruitController {
 
 	}
 	
-	// 기업회원- 공고 삭제
-	@DeleteMapping(value="/{recruit_id}")
+	// 기업회원- 공고 즉시 마감
+	@PutMapping(value="/emergency/{recruit_id}")
 	public ResponseEntity<BasicResponseEntity<Object>> 
-		deleteRecruitNotice(@PathVariable("recruit_id") int recruit_id){ 
+		closeRecruitNotice(@PathVariable("recruit_id") int recruitId){ 
 		
-		log.debug(recruit_id);
-		boolean result = service.deleteRecruitNotice( recruit_id);
+		log.debug(recruitId);
+		boolean result = service.closeRecruitNotice( recruitId);
 		
 		BasicResponseEntity<Object> respBody = null;
 		int respCode=0;
 		
 		if(result == true) {
-			log.debug("공고 삭제 성공");
-			respBody = new BasicResponseEntity<Object> (true, "공고 삭제 완료", result);
+			log.debug("공고 즉시 마감 성공");
+			respBody = new BasicResponseEntity<Object> (true, "공고 즉시 마감 완료", result);
 			respCode = HttpServletResponse.SC_OK;
 		} else {
-			log.debug("공고 삭제 실패");
-			respBody = new BasicResponseEntity<Object> (false, "공고 삭제 실패", result);
+			log.debug("공고 즉시 마감 실패");
+			respBody = new BasicResponseEntity<Object> (false, "공고 즉시 마감 실패", result);
 			respCode = HttpServletResponse.SC_BAD_REQUEST;
 		}
-		
 		
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(new MediaType("application", "json",
@@ -125,7 +127,7 @@ public class RecruitController {
 	
 	}
 	
-	// 전체 채용 공고 조히 
+	// 전체 채용 공고 조회 
 	@GetMapping(value="")
 	public ResponseEntity<BasicResponseEntity<Object>> getRecruitList(){ 
   		
@@ -212,6 +214,78 @@ public class RecruitController {
 		
 		return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
 
-}
+	}
+	
+	// 기업별 채용 공고 현황 조회 
+    @GetMapping(value="/statistics/{company_id}")
+    public ResponseEntity<BasicResponseEntity<Object>> 
+    getRecruitStatusOfCompany(@PathVariable("company_id") String companyId, 
+    		Authentication authentication) {
+       
+        BasicResponseEntity<Object> respBody = null;
+        int respCode=0;
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(new MediaType("application", "json",
+				Charset.forName("UTF-8")));
+		
+		HashMap<String, Object> result = null;
+		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
+		
+		if (userDetails.getUsername().equals(companyId)) {
+			
+			result = service.getRecruitStatusOfCompany(companyId);
+		    log.debug(result);
+		    
+			if(result != null) {   
+			log.debug("공고 조회 성공");
+			respBody = new BasicResponseEntity<Object> (true, "공고 조회 완료", result);
+			respCode = HttpServletResponse.SC_OK;
+		    } else {
+		    	log.debug("공고 조회 실패");
+				respBody = new BasicResponseEntity<Object> (false, "공고 조회 실패", result);
+				respCode = HttpServletResponse.SC_BAD_REQUEST;
+		    }
+		} else {
+			log.debug("공고 조회 실패");
+			respBody = new BasicResponseEntity<Object> (false, "공고 조회 실패", result);
+			respCode = HttpServletResponse.SC_BAD_REQUEST;
+		}
+		
+    	
+    	return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
+
+    }
+    
+    // 기업별 채용 공고 조회
+    @GetMapping(value="/companyinfo/{company_id}")
+    public ResponseEntity<BasicResponseEntity<Object>> 
+    getRecruitListCompany(@PathVariable("company_id") String companyId) {
+       
+        List<Recruit> result = service.getRecruitListOfCompany(companyId);
+		log.debug(companyId);
+		
+		log.debug(result);
+		BasicResponseEntity<Object> respBody = null;
+		int respCode=0;
+		
+		if(result != null) {
+			log.debug("기업별 공고 조회 성공");
+			respBody = new BasicResponseEntity<Object> (true, "기업별 공고 조회 완료", result);
+			respCode = HttpServletResponse.SC_OK;
+		} else {
+			log.debug("기업별 공고 조회 실패");
+			respBody = new BasicResponseEntity<Object> (false, "기업별 조회 실패", result);
+			respCode = HttpServletResponse.SC_BAD_REQUEST;
+		}
+		
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(new MediaType("application", "json",
+				Charset.forName("UTF-8")));
+		
+		return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
+
+
+    }
 	
 }

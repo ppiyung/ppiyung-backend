@@ -1,5 +1,6 @@
 package org.ppiyung.ppiyung.recruit.dao;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
@@ -22,17 +23,16 @@ public class RecruitDaoImpl implements RecruitDao {
 	}
 
 	@Override
-	public void updateRecruitNotice(Recruit param) throws Exception {
-		
+	public void updateRecruitNotice(Recruit param) throws Exception {		
 		int count = session.update("org.ppiyung.ppiyung.recruit.update", param);
 		if (count != 1) {
 			throw new Exception();
 		}
-		
 	}
-    @Override
-	public void deleteRecruitNotice(int recruit_id) throws Exception{
-		int count = session.update("org.ppiyung.ppiyung.recruit.delete", recruit_id);
+	
+	@Override
+	public void updateRecruitEndDate(int recruitId) throws Exception {
+		int count = session.update("org.ppiyung.ppiyung.recruit.updateEndAt", recruitId);
 		if (count != 1) {
 			throw new Exception();
 		}
@@ -60,4 +60,26 @@ public class RecruitDaoImpl implements RecruitDao {
 		return list;
 	}
 	
+	public HashMap<String, Object> selectByCompany(String companyId) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		
+		int closedRecruitNum = session.selectOne("org.ppiyung.ppiyung.recruit.selectClosedRecruit",companyId);
+		int recruitingNum = session.selectOne("org.ppiyung.ppiyung.recruit.selectRecruiting",companyId);
+		int applicantsNum = session.selectOne("org.ppiyung.ppiyung.recruit.selectAllApplicants", companyId);
+		int applicatnsPassedNum = session.selectOne("org.ppiyung.ppiyung.recruit.selectApplicantsPassed", companyId);
+		
+		map.put("closedRecruitNum", closedRecruitNum);
+		map.put("recruitingNum", recruitingNum);
+	 	map.put("applicantsNum", applicantsNum);
+	    map.put("applicantsPassed", applicatnsPassedNum);
+	    
+		return map;
+	}
+	
+	@Override
+	public List<Recruit> selectAllByCompany(String companyId) {
+		List<Recruit> list = session.selectList("org.ppiyung.ppiyung.recruit.selectAllByCompany",companyId);
+			
+		return list;
+	}
 }

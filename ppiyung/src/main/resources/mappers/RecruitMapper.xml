@@ -31,10 +31,11 @@
 		  ]]>
 	   </update>
   
-       <!-- 기업회원 - 공고 삭제 -->
-       <update id ="delete" parameterType="Recruit">
+       <!-- 기업회원 - 공고 즉시 마감 -->
+       <update id ="updateEndAt" parameterType="Integer">
           <![CDATA[
-			DELETE FROM recruit_tb 
+			UPDATE recruit_tb
+			SET recruit_end_at=NOW()
 			WHERE recruit_id=#{recruitId}
 		  ]]>
 	   </update>
@@ -62,7 +63,40 @@
 	      ]]>
 	   </select>
 	   
+	   <!--  기업별 채용 공고 현황 조회 ; 해당 기업 채용공고 지원자 수  -->
+	   <select id="selectRecruiting" parameterType="String" resultType="_int">
+			<![CDATA[ 
+				SELECT COUNT(recruit_id) FROM recruit_tb 
+				WHERE (company_id=#{companyId} AND recruit_end_at >= NOW()) ]]>
+	   </select>
+		
+	   <select id="selectClosedRecruit" parameterType="String" resultType="_int">
+			<![CDATA[ 
+				SELECT COUNT(recruit_id) FROM recruit_tb 
+				WHERE (company_id=#{companyId} AND recruit_end_at < NOW()) ]]>
+	   </select>
+		
+	   <select id="selectApplicantsPassed" parameterType="String" resultType="_int">
+			<![CDATA[ 
+				SELECT COUNT(apply_id) FROM apply_tb 
+				WHERE apply_result = '1' AND recruit_id 
+				IN (SELECT recruit_id FROM recruit_tb WHERE company_id = #{companyId}) ]]>
+	   </select>
 	   
+	   <select id="selectAllApplicants" parameterType="String" resultType="_int">
+			<![CDATA[ 
+				SELECT COUNT(apply_id) FROM apply_tb 
+				WHERE recruit_id 
+				IN (SELECT recruit_id FROM recruit_tb WHERE company_id = #{companyId}) ]]>
+		</select>
+	   
+	   <!-- 기업별 채용 공고 전체 목록 조회 -->
+	   <select id="selectAllByCompany" parameterType="String" resultMap="RecruitMapped">
+	      <![CDATA[
+	         SELECT * FROM recruit_tb
+	         WHERE company_id = #{companyId}
+	      ]]>
+	   </select>
   </mapper>
   
   

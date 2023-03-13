@@ -1,5 +1,6 @@
 package org.ppiyung.ppiyung.recruit.service;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.ppiyung.ppiyung.recruit.dao.RecruitDaoImpl;
@@ -34,11 +35,11 @@ public class RecruitServiceImpl implements RecruitService{
 			return false;
 		}
 	}
-	
+		
 	@Override
-	public boolean deleteRecruitNotice(int recruit_id) {
+	public boolean closeRecruitNotice(int recruitId) {
 		try {
-			dao.deleteRecruitNotice(recruit_id);
+			dao.updateRecruitEndDate(recruitId);
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -61,6 +62,17 @@ public class RecruitServiceImpl implements RecruitService{
     @Override
     public List<Recruit> getRecruitListByKeyword(String keyword) {
     	List<Recruit> list = dao.selectByKeyword(keyword);
+		return list;
+    }
+    
+    @Override
+	public HashMap<String, Object> getRecruitStatusOfCompany(String companyId) {
+	   HashMap<String, Object> map = dao.selectByCompany(companyId);
+	return map;
+}
+    @Override
+    public List<Recruit> getRecruitListOfCompany(String companyId) {
+    	List<Recruit> list = dao.selectAllByCompany(companyId);
 		return list;
     }
 }

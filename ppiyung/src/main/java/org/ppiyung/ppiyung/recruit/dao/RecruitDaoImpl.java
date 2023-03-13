@@ -75,4 +75,11 @@ public class RecruitDaoImpl implements RecruitDao {
 	    
 		return map;
 	}
+	
+	@Override
+	public List<Recruit> selectAllByCompany(String companyId) {
+		List<Recruit> list = session.selectList("org.ppiyung.ppiyung.recruit.selectAllByCompany",companyId);
+			
+		return list;
+	}
 }

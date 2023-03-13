@@ -70,4 +70,9 @@ public class RecruitServiceImpl implements RecruitService{
 	   HashMap<String, Object> map = dao.selectByCompany(companyId);
 	return map;
 }
+    @Override
+    public List<Recruit> getRecruitListOfCompany(String companyId) {
+    	List<Recruit> list = dao.selectAllByCompany(companyId);
+		return list;
+    }
 }

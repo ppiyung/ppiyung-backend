@@ -3,6 +3,7 @@ package org.ppiyung.ppiyung.recruit.service;
 import java.util.HashMap;
 import java.util.List;
 
+import org.ppiyung.ppiyung.recruit.vo.Apply;
 import org.ppiyung.ppiyung.recruit.vo.Recruit;
 
 public interface RecruitService {
@@ -22,6 +23,8 @@ public interface RecruitService {
 	public HashMap<String, Object> getRecruitStatusOfCompany(String companyId);
 
 	public List<Recruit> getRecruitListOfCompany(String companyId);
+
+	public boolean applyForJob(Apply apply);
 
 
 	

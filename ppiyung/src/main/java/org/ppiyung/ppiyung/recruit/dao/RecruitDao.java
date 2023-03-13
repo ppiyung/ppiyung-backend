@@ -3,6 +3,7 @@ package org.ppiyung.ppiyung.recruit.dao;
 import java.util.HashMap;
 import java.util.List;
 
+import org.ppiyung.ppiyung.recruit.vo.Apply;
 import org.ppiyung.ppiyung.recruit.vo.Recruit;
 
 public interface RecruitDao {
@@ -15,5 +16,5 @@ public interface RecruitDao {
 	public List<Recruit> selectByKeyword(String keyword);
 	public HashMap<String, Object> selectByCompany(String companyId);
 	public List<Recruit> selectAllByCompany(String companyId);
-	
+	public void insertApply(Apply apply) throws Exception;
 }

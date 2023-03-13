@@ -12,6 +12,7 @@ import org.apache.logging.log4j.Logger;
 import org.ppiyung.ppiyung.board.service.BoardService;
 import org.ppiyung.ppiyung.board.vo.Board;
 import org.ppiyung.ppiyung.board.vo.BoardList;
+import org.ppiyung.ppiyung.board.vo.Like;
 import org.ppiyung.ppiyung.common.entity.Criteria;
 import org.ppiyung.ppiyung.board.vo.Reply;
 import org.ppiyung.ppiyung.common.entity.BasicResponseEntity;
@@ -239,5 +240,38 @@ public class BoardController {
 
 		return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
 	}
+	
+	// 좋아요 삭제 기능
+	@DeleteMapping(value = "/like/{articleId}/{memberId}")
+	public ResponseEntity<BasicResponseEntity<Object>> deleteCommunityLike(
+	@PathVariable(value ="articleId") int articleId, @PathVariable(value="memberId") String memberId){
+		
+		Like like = new Like();
+		like.setArticleId(articleId);
+		like.setMemberId(memberId);
+		log.debug(like);
+		
+		boolean result = service.deleteCoummunityLike(like);
+		log.debug(result);
+		
+		BasicResponseEntity<Object> respBody = null;
+		int respCode = 0;
+		if (result == true) {
+			log.debug("좋아요 삭제 완료");
+			respBody = new BasicResponseEntity<Object>(true, "삭제 완료", result);
+			respCode = HttpServletResponse.SC_OK;
 
+		} else {
+			log.debug("좋아요 삭제 실패");
+			respBody = new BasicResponseEntity<Object>(false, "삭제 실퍠", result);
+			respCode = HttpServletResponse.SC_BAD_REQUEST;
+		}
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+		return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
+		
+	}
+	
 }

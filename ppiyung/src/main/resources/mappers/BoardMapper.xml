@@ -117,7 +117,12 @@
 			WHERE article_id = #{articleId}
 		]]>
 	</update>
-	
-	
+	<!-- 좋아요 삭제 -->
+	<delete id="deleteLike" parameterType="Like">
+		<![CDATA[
+			DELETE FROM community_like_tb
+			WHERE member_id=#{memberId} and article_id=#{articleId}
+		]]>
+	</delete>
 	
 </mapper>

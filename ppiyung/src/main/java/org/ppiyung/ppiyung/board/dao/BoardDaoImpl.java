@@ -7,6 +7,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.ppiyung.ppiyung.board.vo.Board;
 import org.ppiyung.ppiyung.board.vo.BoardList;
+import org.ppiyung.ppiyung.board.vo.Like;
 import org.ppiyung.ppiyung.board.vo.Reply;
 import org.ppiyung.ppiyung.common.entity.Criteria;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,6 +94,18 @@ public class BoardDaoImpl implements BoardDao {
 		if(count!= 1){
 			throw new Exception();
 		}
+	}
+
+	//좋아요  삭제 기능
+	@Override
+	public void deleteLike(Like like) throws Exception {
+		log.debug(like);
+		int count = session.delete("org.ppiyung.ppiyung.board.deleteLike",like);
+		log.debug(count);
+		if(count != 1) {
+			throw new Exception();
+		}
+		
 	}
 	
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.ppiyung.ppiyung.board.vo.Board;
 import org.ppiyung.ppiyung.board.vo.BoardList;
+import org.ppiyung.ppiyung.board.vo.Like;
 import org.ppiyung.ppiyung.common.entity.Criteria;
 import org.ppiyung.ppiyung.board.vo.Reply;
 
@@ -29,6 +30,8 @@ public interface BoardService {
 
 	// 게시글 수정
 	public boolean editCommunit(Board boardContent);
+	// 커뮤니티 좋아요 삭제
+	boolean deleteCoummunityLike(Like like);
 
 
 

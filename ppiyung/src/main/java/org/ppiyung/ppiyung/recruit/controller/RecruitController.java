@@ -95,27 +95,26 @@ public class RecruitController {
 
 	}
 	
-	// 기업회원- 공고 삭제
-	@DeleteMapping(value="/{recruit_id}")
+	// 기업회원- 공고 즉시 마감
+	@PutMapping(value="/emergency/{recruit_id}")
 	public ResponseEntity<BasicResponseEntity<Object>> 
-		deleteRecruitNotice(@PathVariable("recruit_id") int recruit_id){ 
+		closeRecruitNotice(@PathVariable("recruit_id") int recruitId){ 
 		
-		log.debug(recruit_id);
-		boolean result = service.deleteRecruitNotice( recruit_id);
+		log.debug(recruitId);
+		boolean result = service.closeRecruitNotice( recruitId);
 		
 		BasicResponseEntity<Object> respBody = null;
 		int respCode=0;
 		
 		if(result == true) {
-			log.debug("공고 삭제 성공");
-			respBody = new BasicResponseEntity<Object> (true, "공고 삭제 완료", result);
+			log.debug("공고 즉시 마감 성공");
+			respBody = new BasicResponseEntity<Object> (true, "공고 즉시 마감 완료", result);
 			respCode = HttpServletResponse.SC_OK;
 		} else {
-			log.debug("공고 삭제 실패");
-			respBody = new BasicResponseEntity<Object> (false, "공고 삭제 실패", result);
+			log.debug("공고 즉시 마감 실패");
+			respBody = new BasicResponseEntity<Object> (false, "공고 즉시 마감 실패", result);
 			respCode = HttpServletResponse.SC_BAD_REQUEST;
 		}
-		
 		
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(new MediaType("application", "json",

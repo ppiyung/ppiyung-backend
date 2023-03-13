@@ -28,6 +28,7 @@ import io.jsonwebtoken.security.Keys;
 public class JwtTokenUtil {
 	
 	public static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60 * 1000; // 5시간
+//	public static final long JWT_TOKEN_VALIDITY = 60 * 1000; // 1분
 	public static final long REFRESH_TOKEN_VALIDITY = 24 * 60 * 60 * 14 * 1000; // 14일
 	
 	private final Key accesskey;
@@ -79,6 +80,8 @@ public class JwtTokenUtil {
         payload.put("authType", "Bearer");
         payload.put("accessToken", accessToken);
         payload.put("refreshToken", refreshToken);
+        payload.put("accessTokenExpiresIn", accessTokenExpiresIn);
+        payload.put("refreshTokenExpiresIn", refreshTokenExpiresIn);
         
         Member member = ((SecurityUserDetails)authentication.getPrincipal()).getMember();
         member.setMemberPw("");
@@ -106,7 +109,7 @@ public class JwtTokenUtil {
     }
     
     // 토큰 리프레시
-    public String reGenerateTokenFromRefreshToken(String refreshToken) {
+    public HashMap<String, Object> reGenerateTokenFromRefreshToken(String refreshToken) {
     	// 리프레시 토큰 검증
     	if (!validateToken(refreshToken, true)) {
     		return null;
@@ -127,7 +130,11 @@ public class JwtTokenUtil {
                 .signWith(accesskey, SignatureAlgorithm.HS256)
                 .compact();
         
-        return accessToken;
+        HashMap<String, Object> payload = new HashMap<String, Object>();
+        payload.put("accessToken", accessToken);
+        payload.put("accessTokenExpiresIn", accessTokenExpiresIn);
+        
+        return payload;
     }
     
     // 토큰 검증

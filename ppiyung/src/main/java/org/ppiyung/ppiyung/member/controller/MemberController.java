@@ -70,6 +70,7 @@ public class MemberController {
 		
 		Member result = null;
 		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
+		
 		if (userDetails.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
 			log.debug("개별회원조회 성공");
 			Member param = new Member();

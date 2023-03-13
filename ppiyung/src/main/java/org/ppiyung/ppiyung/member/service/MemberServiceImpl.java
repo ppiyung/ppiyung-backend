@@ -87,7 +87,7 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public String regenToken(String refreshToken) {
+	public HashMap<String, Object> regenToken(String refreshToken) {
 		try {
 	        return jwtTokenUtil.reGenerateTokenFromRefreshToken(refreshToken);
 		} catch (Exception e) {

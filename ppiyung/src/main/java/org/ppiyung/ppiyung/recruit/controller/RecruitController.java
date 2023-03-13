@@ -10,6 +10,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.ppiyung.ppiyung.common.entity.BasicResponseEntity;
 import org.ppiyung.ppiyung.recruit.service.RecruitService;
+import org.ppiyung.ppiyung.recruit.vo.Apply;
 import org.ppiyung.ppiyung.recruit.vo.Recruit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -18,7 +19,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -230,6 +230,7 @@ public class RecruitController {
 				Charset.forName("UTF-8")));
 		
 		HashMap<String, Object> result = null;
+		
 		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
 		
 		if (userDetails.getUsername().equals(companyId)) {
@@ -287,5 +288,45 @@ public class RecruitController {
 
 
     }
+    
+    // 일반회원 - 지원하기
+    @PostMapping(value="/apply/{recruit_id}")
+    public ResponseEntity<BasicResponseEntity<Object>> 
+	
+    appplyForJob(@PathVariable("recruit_id") int recruitId, Authentication authentication){
+    	 
+    	    UserDetails userDetails = (UserDetails)authentication.getPrincipal();
+    	    String memberId = userDetails.getUsername();
+    	 
+    	    Apply apply = new Apply();
+    	    apply.setMemberId(memberId);
+    	    apply.setRecruitId(recruitId);
+    	    
+    	    boolean result = service.applyForJob(apply);
+    		
+    		BasicResponseEntity<Object> respBody = null;
+    		int respCode=0;
+    		
+    		if(result == true) {
+    			log.debug("공고 업로드 성공");
+    			respBody = new BasicResponseEntity<Object> (true, "공고 게시 완료", result);
+    			respCode = HttpServletResponse.SC_OK;
+    		} else {
+    			log.debug("공고 업로드 실패");
+    			respBody = new BasicResponseEntity<Object> (false, "공고 게시 실패", result);
+    			respCode = HttpServletResponse.SC_BAD_REQUEST;
+    		}
+    		
+    		
+    		HttpHeaders headers = new HttpHeaders();
+    		headers.setContentType(new MediaType("application", "json",
+    				Charset.forName("UTF-8")));
+    		
+    		return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
+    		
+	
+
+    }
+    
 	
 }

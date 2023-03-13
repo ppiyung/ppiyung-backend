@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
+import org.ppiyung.ppiyung.recruit.vo.Apply;
 import org.ppiyung.ppiyung.recruit.vo.Recruit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -81,5 +82,15 @@ public class RecruitDaoImpl implements RecruitDao {
 		List<Recruit> list = session.selectList("org.ppiyung.ppiyung.recruit.selectAllByCompany",companyId);
 			
 		return list;
+	}
+	
+
+	@Override
+	public void insertApply(Apply apply) throws Exception {
+		int count = session.insert("org.ppiyung.ppiyung.apply.insert", apply);
+		if (count != 1) {
+			throw new Exception();
+		}
+		
 	}
 }

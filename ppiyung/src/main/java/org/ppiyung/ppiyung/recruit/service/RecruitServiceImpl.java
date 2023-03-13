@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.ppiyung.ppiyung.recruit.dao.RecruitDaoImpl;
+import org.ppiyung.ppiyung.recruit.vo.Apply;
 import org.ppiyung.ppiyung.recruit.vo.Recruit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -74,5 +75,16 @@ public class RecruitServiceImpl implements RecruitService{
     public List<Recruit> getRecruitListOfCompany(String companyId) {
     	List<Recruit> list = dao.selectAllByCompany(companyId);
 		return list;
+    }
+    
+    @Override
+    public boolean applyForJob(Apply apply) {
+    	try {
+			dao.insertApply(apply);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
     }
 }

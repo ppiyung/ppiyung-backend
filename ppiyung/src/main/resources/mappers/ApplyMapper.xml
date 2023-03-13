@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="org.ppiyung.ppiyung.apply">
+	<resultMap id="ApplyMapped" type="Apply">
+		<result property="applyId" column="apply_id" />
+		<result property="applyResult" column="apply_result" />
+		<result property="memberId" column="member_id" />
+		<result property="recruitId" column="recruit_id" />
+		<result property="applyCreatedAt" column="apply_created_at" />
+    </resultMap>
+    
+    <!-- 일반회원 - 지원하기 -->
+    <insert id="insert" parameterType="Apply" >
+      <![CDATA[INSERT INTO apply_tb (member_id, recruit_id)
+      VALUES (#{memberId}, #{recruitId})
+      ]]>
+    </insert>
+    
+  </mapper>
+  

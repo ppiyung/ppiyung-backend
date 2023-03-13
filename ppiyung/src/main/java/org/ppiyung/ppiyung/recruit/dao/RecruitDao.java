@@ -14,5 +14,6 @@ public interface RecruitDao {
 	public List<Recruit> selectByWorkAreaId(int work_area_id);
 	public List<Recruit> selectByKeyword(String keyword);
 	public HashMap<String, Object> selectByCompany(String companyId);
-
+	public List<Recruit> selectAllByCompany(String companyId);
+	
 }

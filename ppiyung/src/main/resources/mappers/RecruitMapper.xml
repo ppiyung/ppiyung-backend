@@ -90,6 +90,13 @@
 				IN (SELECT recruit_id FROM recruit_tb WHERE company_id = #{companyId}) ]]>
 		</select>
 	   
+	   <!-- 기업별 채용 공고 전체 목록 조회 -->
+	   <select id="selectAllByCompany" parameterType="String" resultMap="RecruitMapped">
+	      <![CDATA[
+	         SELECT * FROM recruit_tb
+	         WHERE company_id = #{companyId}
+	      ]]>
+	   </select>
   </mapper>
   
   

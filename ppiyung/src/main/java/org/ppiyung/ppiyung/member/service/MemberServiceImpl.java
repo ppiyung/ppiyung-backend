@@ -90,7 +90,7 @@ public class MemberServiceImpl implements MemberService {
 
 	// 토큰
 	@Override
-	public String regenToken(String refreshToken) {
+	public HashMap<String, Object> regenToken(String refreshToken) {
 		try {
 			return jwtTokenUtil.reGenerateTokenFromRefreshToken(refreshToken);
 		} catch (Exception e) {

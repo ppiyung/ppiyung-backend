@@ -1,6 +1,6 @@
 package org.ppiyung.ppiyung.board.vo;
 
-import java.sql.Date;
+import java.util.Date;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

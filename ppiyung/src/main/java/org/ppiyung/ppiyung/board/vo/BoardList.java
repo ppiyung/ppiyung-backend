@@ -16,6 +16,7 @@ public class BoardList {
 	private String articleTitle; // 게시글 제목
 	private String articleContent; // 게시글 내용
 	private String memberId; // 회원 아이디
+	
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date articleCreatedAt; // 게시글 작성일시
 	private String commentCnt; // 댓글 수

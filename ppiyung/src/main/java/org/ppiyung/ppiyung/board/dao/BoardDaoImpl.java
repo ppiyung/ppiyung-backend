@@ -9,6 +9,7 @@ import org.ppiyung.ppiyung.board.vo.Board;
 import org.ppiyung.ppiyung.board.vo.BoardList;
 import org.ppiyung.ppiyung.board.vo.Like;
 import org.ppiyung.ppiyung.board.vo.Reply;
+import org.ppiyung.ppiyung.common.entity.Criteria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -21,12 +22,14 @@ public class BoardDaoImpl implements BoardDao {
 	SqlSession session;
 	
 		
-	// 커뮤니티 전체 게시글 목록
+	// 커뮤니티 전체 게시글 목록 (페이징 수행)
 	@Override
-	public List<BoardList> getCurrentBoard() {
+	public List<BoardList> pagingInsertBoard(Criteria criteria) {
 		
-		return session.selectList("org.ppiyung.ppiyung.board.allBoard");
+		return session.selectList("org.ppiyung.ppiyung.board.getListPaging",criteria);
+
 	}
+	
 	
 	// 커뮤니티 게시글 삽입
 	@Override
@@ -50,12 +53,24 @@ public class BoardDaoImpl implements BoardDao {
 		}
 		
 	}
+	
+	// 게시글 수정
+	@Override
+	public void updateBoardPost(Board parm) throws Exception {
+		int count = session.update("org.ppiyung.ppiyung.board.updateBoard", parm);
+		
+		if(count!= 1){
+			throw new Exception();
+		}
+	}
 
 	// 게시글 댓글 생성
 	@Override
 	public void insertReply(Reply param) throws Exception {
+		log.debug(param);
 		int count = session.insert("org.ppiyung.ppiyung.board.insertReply", param);
 		if (count != 1) {
+			log.debug(param);
 			throw new Exception();
 		}
 	}
@@ -80,7 +95,7 @@ public class BoardDaoImpl implements BoardDao {
 			throw new Exception();
 		}
 	}
-	
+
 	// 게시글 좋아요 작성
 	@Override
 	public void insertLike(Like like) throws Exception {
@@ -94,7 +109,24 @@ public class BoardDaoImpl implements BoardDao {
 		
 	}
 
+
+	// 게시글 좋아요  삭제
+	@Override
+	public void deleteLike(Like like) throws Exception {
+		log.debug(like);
+		int count = session.delete("org.ppiyung.ppiyung.board.deleteLike",like);
+		log.debug(count);
+		if(count != 1) {
+			throw new Exception();
+		}
+		
+	}
+
+
+	@Override
+	public List<BoardList> getCurrentBoard() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
-
-
 }

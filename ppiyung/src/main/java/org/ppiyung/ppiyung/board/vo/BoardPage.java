@@ -1,45 +1,60 @@
 package org.ppiyung.ppiyung.board.vo;
 
+import org.ppiyung.ppiyung.common.entity.Criteria;
+
+import lombok.Data;
 import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 // 특정 페이지 조회를 위한 Boardpage 클래스
+
+@Data
+@Getter
+@Setter
+@ToString
 public class BoardPage {
 	
-	@Getter
-	private int page; // 현재 페이지 번호
-	@Getter
-	private int perPageNum;// 한 페이지당 보여줄 게시글 갯수
-	
-	public int getPageStart() { //페이지 시작
-        return (this.page-1)*perPageNum;
-        // 현재 페이지의 게시글 시작 번호 = (현제 페이지번호  -1) * 페이지당 보여줄 게시글 갯수
-       
-    }
+	// 시작 페이지
+	private int startPage;
     
-	// 최초로 게시판 목록에 들어 왔을 때 기본 설정값.
-    public BoardPage() {
-		// TODO Auto-generated constructor stub
-        this.page = 1; 
-        this.perPageNum = 10;
-    }
-   
-    //페이지가 음수가 되지 않도록 설정. 음수가 되면 1페이지를 나타냄.
-    public void setPage(int page) {
-        if(page <= 0) {
-            this.page = 1;
-        } else {
-            this.page = page;
-        }
-    }
+    /* 끝 페이지 */
+    private int endPage;
     
-    // 페이지 당 보여줄 게시글 수가 변하지 않게 설정.
-    public void setPerPageNum(int pageCount) {
-        int cnt = this.perPageNum;
-        if(pageCount != cnt) {
-            this.perPageNum = cnt;
-        } else {
-            this.perPageNum = pageCount;
+    /* 이전 페이지, 다음 페이지 존재유무 */
+    private boolean prev, next;
+    
+    /*전체 게시물 수*/
+    private int total;
+    
+    /* 현재 페이지, 페이지당 게시물 표시수 정보 */
+    private Criteria cri;
+    
+    
+    // 생성자
+    public BoardPage(Criteria cri, int total) {
+        
+        this.cri = cri;
+        this.total = total;
+        
+        /* 마지막 페이지 */
+        this.endPage = (int)(Math.ceil(cri.getPageNum()/10.0))*10;
+        
+        /* 시작 페이지 */
+        this.startPage = this.endPage - 9;
+        
+        /* 전체 마지막 페이지 */
+        int realEnd = (int)(Math.ceil(total * 1.0/cri.getAmount()));
+        
+        /* 전체 마지막 페이지(realend)가 화면에 보이는 마지막페이지(endPage)보다 작은 경우, 보이는 페이지(endPage) 값 조정 */
+        if(realEnd < this.endPage) {
+            this.endPage = realEnd;
         }
+        /* 시작 페이지(startPage)값이 1보다 큰 경우 true */
+        this.prev = this.startPage > 1;
+        
+        /* 마지막 페이지(endPage)값이 1보다 큰 경우 true */
+        this.next = this.endPage < realEnd;
+        
     }
-	
 }

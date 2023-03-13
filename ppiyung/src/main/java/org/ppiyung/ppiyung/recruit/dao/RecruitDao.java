@@ -8,7 +8,7 @@ public interface RecruitDao {
 	
 	public void insertRecruitNotice(Recruit recruit) throws Exception;
 	public void updateRecruitNotice(Recruit recruit) throws Exception;
-	public void deleteRecruitNotice(int recruit_id) throws Exception;
+	public void updateRecruitEndDate(int recruitId) throws Exception;
 	public List<Recruit> selectAll();
 	public List<Recruit> selectByWorkAreaId(int work_area_id);
 	public List<Recruit> selectByKeyword(String keyword);

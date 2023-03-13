@@ -31,10 +31,11 @@
 		  ]]>
 	   </update>
   
-       <!-- 기업회원 - 공고 삭제 -->
-       <update id ="delete" parameterType="Recruit">
+       <!-- 기업회원 - 공고 즉시 마감 -->
+       <update id ="updateEndAt" parameterType="Integer">
           <![CDATA[
-			DELETE FROM recruit_tb 
+			UPDATE recruit_tb
+			SET recruit_end_at=NOW()
 			WHERE recruit_id=#{recruitId}
 		  ]]>
 	   </update>

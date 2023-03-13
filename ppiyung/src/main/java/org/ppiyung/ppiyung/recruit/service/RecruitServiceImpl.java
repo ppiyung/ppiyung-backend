@@ -1,5 +1,6 @@
 package org.ppiyung.ppiyung.recruit.service;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.ppiyung.ppiyung.recruit.dao.RecruitDaoImpl;
@@ -63,4 +64,10 @@ public class RecruitServiceImpl implements RecruitService{
     	List<Recruit> list = dao.selectByKeyword(keyword);
 		return list;
     }
+    
+    @Override
+	public HashMap<String, Object> getRecruitStatusOfCompany(String companyId) {
+	   HashMap<String, Object> map = dao.selectByCompany(companyId);
+	return map;
+}
 }

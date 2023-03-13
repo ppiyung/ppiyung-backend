@@ -1,5 +1,6 @@
 package org.ppiyung.ppiyung.recruit.dao;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.ppiyung.ppiyung.recruit.vo.Recruit;
@@ -12,5 +13,6 @@ public interface RecruitDao {
 	public List<Recruit> selectAll();
 	public List<Recruit> selectByWorkAreaId(int work_area_id);
 	public List<Recruit> selectByKeyword(String keyword);
+	public HashMap<String, Object> selectByCompany(String companyId);
 
 }

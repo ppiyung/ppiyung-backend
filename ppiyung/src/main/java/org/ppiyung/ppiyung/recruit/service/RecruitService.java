@@ -1,5 +1,6 @@
 package org.ppiyung.ppiyung.recruit.service;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.ppiyung.ppiyung.recruit.vo.Recruit;
@@ -18,6 +19,7 @@ public interface RecruitService {
 
 	public List<Recruit> getRecruitListByKeyword(String keyword);
 
+	public HashMap<String, Object> getRecruitStatusOfCompany(String companyId);
 
 
 	

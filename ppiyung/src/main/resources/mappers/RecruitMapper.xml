@@ -63,6 +63,32 @@
 	      ]]>
 	   </select>
 	   
+	   <!--  기업별 채용 공고 현황 조회 ; 해당 기업 채용공고 지원자 수  -->
+	   <select id="selectRecruiting" parameterType="String" resultType="_int">
+			<![CDATA[ 
+				SELECT COUNT(recruit_id) FROM recruit_tb 
+				WHERE (company_id=#{companyId} AND recruit_end_at >= NOW()) ]]>
+	   </select>
+		
+	   <select id="selectClosedRecruit" parameterType="String" resultType="_int">
+			<![CDATA[ 
+				SELECT COUNT(recruit_id) FROM recruit_tb 
+				WHERE (company_id=#{companyId} AND recruit_end_at < NOW()) ]]>
+	   </select>
+		
+	   <select id="selectApplicantsPassed" parameterType="String" resultType="_int">
+			<![CDATA[ 
+				SELECT COUNT(apply_id) FROM apply_tb 
+				WHERE apply_result = '1' AND recruit_id 
+				IN (SELECT recruit_id FROM recruit_tb WHERE company_id = #{companyId}) ]]>
+	   </select>
+	   
+	   <select id="selectAllApplicants" parameterType="String" resultType="_int">
+			<![CDATA[ 
+				SELECT COUNT(apply_id) FROM apply_tb 
+				WHERE recruit_id 
+				IN (SELECT recruit_id FROM recruit_tb WHERE company_id = #{companyId}) ]]>
+		</select>
 	   
   </mapper>
   

@@ -5,6 +5,7 @@ import java.util.List;
 import org.ppiyung.ppiyung.board.dao.BoardDao;
 import org.ppiyung.ppiyung.board.vo.Board;
 import org.ppiyung.ppiyung.board.vo.BoardList;
+import org.ppiyung.ppiyung.board.vo.Like;
 import org.ppiyung.ppiyung.board.vo.Reply;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -49,7 +50,7 @@ public class BoardServiceImpl implements BoardService{
 		}
 	}
 	
-	// 댓글 생성
+	// 게시글 댓글 생성
 	@Override
 	public boolean insertReply(Reply reply) {
 		try {
@@ -61,7 +62,7 @@ public class BoardServiceImpl implements BoardService{
 		}
 	}
 	
-	// 댓글 삭제
+	// 게시글 댓글 삭제
 	@Override
 	public boolean deleteReply(int reply_id) {
 		try {
@@ -73,7 +74,7 @@ public class BoardServiceImpl implements BoardService{
 		}
 	}
 	
-	// 댓글 수정
+	// 게시글 댓글 수정
 	@Override
 	public boolean updateReply(Reply reply) {
 		try {
@@ -84,5 +85,21 @@ public class BoardServiceImpl implements BoardService{
 			return false;
 		}
 	}
+
+	// 게시글 좋아요 작성
+	@Override
+	public boolean insetLike(Like like) {
+		
+		try {
+			dao.insertLike(like);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+
+	}
+	
+	
 	
 }

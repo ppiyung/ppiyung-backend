@@ -32,6 +32,12 @@
 	    <result property="memberId" column="member_id" />
 	    <result property="replyCreatedAt" column="reply_created_at" />
     </resultMap>
+    
+   	<resultMap id="LikeMapped" type="Like">
+	    <result property="articleId" column="article_id" />
+	    <result property="memberId" column="member_id" />
+	    <result property="likeCreatedAt" column="like_created_at" />
+    </resultMap>
 
 	<!-- 커뮤니티 게시글 전체 목록 출력-->
 	<select id="allBoard" resultMap="BoardListMapped">		
@@ -85,6 +91,14 @@
 			WHERE reply_id = #{replyId}
 		]]>
 	</update>
+	
+	<!-- 게시글 좋아요 생성 -->
+	<insert id="insertLike" parameterType="Like">
+		<![CDATA[
+			INSERT INTO community_like_tb (article_id, member_id, like_created_at)
+			VALUES(#{articleId}, #{memberId}, #{likeCreatedAt})
+		]]>
+	</insert>
 
 
 </mapper>

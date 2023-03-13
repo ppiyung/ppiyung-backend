@@ -10,6 +10,7 @@ import org.apache.logging.log4j.Logger;
 import org.ppiyung.ppiyung.board.service.BoardService;
 import org.ppiyung.ppiyung.board.vo.Board;
 import org.ppiyung.ppiyung.board.vo.BoardList;
+import org.ppiyung.ppiyung.board.vo.Like;
 import org.ppiyung.ppiyung.board.vo.Reply;
 import org.ppiyung.ppiyung.common.entity.BasicResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -117,7 +118,7 @@ public class BoardController {
 	}
 		
 
-	// 댓글 생성
+	// 커뮤니티 게시글의 댓글 생성
 	@PostMapping(value = "/reply")
 	public ResponseEntity<BasicResponseEntity<Object>>
 			insertReplyHandler(@RequestBody Reply replyContent){
@@ -145,7 +146,7 @@ public class BoardController {
 		return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
 	}
 	
-	// 댓글 삭제
+	// 커뮤니티 게시글의 댓글 삭제
 	@DeleteMapping(value="/reply/{reply_id}")
 	public ResponseEntity<BasicResponseEntity<Object>>
 		deleteReplyHandler(@PathVariable("reply_id") int reply_id){
@@ -174,7 +175,7 @@ public class BoardController {
 	
 	}
 	
-	// 댓글 수정
+	// 커뮤니티 게시글의 댓글 수정
 	@PutMapping(value="/reply/{reply_id}")
 	public ResponseEntity<BasicResponseEntity<Object>>
 		updateReply(@RequestBody Reply replyContent,@PathVariable("reply_id") int reply_id){
@@ -202,5 +203,32 @@ public class BoardController {
 		
 		return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
 	}
+	
+	@PostMapping(value = "/like")
+	public ResponseEntity<BasicResponseEntity<Object>>
+			insertLikeHandler(@RequestBody Like likeContent){
+		
+		boolean result = service.insetLike(likeContent);
+		
+		BasicResponseEntity<Object> respBody = null;
+		
+		int respCode = 0;
+		
+		if(result == true) {
+			log.debug("좋아요 작성 성공");
+			respBody = new BasicResponseEntity<Object>(true, "좋아요가 작성되었습니다.", result);
+			respCode = HttpServletResponse.SC_OK;
+		} else {
+			log.debug("좋아요 작성 실패");
+			respBody = new BasicResponseEntity<Object>(false, "좋아요 작성이 실패했습니다.", result);
+			respCode = HttpServletResponse.SC_BAD_REQUEST;
+		}
+		
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+		
+		return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
+	}
+	
 
 }

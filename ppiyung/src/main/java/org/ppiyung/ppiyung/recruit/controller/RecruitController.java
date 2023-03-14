@@ -458,9 +458,9 @@ public class RecruitController {
     }
     
     // 일반회원 -회원별 받은 입사 제안 조회
-    @GetMapping(value="/recruit/suggest/member/{memberId}")
+    @GetMapping(value="/suggest/member/{member_id}")
     public ResponseEntity<BasicResponseEntity<Object>> 
-    get(@RequestParam("recruitid") int recruitId, @RequestParam("companyid") String companyId, 
+    getJobOfferOfMember(@PathVariable("member_id") String memberId, 
     		Authentication authentication) {
         
 		BasicResponseEntity<Object> respBody = null;
@@ -468,22 +468,20 @@ public class RecruitController {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 		
-		List<HashMap<String, Object>> result = null;
-		log.debug("!!" +result);
+		List<Suggest> result = null;
 		
 		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
 		
-		if (userDetails.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_COMPANY")) 
-				&& userDetails.getUsername().equals(companyId)) {
+		if (userDetails.getUsername().equals(memberId)) {
 			
-			result = service.getApplicantsByRecruitNotice(recruitId);
+			result = service.getJobOfferOfMember(memberId);
 			
-			respBody = new BasicResponseEntity<Object>(true, "개별회원조회 성공하였습니다.", result);
+			respBody = new BasicResponseEntity<Object>(true, "개별회원 입사제안 조회 성공하였습니다.", result);
 			respCode = HttpServletResponse.SC_OK;
 
 		} else {
-			log.debug("개별회원조회 실패");
-			respBody = new BasicResponseEntity<Object>(false, "개별회원조회 실패하였습니다.", result);
+			
+			respBody = new BasicResponseEntity<Object>(false, "개별회원입사제안 조회 실패하였습니다.", result);
 			respCode = HttpServletResponse.SC_BAD_REQUEST;
 		}
 		return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);

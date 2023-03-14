@@ -59,7 +59,9 @@
 	   <!-- 직무별 채용 공고 조회 -->
 	   <select id="selectByWorkAreaId" parameterType="Integer" resultMap="RecruitMapped">
 	      <![CDATA[
-	         SELECT * FROM recruit_tb
+	         SELECT r.*, m.member_name FROM recruit_tb AS r
+	         JOIN member_tb AS m
+             ON r.company_id=m.member_id
 	         WHERE work_area_id=#{workAreaId}
 	      ]]>
 	   </select>
@@ -67,7 +69,9 @@
 	   <!-- 키워드로 채용 공고 조회 -->
 	   <select id="selectByKeyword" parameterType="String" resultMap="RecruitMapped">
 	      <![CDATA[
-	         SELECT * FROM recruit_tb
+	         SELECT r.*, m.member_name FROM recruit_tb AS r
+	         JOIN member_tb AS m
+             ON r.company_id=m.member_id
 	         WHERE recruit_title LIKE CONCAT ('%',#{keyword},'%') OR recruit_detail LIKE CONCAT ('%',#{keyword},'%')
 	      ]]>
 	   </select>
@@ -102,7 +106,9 @@
 	   <!-- 기업별 채용 공고 전체 목록 조회 -->
 	   <select id="selectAllByCompany" parameterType="String" resultMap="RecruitMapped">
 	      <![CDATA[
-	         SELECT * FROM recruit_tb
+	         SELECT r.*, m.member_name FROM recruit_tb AS r
+	         JOIN member_tb AS m
+             ON r.company_id=m.member_id
 	         WHERE company_id = #{companyId}
 	      ]]>
 	   </select>

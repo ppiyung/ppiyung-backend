@@ -20,4 +20,11 @@
         ]]>
     </insert>
    
+   <!-- 일반회원-회원별 받은 입사제안 조회 -->
+   <select id="selectByMember" parameterType="String" resultMap="SuggestMapped">
+        <![CDATA[
+          SELECT * FROM suggest_tb
+          WHERE member_id = #{memberId}
+        ]]>
+   </select>
  </mapper>  

@@ -1,8 +1,9 @@
 -- 삐융 베이스 SQL 스크립트
--- Version: v0.5
+-- Version: v0.5.1
 -- Author: @initbyran, @silver-hee, @schdevv, @0tak2, @gkswotjd45
 --
 -- 변경 사항
+-- v0.5.1 img_tb.img_updated_at에 기본값 현재 시간으로 지정
 -- v0.5 member_tb에서 member_img 속성 삭제 및 img_tb 추가
 -- v0.4.1 member_tb의 샘플 데이터의 member_pw 값을 해싱된 값으로 교체
 -- v0.4 community_like_tb, community_reply_tb의 article_id(FK)에 대한 제약조건 추가
@@ -121,7 +122,7 @@ CREATE TABLE `img_tb` (
 	`img_location`	varchar(128)	NOT NULL,
 	`img_filename`	varchar(128)	NOT NULL,
 	`img_filetype`	varchar(10)	NOT NULL,
-	`img_updated_at`	datetime	NOT NULL,
+	`img_updated_at`	datetime  DEFAULT now()	NOT NULL,
 	PRIMARY KEY (member_id),
     FOREIGN KEY (member_id) REFERENCES member_tb (member_id)
 );

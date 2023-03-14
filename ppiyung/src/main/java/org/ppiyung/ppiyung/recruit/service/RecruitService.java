@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.ppiyung.ppiyung.recruit.vo.Apply;
+import org.ppiyung.ppiyung.recruit.vo.BookMark;
 import org.ppiyung.ppiyung.recruit.vo.Recruit;
 
 public interface RecruitService {
@@ -27,6 +28,8 @@ public interface RecruitService {
 	public boolean applyForJob(Apply apply);
 	
 	public List<Recruit> getRecruitDetailInfo(String recruitId);
+
+	public boolean addBookmarkRecruit(BookMark bookMark);
 
 
 	

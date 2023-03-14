@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.ppiyung.ppiyung.recruit.dao.RecruitDaoImpl;
 import org.ppiyung.ppiyung.recruit.vo.Apply;
+import org.ppiyung.ppiyung.recruit.vo.BookMark;
 import org.ppiyung.ppiyung.recruit.vo.Recruit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -92,5 +93,16 @@ public class RecruitServiceImpl implements RecruitService{
 	public List<Recruit> getRecruitDetailInfo(String recruitId) {
 		List<Recruit> list = dao.selectAllDetailRecruit(recruitId);
 		return list;
+	}
+
+	@Override
+	public boolean addBookmarkRecruit(BookMark bookMark) {
+		try {
+			dao.insertBookmark(bookMark);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 }

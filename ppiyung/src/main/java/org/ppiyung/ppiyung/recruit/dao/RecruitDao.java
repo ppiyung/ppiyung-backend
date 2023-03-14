@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.ppiyung.ppiyung.recruit.vo.Apply;
+import org.ppiyung.ppiyung.recruit.vo.BookMark;
 import org.ppiyung.ppiyung.recruit.vo.Recruit;
 
 public interface RecruitDao {
@@ -18,4 +19,5 @@ public interface RecruitDao {
 	public List<Recruit> selectAllByCompany(String companyId);
 	public void insertApply(Apply apply) throws Exception;
 	public List<Recruit> selectAllDetailRecruit(String recruitId);
+	public void insertBookmark(BookMark bookMark) throws Exception;
 }

@@ -15,6 +15,7 @@
 	 	<typeAlias type="org.ppiyung.ppiyung.recruit.vo.Recruit" alias="Recruit"/>
 	 	<typeAlias type="org.ppiyung.ppiyung.board.vo.Reply" alias="Reply"/>
 	 	<typeAlias type="org.ppiyung.ppiyung.recruit.vo.Apply" alias="Apply"/>
+	 	<typeAlias type="org.ppiyung.ppiyung.recruit.vo.BookMark" alias="BookMark"/>
 	 </typeAliases>
 	 
 </configuration>

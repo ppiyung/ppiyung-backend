@@ -11,6 +11,7 @@ import org.apache.logging.log4j.Logger;
 import org.ppiyung.ppiyung.common.entity.BasicResponseEntity;
 import org.ppiyung.ppiyung.recruit.service.RecruitService;
 import org.ppiyung.ppiyung.recruit.vo.Apply;
+import org.ppiyung.ppiyung.recruit.vo.BookMark;
 import org.ppiyung.ppiyung.recruit.vo.Recruit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -361,6 +362,47 @@ public class RecruitController {
 			return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
 		 
 	 }
+	 
+	 
+	 //관심 채용 정보 추가
+	 @PostMapping(value= "/bookmark/{recruit_id}")
+	 public ResponseEntity<BasicResponseEntity<Object>> 
+	 		addBookmarkRecruit(@PathVariable("recruit_id") int recruitId, Authentication authentication)  {
+		 
+ 	    UserDetails userDetails = (UserDetails)authentication.getPrincipal();
+ 	    String memberId = userDetails.getUsername();
+ 	    
+ 	    
+ 	    BookMark bookMark = new BookMark();
+ 	    bookMark.setRecruitId(recruitId);
+ 	    bookMark.setMemberId(memberId);
+ 	   
+
+	    boolean result = service.addBookmarkRecruit(bookMark);
+		log.debug("test" +bookMark.getMemberId());
+		log.debug("test" + bookMark.getRecruitId());
+		BasicResponseEntity<Object> respBody = null;
+		int respCode=0;
+		
+		if(result == true) {
+			log.debug("북마크 성공");
+			respBody = new BasicResponseEntity<Object> (true, "북마크 완료", result);
+			respCode = HttpServletResponse.SC_OK;
+		} else {
+			log.debug("북마크 실패");
+			respBody = new BasicResponseEntity<Object> (false, "북마크 실패", result);
+			respCode = HttpServletResponse.SC_BAD_REQUEST;
+		}
+		
+		
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(new MediaType("application", "json",
+				Charset.forName("UTF-8")));
+		
+		return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
+ 	    
+	 }
+	 
 	 
     
 	

@@ -105,6 +105,16 @@
 	   	  	WHERE recruit_id = #{recruitId}
 	   	  ]]>
 	   </select>
+	   
+	   <!-- 북마크 -->
+	   <insert id="insertBookmark" parameterType="BookMark" >   
+	   		  <![CDATA[
+	   		  INSERT INTO (recruit_id,member_id, bookmark_created_at)
+	   		  bookmark 
+	   		  VALUES (#{recruitId}, #{memberId});
+	   		  ]]>
+	   </insert>
+	   
   </mapper>
   
   

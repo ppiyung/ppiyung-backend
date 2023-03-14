@@ -109,5 +109,13 @@ public class RecruitDaoImpl implements RecruitDao {
 		}
 
 	}
+	
+	@Override
+	public void deleteBookmark(BookMark bookMark) throws Exception {
+		int count = session.delete("org.ppiyung.ppiyung.bookmark.deleteBookMark", bookMark);
+		if (count != 1) {
+			throw new Exception();
+		}
+	}
 
 }

@@ -3,24 +3,36 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-  
-  <mapper namespace="org.ppiyung.ppiyung.bookmark">
+
+<mapper namespace="org.ppiyung.ppiyung.bookmark">
 	<resultMap id="BookmarkMapped" type="BookMark">
 		<result property="recruitId" column="recruit_id" />
 		<result property="memberId" column="member_id" />
-		<result property="bookmarkCreatedAt" column="bookmark_created_at" />
+		<result property="bookmarkCreatedAt"
+			column="bookmark_created_at" />
 
 	</resultMap>
-  
-  	   <!-- 북마크 -->
-	   <insert id="insertBookMark" parameterType="BookMark" >   
+
+	<!-- 북마크 생성-->
+	<insert id="insertBookMark" parameterType="BookMark">   
 	   		  <![CDATA[
 	   		  INSERT INTO bookmark (recruit_id,member_id)
 	   	
 	   		  VALUES (#{recruitId}, #{memberId});
 	   		  ]]>
-	   </insert>
-	   
-  </mapper>
+	</insert>
+
+	<!-- 북마크 취소-->
+	<insert id="deleteBookMark" parameterType="BookMark">   
+	   		  <![CDATA[
+	   		  DELETE FROM bookmark 
+	   		  WHERE (
+	   		  recruit_id = #{recruitId} AND
+	   		  member_id =#{memberId}
+	   		  )
+	   		  ]]>
+	</insert>
+
+</mapper>
   
   

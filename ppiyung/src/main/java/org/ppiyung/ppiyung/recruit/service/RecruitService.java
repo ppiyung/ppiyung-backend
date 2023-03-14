@@ -31,6 +31,8 @@ public interface RecruitService {
 
 	public boolean addBookmarkRecruit(BookMark bookMark);
 
+	public boolean removeBookmarkRecruit(BookMark bookMark);
+
 
 	
 	

@@ -20,4 +20,5 @@ public interface RecruitDao {
 	public void insertApply(Apply apply) throws Exception;
 	public List<Recruit> selectAllDetailRecruit(String recruitId);
 	public void insertBookmark(BookMark bookMark) throws Exception;
+	public void deleteBookmark(BookMark bookMark) throws Exception;
 }

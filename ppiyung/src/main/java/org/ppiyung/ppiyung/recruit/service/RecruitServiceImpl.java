@@ -105,4 +105,15 @@ public class RecruitServiceImpl implements RecruitService{
 			return false;
 		}
 	}
+
+	@Override
+	public boolean removeBookmarkRecruit(BookMark bookMark) {
+		try {
+			dao.deleteBookmark(bookMark);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
 }

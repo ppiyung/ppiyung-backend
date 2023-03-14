@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="org.ppiyung.ppiyung.suggest">
+	<resultMap id="SuggestMapped" type="Suggest">
+		<result property="suggestId" column="suggest_id" />
+		<result property="suggestCreatedAt" column="suggest_created_at" />
+		<result property="memberId" column="member_id" />
+		<result property="companyId" column="company_id" />
+    </resultMap>
+    
+    <!-- 기업회원 -입사 제안보내기 -->
+    <insert id="insert" parameterType="Suggest">
+        <![CDATA[
+          INSERT INTO suggest_tb (company_id, member_id)
+          VALUES (#{companyId}, #{memberId})
+        ]]>
+    </insert>
+   
+ </mapper>  

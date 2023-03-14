@@ -6,6 +6,7 @@ import java.util.List;
 import org.ppiyung.ppiyung.recruit.vo.Apply;
 import org.ppiyung.ppiyung.recruit.vo.BookMark;
 import org.ppiyung.ppiyung.recruit.vo.Recruit;
+import org.ppiyung.ppiyung.recruit.vo.Suggest;
 
 public interface RecruitDao {
 	
@@ -18,6 +19,7 @@ public interface RecruitDao {
 	public HashMap<String, Object> selectByCompany(String companyId);
 	public List<Recruit> selectAllByCompany(String companyId);
 	public void insertApply(Apply apply) throws Exception;
+	public void insertSuggest(Suggest suggest)throws Exception;
 	public List<Recruit> selectAllDetailRecruit(String recruitId);
 	public void insertBookmark(BookMark bookMark) throws Exception;
 	public void deleteBookmark(BookMark bookMark) throws Exception;

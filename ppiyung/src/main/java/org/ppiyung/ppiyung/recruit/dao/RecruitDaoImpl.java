@@ -7,6 +7,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.ppiyung.ppiyung.recruit.vo.Apply;
 import org.ppiyung.ppiyung.recruit.vo.BookMark;
 import org.ppiyung.ppiyung.recruit.vo.Recruit;
+import org.ppiyung.ppiyung.recruit.vo.Suggest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -95,6 +96,15 @@ public class RecruitDaoImpl implements RecruitDao {
 	}
 
 	@Override
+	public void insertSuggest(Suggest suggest) throws Exception {
+		int count = session.insert("org.ppiyung.ppiyung.suggest.insert", suggest);
+		if (count != 1) {
+			throw new Exception();
+		}
+
+	}
+
+	@Override
 	public List<Recruit> selectAllDetailRecruit(String recruitId) {
 		List<Recruit> list = session.selectList("org.ppiyung.ppiyung.recruit.selectAllDetailRecruit", recruitId);
 
@@ -109,7 +119,7 @@ public class RecruitDaoImpl implements RecruitDao {
 		}
 
 	}
-	
+
 	@Override
 	public void deleteBookmark(BookMark bookMark) throws Exception {
 		int count = session.delete("org.ppiyung.ppiyung.bookmark.deleteBookMark", bookMark);

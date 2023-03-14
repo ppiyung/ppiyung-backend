@@ -1,29 +1,40 @@
 package org.ppiyung.ppiyung.member.controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
+
 import javax.servlet.http.HttpServletResponse;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.ppiyung.ppiyung.common.entity.BasicResponseEntity;
 import org.ppiyung.ppiyung.member.service.MemberService;
+import org.ppiyung.ppiyung.member.vo.Image;
 import org.ppiyung.ppiyung.member.vo.Member;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping(value = "/member")
@@ -34,6 +45,9 @@ public class MemberController {
 
 	@Autowired
 	private MemberService service;
+	
+	@Autowired
+	ResourceLoader rsLoader;
 
 	// 회원가입
 	@PostMapping(value = "signin")
@@ -248,6 +262,102 @@ public class MemberController {
 	}
 	
 	
+	@PostMapping(value="/img")
+	public ResponseEntity<BasicResponseEntity<Object>>
+		uploadImageHandler(@RequestParam("file") MultipartFile file, Authentication authentication) {
+		
+		boolean fileSaveResult = false;
+		
+		String filenameOriginal = file.getOriginalFilename();
+		long size = file.getSize();
+		
+		String fileExtension = filenameOriginal.substring(filenameOriginal.lastIndexOf("."),filenameOriginal.length());
+		
+		Resource resource = rsLoader.getResource("resources/images");
+		String uploadFolder = "";
+		try {
+			uploadFolder = resource.getFile().getCanonicalPath();
+		} catch (IOException e1) {
+			fileSaveResult = false;
+			e1.printStackTrace();
+		}
+		
+		UUID uuid = UUID.randomUUID();
+		String filenameForSaving = uuid.toString();
+		
+		File saveFile = new File(uploadFolder + "/" + filenameForSaving + fileExtension);
+		try {
+			file.transferTo(saveFile);
+			fileSaveResult = true;
+			log.debug(saveFile);
+		} catch (IllegalStateException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		BasicResponseEntity<Object> respBody = null;
+		int respCode = 0;
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+		
+		Image image = null;
+		boolean dbResult = false;
+		if (fileSaveResult) {
+			UserDetails userDetails = (UserDetails)authentication.getPrincipal();
+			
+			image = new Image(userDetails.getUsername(),
+					filenameForSaving + fileExtension,
+					filenameOriginal, fileExtension, null);
+			dbResult = service.addImageFileInfo(image);
+		}
+		
+		if (fileSaveResult && dbResult) {
+			log.debug("이미지 업로드 성공");
+			respBody = new BasicResponseEntity<Object>(true, "이미지 업로드에 성공하였습니다.", image);
+			respCode = HttpServletResponse.SC_OK;
+		} else {
+			log.debug("이미지 업로드 실패");
+			respBody = new BasicResponseEntity<Object>(false, "이미지 업로드에 실패하였습니다.", null);
+			respCode = HttpServletResponse.SC_BAD_REQUEST;
+		}
+		
+		return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
+	}
 	
 
+	@GetMapping(value="/img/{memberId}")
+	public ResponseEntity<BasicResponseEntity<Object>>
+		getImageHandler(@PathVariable("memberId") String memberId,
+			Authentication authentication) {
+
+		Image result = null;
+		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
+
+
+		if (userDetails.getUsername().equals(memberId)) {
+			Image param = new Image();
+			param.setMemberId(memberId);
+
+			result = service.getImageFileInfo(param);
+			log.debug("테스트:" + result);
+		}
+		
+		BasicResponseEntity<Object> respBody = null;
+		int respCode = 0;
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+		
+		if (result != null) {
+			log.debug("이미지 정보 조회 성공");
+			respBody = new BasicResponseEntity<Object>(true, "이미지 정보 조회에 성공하였습니다.", result);
+			respCode = HttpServletResponse.SC_OK;
+		} else {
+			log.debug("이미지 정보 조회 실패");
+			respBody = new BasicResponseEntity<Object>(false, "이미지 정보 조회에 실패하였습니다.", null);
+			respCode = HttpServletResponse.SC_BAD_REQUEST;
+		}
+		
+		return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
+	}
 }

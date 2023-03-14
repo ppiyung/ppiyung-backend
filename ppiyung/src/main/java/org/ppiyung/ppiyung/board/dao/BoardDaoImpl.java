@@ -107,7 +107,7 @@ public class BoardDaoImpl implements BoardDao {
 	}
 	// 게시글 세부조회
 	@Override
-	public List<Board> detailBoard(int articleId) {
+	public List<BoardList> detailBoard(int articleId) {
 		return session.selectList("org.ppiyung.ppiyung.board.detailBoard",articleId);
 	}
 	

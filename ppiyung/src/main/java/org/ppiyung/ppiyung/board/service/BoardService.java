@@ -35,6 +35,6 @@ public interface BoardService {
 	boolean deleteCoummunityLike(Like like);
 
 	// 게시판 상세조회 페이지
-	public List<Board> getdetailPost(int articleId);
+	public List<BoardList> getdetailPost(int articleId);
 	
 }

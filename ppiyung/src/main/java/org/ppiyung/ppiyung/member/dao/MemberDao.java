@@ -2,6 +2,7 @@ package org.ppiyung.ppiyung.member.dao;
 
 import java.util.List;
 
+import org.ppiyung.ppiyung.member.vo.Image;
 import org.ppiyung.ppiyung.member.vo.Member;
 
 public interface MemberDao {
@@ -22,4 +23,10 @@ public interface MemberDao {
 	public void leaveMember(String memberId) throws Exception;
 
 	public List<Member> getResumeOpenMember(String workAreaId);
+
+	public void insertMemberImage(Image image) throws Exception;
+
+	public Image getMemberImage(Image image);
+	
+
 }

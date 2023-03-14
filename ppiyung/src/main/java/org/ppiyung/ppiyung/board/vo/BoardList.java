@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+// 게시글 리스트 출력 겸 게시글 세부내역 VO
 public class BoardList {
 	private int articleId; // 게시글 아이디
 	private String memberNickname; //회원 닉네임

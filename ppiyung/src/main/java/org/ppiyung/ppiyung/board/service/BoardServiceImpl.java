@@ -111,7 +111,7 @@ public class BoardServiceImpl implements BoardService {
 	}
 	// 게시판 상세 조회 페이지
 	@Override
-	public List<Board> getdetailPost(int articleId){
+	public List<BoardList> getdetailPost(int articleId){
 		return dao.detailBoard(articleId);
 	
 	}

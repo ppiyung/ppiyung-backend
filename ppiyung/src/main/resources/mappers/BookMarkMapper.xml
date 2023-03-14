@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.ppiyung.ppiyung.bookmark">
+	<resultMap id="BookmarkMapped" type="BookMark">
+		<result property="recruitId" column="recruit_id" />
+		<result property="memberId" column="member_id" />
+		<result property="bookmarkCreatedAt"
+			column="bookmark_created_at" />
+	</resultMap>
+
+
+	<!-- 북마크 생성 -->
+	<insert id="insertBookMark" parameterType="BookMark">   
+	   		  <![CDATA[
+	   		  INSERT INTO bookmark (recruit_id, member_id)
+	   		  VALUES (#{recruitId}, #{memberId});
+	   		  ]]>
+	</insert>
+
+
+	<!-- 북마크 취소 -->
+	<insert id="deleteBookMark" parameterType="BookMark">   
+	   		  <![CDATA[
+	   		  DELETE FROM bookmark 
+	   		  WHERE (
+	   		  recruit_id = #{recruitId} AND
+	   		  member_id =#{memberId}
+	   		  )
+	   		  ]]>
+	</insert>
+
+	<!-- 회원별 북마크 리스트 -->
+	<select id="selectBookmarkList" resultType="HashMap">
+		<![CDATA[
+		    SELECT A.company_id , A.recruit_title, A.recruit_detail, A.work_area_id, A.recruit_start_at,A.recruit_end_at,
+			B.member_id , C.member_name
+ 			FROM recruit_tb AS A JOIN bookmark AS B
+			ON  A.recruit_id = B.recruit_id
+  			JOIN member_tb AS C ON B.member_id = C.member_id  WHERE B.member_id = #{memberId}
+		]]>
+	</select>
+
+</mapper>
+  
+  

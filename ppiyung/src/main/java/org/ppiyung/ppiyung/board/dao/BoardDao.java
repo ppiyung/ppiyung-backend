@@ -36,6 +36,6 @@ public interface BoardDao  {
 	void deleteLike(Like like) throws Exception;
 	
 	// 게시글 상세조회
-	public List<Board> detailBoard(int articleId);
+	public List<BoardList> detailBoard(int articleId);
 	
 }

@@ -272,11 +272,12 @@ public class BoardController {
 		return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
 		
 	}
+	
 	// 게시글 개별 상세조회
 	@GetMapping("/article/{articleId}")
-	public ResponseEntity<BasicResponseEntity<Object>> detailsCommunity(@PathVariable("articleId") int articleId ,@RequestParam("pageNum") int pageNum, @RequestParam("amount") int amount){
+	public ResponseEntity<BasicResponseEntity<Object>> detailsCommunity(@PathVariable("articleId") int articleId ,@RequestParam("page") int page, @RequestParam("size") int size){
 		
-		List<Board> result = service.getdetailPost(articleId);
+		List<BoardList> result = service.getdetailPost(articleId);
 		BasicResponseEntity<Object> respBody = null;
 		int respCode = 0;
 

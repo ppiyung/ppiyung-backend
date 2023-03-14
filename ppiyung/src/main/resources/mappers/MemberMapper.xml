@@ -25,6 +25,14 @@
 	    <result property="workAreaId" column="work_area_id" />
    	    <result property="memberVerified" column="member_verified" />
     </resultMap>
+    
+    <resultMap id="ImageMapped" type="Image">
+	    <result property="memberId" column="member_id" />
+	    <result property="imgLocation" column="img_location" />
+	    <result property="imgFilename" column="img_filename" />
+	    <result property="imgFiletype" column="img_filetype" />
+	    <result property="imgUpdatedAt" column="img_updated_at" />
+    </resultMap>
 
 	<select id="login" parameterType="Member"
 	        resultMap="MemberMapped">		
@@ -126,5 +134,32 @@
 	
 	</select>
 
+<!-- 
 
+	    <result property="memberId" column="memberId" />
+	    <result property="img_location" column="imgLocation" />
+	    <result property="img_filename" column="imgFilename" />
+	    <result property="img_filetype" column="imgFiletype" />
+	    <result property="img_updated_at" column="imgUpdatedAt" />
+
+ -->
+
+	<!-- 이미지 정보 추가 -->
+	<insert id="insertImg" parameterType = "Image">
+		<![CDATA[
+			INSERT INTO img_tb 
+			(member_id, img_location, img_filename, img_filetype, img_updated_at) 
+			VALUES 	(#{memberId},#{imgLocation},#{imgFilename},#{imgFiletype}, default)
+		]]>
+	</insert>
+	
+	<!-- 이미지 정보 조회 -->
+	<select id="selectImg" parameterType="Image" resultMap="ImageMapped">
+		<![CDATA[
+			SELECT member_id, img_location, img_filename, img_filetype, img_updated_at
+			FROM  img_tb
+			WHERE member_id = #{memberId}
+		 ]]>
+	</select>
+	
 </mapper>

@@ -3,6 +3,7 @@ package org.ppiyung.ppiyung.member.dao;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
+import org.ppiyung.ppiyung.member.vo.Image;
 import org.ppiyung.ppiyung.member.vo.Member;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -68,4 +69,18 @@ public class MemberDaoImpl implements MemberDao {
 		return list;
 	}
 
+
+	@Override
+	public void insertMemberImage(Image image) throws Exception {
+		int count = session.insert("org.ppiyung.ppiyung.member.insertImg", image);
+		if (count != 1) {
+			throw new Exception();
+		}
+	}
+
+
+	@Override
+	public Image getMemberImage(Image image) {
+		return session.selectOne("org.ppiyung.ppiyung.member.selectImg" , image);
+	}
 }

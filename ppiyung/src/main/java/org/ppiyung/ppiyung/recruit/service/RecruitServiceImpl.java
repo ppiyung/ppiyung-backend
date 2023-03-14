@@ -3,6 +3,7 @@ package org.ppiyung.ppiyung.recruit.service;
 import java.util.HashMap;
 import java.util.List;
 
+import org.ppiyung.ppiyung.common.entity.PagingEntity;
 import org.ppiyung.ppiyung.recruit.dao.RecruitDaoImpl;
 import org.ppiyung.ppiyung.recruit.vo.Apply;
 import org.ppiyung.ppiyung.recruit.vo.Recruit;
@@ -50,8 +51,8 @@ public class RecruitServiceImpl implements RecruitService{
 	}
 	
 	@Override
-	public List<Recruit> getRecruitList() {
-		List<Recruit> list = dao.selectAll();
+	public List<Recruit> getRecruitList(PagingEntity pagingEntity) {
+		List<Recruit> list = dao.selectAll(pagingEntity);
 		return list;
 	}
 	
@@ -87,6 +88,18 @@ public class RecruitServiceImpl implements RecruitService{
 			e.printStackTrace();
 			return false;
 		}
+    }
+    
+    @Override
+    public List<Apply> getApplyListOfMember(String memberId) {
+    	List<Apply> list = dao.selectByMember(memberId);
+    	return list;
+    }
+    
+    @Override
+    public List<HashMap<String, Object>> getApplicantsByRecruitNotice(int recruitId) {
+    	List<HashMap<String, Object>> list = dao.selectByRecruit(recruitId);
+    	return list;
     }
     @Override
     public boolean jobOffer(Suggest suggest) {

@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
+import org.ppiyung.ppiyung.common.entity.PagingEntity;
 import org.ppiyung.ppiyung.recruit.vo.Apply;
 import org.ppiyung.ppiyung.recruit.vo.Recruit;
 import org.ppiyung.ppiyung.recruit.vo.Suggest;
@@ -49,8 +50,8 @@ public class RecruitDaoImpl implements RecruitDao {
 	}
 
 	@Override
-	public List<Recruit> selectAll() {
-        List<Recruit> list = session.selectList("org.ppiyung.ppiyung.recruit.selectAll");
+	public List<Recruit> selectAll(PagingEntity pagingEntity) {
+        List<Recruit> list = session.selectList("org.ppiyung.ppiyung.recruit.selectAll", pagingEntity);
 		
 		return list;
 	}
@@ -62,6 +63,7 @@ public class RecruitDaoImpl implements RecruitDao {
 		return list;
 	}
 	
+	@Override
 	public HashMap<String, Object> selectByCompany(String companyId) {
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		
@@ -95,6 +97,20 @@ public class RecruitDaoImpl implements RecruitDao {
 		
 	}
   
+	@Override
+	public List<Apply> selectByMember(String memberId) {
+		List<Apply> list = session.selectList("org.ppiyung.ppiyung.apply.selectByMember",memberId);
+		
+		return list;
+	}
+	
+	@Override
+	public List<HashMap<String, Object>> selectByRecruit(int recruitId) {
+		List<HashMap<String, Object>> list = session.selectList("org.ppiyung.ppiyung.apply.selectByRecruit",recruitId);
+		
+		return list;
+	}
+	
 	@Override
 	public void insertSuggest(Suggest suggest) throws Exception {
 		int count = session.insert("org.ppiyung.ppiyung.suggest.insert", suggest);

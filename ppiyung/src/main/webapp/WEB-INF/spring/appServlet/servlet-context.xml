@@ -47,4 +47,7 @@
 			<beans:value>classpath:config/auth.properties</beans:value>
 		</beans:property>
 	</beans:bean>
+	
+
+	
 </beans:beans>

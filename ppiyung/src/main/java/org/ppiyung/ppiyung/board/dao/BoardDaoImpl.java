@@ -30,7 +30,6 @@ public class BoardDaoImpl implements BoardDao {
 
 	}
 	
-	
 	// 커뮤니티 게시글 삽입
 	@Override
 	public void insertBoardpost(Board param) throws Exception {
@@ -41,7 +40,6 @@ public class BoardDaoImpl implements BoardDao {
 		}
 		
 	}
-	
 	
 	// 커뮤니티 게시글 삭제
 	@Override
@@ -106,6 +104,11 @@ public class BoardDaoImpl implements BoardDao {
 			throw new Exception();
 		}
 		
+	}
+	// 게시글 세부조회
+	@Override
+	public List<Board> detailBoard(int articleId) {
+		return session.selectList("org.ppiyung.ppiyung.board.detailBoard",articleId);
 	}
 	
 }

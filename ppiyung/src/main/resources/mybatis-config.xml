@@ -16,6 +16,8 @@
 	 	<typeAlias type="org.ppiyung.ppiyung.board.vo.Reply" alias="Reply"/>
 	 	<typeAlias type="org.ppiyung.ppiyung.common.entity.Criteria" alias="Criteria"/>
 	 	<typeAlias type="org.ppiyung.ppiyung.board.vo.Like" alias="Like"/>
+	 	<typeAlias type="org.ppiyung.ppiyung.recruit.vo.Apply" alias="Apply"/>
+
 	 </typeAliases>
 	 
 </configuration>

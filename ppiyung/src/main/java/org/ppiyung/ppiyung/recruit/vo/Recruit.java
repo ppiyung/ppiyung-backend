@@ -19,5 +19,6 @@ public class Recruit {
 	private int workAreaId;
 	private Date recruitStartAt ; 
 	private Date recruitEndAt;
+	private String companyName;
 	
 }

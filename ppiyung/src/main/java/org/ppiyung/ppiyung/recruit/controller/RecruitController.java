@@ -10,7 +10,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.ppiyung.ppiyung.common.entity.BasicResponseEntity;
 import org.ppiyung.ppiyung.common.entity.PagingEntity;
-import org.ppiyung.ppiyung.member.vo.Member;
 import org.ppiyung.ppiyung.recruit.service.RecruitService;
 import org.ppiyung.ppiyung.recruit.vo.Apply;
 import org.ppiyung.ppiyung.recruit.vo.Recruit;
@@ -141,10 +140,10 @@ public class RecruitController {
 		PagingEntity pagingEntity = new PagingEntity();
 		pagingEntity.setpageNum(pageNum);
 		pagingEntity.setAmount(amount);
-		log.debug("!!" + pagingEntity.getSkip());
+		
 		
         List<Recruit> result = service.getRecruitList(pagingEntity);
-		
+        log.debug("!!" + result);
 		BasicResponseEntity<Object> respBody = null;
 		int respCode=0;
 		
@@ -416,8 +415,6 @@ public class RecruitController {
 		return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
 
 	}
-		
-
     
     // 기업회원 - 입사 제안 보내기
     @PostMapping(value="/suggest/{member_id}")
@@ -457,6 +454,39 @@ public class RecruitController {
     		return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
     		
     }
+    
+    // 일반회원 -회원별 받은 입사 제안 조회
+    @GetMapping(value="/recruit/suggest/member/{memberId}")
+    public ResponseEntity<BasicResponseEntity<Object>> 
+    get(@RequestParam("recruitid") int recruitId, @RequestParam("companyid") String companyId, 
+    		Authentication authentication) {
+        
+		BasicResponseEntity<Object> respBody = null;
+		int respCode = 0;
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+		
+		List<HashMap<String, Object>> result = null;
+		log.debug("!!" +result);
+		
+		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
+		
+		if (userDetails.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_COMPANY")) 
+				&& userDetails.getUsername().equals(companyId)) {
+			
+			result = service.getApplicantsByRecruitNotice(recruitId);
+			
+			respBody = new BasicResponseEntity<Object>(true, "개별회원조회 성공하였습니다.", result);
+			respCode = HttpServletResponse.SC_OK;
+
+		} else {
+			log.debug("개별회원조회 실패");
+			respBody = new BasicResponseEntity<Object>(false, "개별회원조회 실패하였습니다.", result);
+			respCode = HttpServletResponse.SC_BAD_REQUEST;
+		}
+		return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
+
+	}
     
     //채용공고 상세조회
 	 @GetMapping(value="/recruitDetail/{recruit_id}")

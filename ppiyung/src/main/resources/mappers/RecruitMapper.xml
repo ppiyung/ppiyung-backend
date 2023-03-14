@@ -13,6 +13,7 @@
 		<result property="workAreaId" column="work_area_id" />
 		<result property="recruitStartAt" column="recruit_start_at" />
 		<result property="recruitEndAt" column="recruit_end_at" />
+		<result property="companyName" column="member_name" />
 	</resultMap>
   
       <!-- 기업 회원 - 새 공고 게시 -->
@@ -43,7 +44,9 @@
 	   <!-- 전체 채용 공고 조회 -->
 	   <select id="selectAll" parameterType="PagingEntity" resultMap="RecruitMapped">
 	      <![CDATA[
-	         SELECT * FROM recruit_tb
+	         SELECT r.*, m.member_name FROM recruit_tb AS r
+	         JOIN member_tb AS m
+             ON r.company_id=m.member_id
 	         ORDER BY recruit_id DESC
 	         LIMIT #{skip}, #{amount}
 	      ]]>

@@ -97,6 +97,14 @@
 	         WHERE company_id = #{companyId}
 	      ]]>
 	   </select>
+	   
+	   <!-- 채용공고 상세 조회 -->
+	   <select id="selectAllDetailRecruit" parameterType="String" resultMap="RecruitMapped">
+	   	  <![CDATA[
+	   	  	SELECT * FROM recruit_tb
+	   	  	WHERE recruit_id = #{recruitId}
+	   	  ]]>
+	   </select>
   </mapper>
   
   

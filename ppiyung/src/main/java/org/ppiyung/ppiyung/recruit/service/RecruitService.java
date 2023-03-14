@@ -6,6 +6,7 @@ import java.util.List;
 import org.ppiyung.ppiyung.recruit.vo.Apply;
 import org.ppiyung.ppiyung.recruit.vo.BookMark;
 import org.ppiyung.ppiyung.recruit.vo.Recruit;
+import org.ppiyung.ppiyung.recruit.vo.RecruitBookMark;
 import org.ppiyung.ppiyung.recruit.vo.Suggest;
 
 public interface RecruitService {
@@ -35,6 +36,8 @@ public interface RecruitService {
 	public boolean removeBookmarkRecruit(BookMark bookMark);
 
 	public boolean jobOffer(Suggest suggest);
+
+	public List<HashMap<String, Object>> getMyBookmarkList(String memberId);
 
 
 

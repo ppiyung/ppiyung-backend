@@ -14,6 +14,10 @@
 		<result property="recruitStartAt" column="recruit_start_at" />
 		<result property="recruitEndAt" column="recruit_end_at" />
 	</resultMap>
+	
+	
+	
+	
   
       <!-- 기업 회원 - 새 공고 게시 -->
       <insert id="insert" parameterType="Recruit" >
@@ -106,14 +110,7 @@
 	   	  ]]>
 	   </select>
 	   
-	   <!-- 북마크 -->
-	   <insert id="insertBookmark" parameterType="BookMark" >   
-	   		  <![CDATA[
-	   		  INSERT INTO (recruit_id,member_id, bookmark_created_at)
-	   		  bookmark 
-	   		  VALUES (#{recruitId}, #{memberId});
-	   		  ]]>
-	   </insert>
+
 	   
   </mapper>
   

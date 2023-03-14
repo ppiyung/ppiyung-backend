@@ -7,6 +7,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.ppiyung.ppiyung.recruit.vo.Apply;
 import org.ppiyung.ppiyung.recruit.vo.BookMark;
 import org.ppiyung.ppiyung.recruit.vo.Recruit;
+import org.ppiyung.ppiyung.recruit.vo.RecruitBookMark;
 import org.ppiyung.ppiyung.recruit.vo.Suggest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -127,5 +128,12 @@ public class RecruitDaoImpl implements RecruitDao {
 			throw new Exception();
 		}
 	}
+	@Override
+	public List<HashMap<String, Object>> selectBookmarkList(String memberId) {
+		List<HashMap<String,Object>>  list = session.selectList("org.ppiyung.ppiyung.bookmark.selectBookmarkList", memberId);
+		return list;
+	}
+
+
 
 }

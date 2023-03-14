@@ -7,6 +7,7 @@ import org.ppiyung.ppiyung.recruit.dao.RecruitDaoImpl;
 import org.ppiyung.ppiyung.recruit.vo.Apply;
 import org.ppiyung.ppiyung.recruit.vo.BookMark;
 import org.ppiyung.ppiyung.recruit.vo.Recruit;
+import org.ppiyung.ppiyung.recruit.vo.RecruitBookMark;
 import org.ppiyung.ppiyung.recruit.vo.Suggest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -126,5 +127,11 @@ public class RecruitServiceImpl implements RecruitService{
 			e.printStackTrace();
 			return false;
 		}
+	}
+
+	@Override
+	public List<HashMap<String, Object>> getMyBookmarkList(String memberId) {
+		List<HashMap<String,Object>>  list = dao.selectBookmarkList(memberId);
+			return list;
 	}
 }

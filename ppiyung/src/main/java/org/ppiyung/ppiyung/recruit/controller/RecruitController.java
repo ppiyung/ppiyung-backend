@@ -302,18 +302,20 @@ public class RecruitController {
     	    apply.setMemberId(memberId);
     	    apply.setRecruitId(recruitId);
     	    
+    	    log.debug(apply);
+    	    
     	    boolean result = service.applyForJob(apply);
     		
     		BasicResponseEntity<Object> respBody = null;
     		int respCode=0;
     		
     		if(result == true) {
-    			log.debug("공고 업로드 성공");
-    			respBody = new BasicResponseEntity<Object> (true, "공고 게시 완료", result);
+    			log.debug("지원하기 성공");
+    			respBody = new BasicResponseEntity<Object> (true, "지원하기 완료", result);
     			respCode = HttpServletResponse.SC_OK;
     		} else {
-    			log.debug("공고 업로드 실패");
-    			respBody = new BasicResponseEntity<Object> (false, "공고 게시 실패", result);
+    			log.debug("지원하기 실패");
+    			respBody = new BasicResponseEntity<Object> (false, "지원하기 실패", result);
     			respCode = HttpServletResponse.SC_BAD_REQUEST;
     		}
     		

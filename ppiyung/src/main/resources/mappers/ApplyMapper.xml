@@ -15,7 +15,8 @@
     
     <!-- 일반회원 - 지원하기 -->
     <insert id="insert" parameterType="Apply" >
-      <![CDATA[INSERT INTO apply_tb (member_id, recruit_id)
+      <![CDATA[
+      INSERT INTO apply_tb (member_id, recruit_id)
       VALUES (#{memberId}, #{recruitId})
       ]]>
     </insert>

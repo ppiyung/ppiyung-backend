@@ -12,6 +12,7 @@ import org.ppiyung.ppiyung.common.entity.BasicResponseEntity;
 import org.ppiyung.ppiyung.common.entity.PagingEntity;
 import org.ppiyung.ppiyung.recruit.service.RecruitService;
 import org.ppiyung.ppiyung.recruit.vo.Apply;
+import org.ppiyung.ppiyung.recruit.vo.BookMark;
 import org.ppiyung.ppiyung.recruit.vo.Recruit;
 import org.ppiyung.ppiyung.recruit.vo.Suggest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -516,6 +518,107 @@ public class RecruitController {
 		 
 	 }
 	 
-    //
+	   // 관심 채용 정보 추가
+	   @PostMapping(value = "/bookmark/{recruit_id}")
+	   public ResponseEntity<BasicResponseEntity<Object>> addBookmarkRecruit(@PathVariable("recruit_id") int recruitId,
+	         Authentication authentication) {
+
+	      UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+	      String memberId = userDetails.getUsername();
+
+	      BookMark bookMark = new BookMark();
+	      bookMark.setRecruitId(recruitId);
+	      bookMark.setMemberId(memberId);
+
+	      boolean result = service.addBookmarkRecruit(bookMark);
+
+	      BasicResponseEntity<Object> respBody = null;
+	      int respCode = 0;
+
+	      if (result == true) {
+	         log.debug("북마크 성공");
+	         respBody = new BasicResponseEntity<Object>(true, "북마크 완료", result);
+	         respCode = HttpServletResponse.SC_OK;
+	      } else {
+	         log.debug("북마크 실패");
+	         respBody = new BasicResponseEntity<Object>(false, "북마크 실패", result);
+	         respCode = HttpServletResponse.SC_BAD_REQUEST;
+	      }
+
+	      HttpHeaders headers = new HttpHeaders();
+	      headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+	      return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
+
+	   }
+
+	   // 관심 채용 정보 삭제
+	   @DeleteMapping(value = "/bookmark/{recruit_id}")
+	   public ResponseEntity<BasicResponseEntity<Object>> removeBookmarkRecruit(@PathVariable("recruit_id") int recruitId,
+	         Authentication authentication) {
+
+	      UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+	      String memberId = userDetails.getUsername();
+
+	      BookMark bookMark = new BookMark();
+	      bookMark.setRecruitId(recruitId);
+	      bookMark.setMemberId(memberId);
+
+	      boolean result = service.removeBookmarkRecruit(bookMark);
+
+	      BasicResponseEntity<Object> respBody = null;
+	      int respCode = 0;
+
+	      if (result == true) {
+	         log.debug("북마크 취소 성공");
+	         respBody = new BasicResponseEntity<Object>(true, "북마크 취소 완료", result);
+	         respCode = HttpServletResponse.SC_OK;
+	      } else {
+	         log.debug("북마크 취소 실패");
+	         respBody = new BasicResponseEntity<Object>(false, "북마크 취소 실패", result);
+	         respCode = HttpServletResponse.SC_BAD_REQUEST;
+	      }
+
+	      HttpHeaders headers = new HttpHeaders();
+	      headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+	      return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
+	   }
+	   
+	// 회원별 관심 채용 정보 리스트 조회
+	   @GetMapping(value = "/bookmark/{member_id}")
+	   public ResponseEntity<BasicResponseEntity<Object>> getMyBookmarkList(@PathVariable("member_id") String memberId,
+	         Authentication authentication) {
+
+	      BasicResponseEntity<Object> respBody = null;
+	      int respCode = 0;
+	      HttpHeaders headers = new HttpHeaders();
+	      headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+	      List<HashMap<String,Object>> list = null;
+	      UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+
+	      if (userDetails.getUsername().equals(memberId)) {
+	         list = service.getMyBookmarkList(memberId);
+	         log.debug(list);
+	         if (list != null) {
+	            log.debug("회원별 관심 채용 정보 리스트 조회 성공");
+	            respBody = new BasicResponseEntity<Object>(true, "회원별 관심 채용 정보 리스트 조회 완료", list);
+	            respCode = HttpServletResponse.SC_OK;
+	         } else {
+	            log.debug("공고 조회 실패");
+	            respBody = new BasicResponseEntity<Object>(false, "회원별 관심 채용 정보 리스트 조회 실패", list);
+	            respCode = HttpServletResponse.SC_BAD_REQUEST;
+	         }
+	      } else {
+	         log.debug("공고 조회 실패");
+	         respBody = new BasicResponseEntity<Object>(false, "회원별 관심 채용 정보 리스트 조회 실패", list);
+	         respCode = HttpServletResponse.SC_BAD_REQUEST;
+	      }
+
+	      return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
+
+	   }
+	   
 	
 }

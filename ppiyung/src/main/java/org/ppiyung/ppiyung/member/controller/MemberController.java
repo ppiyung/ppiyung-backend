@@ -57,6 +57,35 @@ public class MemberController {
 
 		return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
 	}
+	
+	// 아이디 중복 조회
+	@GetMapping(value = "/exist/{memberId}")
+	public ResponseEntity<BasicResponseEntity<Object>>
+	checkExistMemberHandler(@PathVariable("memberId") String memberIdFromUri,
+			Authentication authentication) {
+
+		BasicResponseEntity<Object> respBody = null;
+		int respCode = HttpServletResponse.SC_OK;
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+		
+		Member param = new Member();
+		param.setMemberId(memberIdFromUri);
+		Member result = service.getMemberInfo(param);
+		log.debug(result);
+		
+		if (result == null) {
+			respBody = new BasicResponseEntity<Object>(true,
+						memberIdFromUri + "(이)라는 아이디는 존재하지 않습니다. 회원가입이 가능합니다.",
+						null);
+		} else {
+			respBody = new BasicResponseEntity<Object>(false,
+					memberIdFromUri + "(이)라는 아이디가 이미 존재합니다. 회원가입이 불가능합니다.",
+					null);
+		}
+		
+		return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
+	}
 
 	// 개별회원조회
 	@GetMapping(value = "/{memberId}")
@@ -94,7 +123,6 @@ public class MemberController {
 			respCode = HttpServletResponse.SC_BAD_REQUEST;
 		}
 		return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
-
 	}
 
 	// 관리자 회원 전체조회

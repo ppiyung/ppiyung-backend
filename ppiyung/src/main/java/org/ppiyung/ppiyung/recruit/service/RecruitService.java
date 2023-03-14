@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.ppiyung.ppiyung.recruit.vo.Apply;
 import org.ppiyung.ppiyung.recruit.vo.Recruit;
+import org.ppiyung.ppiyung.recruit.vo.Suggest;
 
 public interface RecruitService {
 
@@ -25,6 +26,10 @@ public interface RecruitService {
 	public List<Recruit> getRecruitListOfCompany(String companyId);
 
 	public boolean applyForJob(Apply apply);
+	
+	public List<Recruit> getRecruitDetailInfo(String recruitId);
+
+	public boolean jobOffer(Suggest suggest);
 
 
 	

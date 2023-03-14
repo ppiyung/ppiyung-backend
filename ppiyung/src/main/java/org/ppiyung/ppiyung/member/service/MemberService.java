@@ -3,6 +3,7 @@ package org.ppiyung.ppiyung.member.service;
 import java.util.HashMap;
 import java.util.List;
 
+import org.ppiyung.ppiyung.common.entity.PagingEntity;
 import org.ppiyung.ppiyung.member.vo.Image;
 import org.ppiyung.ppiyung.member.vo.Member;
 
@@ -18,7 +19,7 @@ public interface MemberService {
 
 	public Member getMemberInfo(Member member);
 
-	public List<Member> getAllMember();
+	public List<Member> getAllMember(PagingEntity pagingEntity);
 
 	public boolean leaveMember(String memberId);
 

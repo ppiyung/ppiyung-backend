@@ -21,4 +21,6 @@ public interface RecruitDao {
 	public void insertApply(Apply apply) throws Exception;
 	public void insertSuggest(Suggest suggest)throws Exception;
 	public List<Recruit> selectAllDetailRecruit(String recruitId);
+	public List<Apply> selectByMember(String memberId);
+	public List<HashMap<String, Object>> selectByRecruit(int recruitId);
 }

@@ -89,6 +89,18 @@ public class RecruitServiceImpl implements RecruitService{
 			return false;
 		}
     }
+    
+    @Override
+    public List<Apply> getApplyListOfMember(String memberId) {
+    	List<Apply> list = dao.selectByMember(memberId);
+    	return list;
+    }
+    
+    @Override
+    public List<HashMap<String, Object>> getApplicantsByRecruitNotice(int recruitId) {
+    	List<HashMap<String, Object>> list = dao.selectByRecruit(recruitId);
+    	return list;
+    }
     @Override
     public boolean jobOffer(Suggest suggest) {
     	try {

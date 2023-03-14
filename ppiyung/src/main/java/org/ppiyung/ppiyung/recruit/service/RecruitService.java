@@ -32,6 +32,12 @@ public interface RecruitService {
 
 	public boolean jobOffer(Suggest suggest);
 
+	public List<Apply> getApplyListOfMember(String memberId);
+
+	public List<HashMap<String, Object>> getApplicantsByRecruitNotice(int recruitId);
+
+	
+
 
 	
 	

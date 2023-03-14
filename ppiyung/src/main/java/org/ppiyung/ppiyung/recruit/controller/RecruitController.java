@@ -10,6 +10,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.ppiyung.ppiyung.common.entity.BasicResponseEntity;
 import org.ppiyung.ppiyung.common.entity.PagingEntity;
+import org.ppiyung.ppiyung.member.vo.Member;
 import org.ppiyung.ppiyung.recruit.service.RecruitService;
 import org.ppiyung.ppiyung.recruit.vo.Apply;
 import org.ppiyung.ppiyung.recruit.vo.Recruit;
@@ -19,6 +20,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -339,6 +341,84 @@ public class RecruitController {
     		
     }
     
+    // 일반회원-회원별 지원 현황 리스트 조회
+    @GetMapping(value="/apply/member/{member_id}")
+    public ResponseEntity<BasicResponseEntity<Object>> 
+    getApplyListOfMember(@PathVariable("member_id") String memberId, 
+    		Authentication authentication) {
+        
+    	
+        BasicResponseEntity<Object> respBody = null;
+        int respCode=0;
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(new MediaType("application", "json",
+				Charset.forName("UTF-8")));
+		
+		List<Apply> result = null;
+		
+		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
+		
+		if (userDetails.getUsername().equals(memberId)) {
+			
+			result = service.getApplyListOfMember(memberId);
+		    log.debug(result);
+		    
+			if(result != null) {   
+			log.debug("회원별 지원 현황 조회 성공");
+			respBody = new BasicResponseEntity<Object> (true, "공고 조회 완료", result);
+			respCode = HttpServletResponse.SC_OK;
+		    } else {
+		    	log.debug("공고 조회 실패");
+				respBody = new BasicResponseEntity<Object> (false, "공고 조회 실패", result);
+				respCode = HttpServletResponse.SC_BAD_REQUEST;
+		    }
+		} else {
+			log.debug("공고 조회 실패");
+			respBody = new BasicResponseEntity<Object> (false, "공고 조회 실패", result);
+			respCode = HttpServletResponse.SC_BAD_REQUEST;
+		}
+		
+    	
+    	return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
+
+    }
+    
+    // 기업회원 - 채용공고별 지원자 리스트 조회
+    @GetMapping(value="/apply/company")
+    public ResponseEntity<BasicResponseEntity<Object>> 
+    getApplicantsByRecruitNotice(@RequestParam("recruitid") int recruitId, @RequestParam("companyid") String companyId, 
+    		Authentication authentication) {
+        
+		BasicResponseEntity<Object> respBody = null;
+		int respCode = 0;
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+		
+		List<HashMap<String, Object>> result = null;
+		log.debug("!!" +result);
+		
+		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
+		
+		if (userDetails.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_COMPANY")) 
+				&& userDetails.getUsername().equals(companyId)) {
+			
+			result = service.getApplicantsByRecruitNotice(recruitId);
+			
+			respBody = new BasicResponseEntity<Object>(true, "개별회원조회 성공하였습니다.", result);
+			respCode = HttpServletResponse.SC_OK;
+
+		} else {
+			log.debug("개별회원조회 실패");
+			respBody = new BasicResponseEntity<Object>(false, "개별회원조회 실패하였습니다.", result);
+			respCode = HttpServletResponse.SC_BAD_REQUEST;
+		}
+		return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
+
+	}
+		
+
+    
     // 기업회원 - 입사 제안 보내기
     @PostMapping(value="/suggest/{member_id}")
     public ResponseEntity<BasicResponseEntity<Object>> 
@@ -377,10 +457,6 @@ public class RecruitController {
     		return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
     		
     }
-      
-
-    
-    
     
     //채용공고 상세조회
 	 @GetMapping(value="/recruitDetail/{recruit_id}")
@@ -412,6 +488,6 @@ public class RecruitController {
 		 
 	 }
 	 
-    
+    //
 	
 }

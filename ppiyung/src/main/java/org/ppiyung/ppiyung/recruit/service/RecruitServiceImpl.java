@@ -6,6 +6,7 @@ import java.util.List;
 import org.ppiyung.ppiyung.recruit.dao.RecruitDaoImpl;
 import org.ppiyung.ppiyung.recruit.vo.Apply;
 import org.ppiyung.ppiyung.recruit.vo.Recruit;
+import org.ppiyung.ppiyung.recruit.vo.Suggest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -81,6 +82,17 @@ public class RecruitServiceImpl implements RecruitService{
     public boolean applyForJob(Apply apply) {
     	try {
 			dao.insertApply(apply);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+    }
+    
+    @Override
+    public boolean jobOffer(Suggest suggest) {
+    	try {
+			dao.insertSuggest(suggest);
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();

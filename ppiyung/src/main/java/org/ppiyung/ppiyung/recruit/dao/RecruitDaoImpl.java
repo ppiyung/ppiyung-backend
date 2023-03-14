@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.ibatis.session.SqlSession;
 import org.ppiyung.ppiyung.recruit.vo.Apply;
 import org.ppiyung.ppiyung.recruit.vo.Recruit;
+import org.ppiyung.ppiyung.recruit.vo.Suggest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -88,6 +89,15 @@ public class RecruitDaoImpl implements RecruitDao {
 	@Override
 	public void insertApply(Apply apply) throws Exception {
 		int count = session.insert("org.ppiyung.ppiyung.apply.insert", apply);
+		if (count != 1) {
+			throw new Exception();
+		}
+		
+	}
+	
+	@Override
+	public void insertSuggest(Suggest suggest) throws Exception {
+		int count = session.insert("org.ppiyung.ppiyung.suggest.insert", suggest);
 		if (count != 1) {
 			throw new Exception();
 		}

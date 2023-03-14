@@ -36,6 +36,7 @@
             <value>classpath:mappers/BoardMapper.xml</value>
             <value>classpath:mappers/RecruitMapper.xml</value>
             <value>classpath:mappers/ApplyMapper.xml</value>
+            <value>classpath:mappers/SuggestMapper.xml</value>
          </list>
       </property>
    </bean>

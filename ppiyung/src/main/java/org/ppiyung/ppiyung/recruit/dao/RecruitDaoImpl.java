@@ -120,6 +120,13 @@ public class RecruitDaoImpl implements RecruitDao {
 		}
 
 	}
+	
+	@Override
+	public List<Suggest> selectSuggestByMember(String memberId) {
+		
+		List<Suggest> list = session.selectList("org.ppiyung.ppiyung.suggest.selectByMember", memberId);		  
+		return list; 
+	}
 
 	@Override
 	public List<Recruit> selectAllDetailRecruit(String recruitId) {
@@ -149,7 +156,6 @@ public class RecruitDaoImpl implements RecruitDao {
 		List<HashMap<String,Object>>  list = session.selectList("org.ppiyung.ppiyung.bookmark.selectBookmarkList", memberId);
 		return list;
 	}
-
 
 
 }

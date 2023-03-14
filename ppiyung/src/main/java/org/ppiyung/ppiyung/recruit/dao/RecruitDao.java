@@ -28,5 +28,6 @@ public interface RecruitDao {
 	public List<HashMap<String, Object>> selectBookmarkList(String memberId);
 	public List<Apply> selectByMember(String memberId);
 	public List<HashMap<String, Object>> selectByRecruit(int recruitId);
+	public List<Suggest> selectSuggestByMember(String memberId);
 
 }

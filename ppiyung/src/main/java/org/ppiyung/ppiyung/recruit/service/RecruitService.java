@@ -44,6 +44,8 @@ public interface RecruitService {
 
 	public List<HashMap<String, Object>> getApplicantsByRecruitNotice(int recruitId);
 
+	public List<Suggest> getJobOfferOfMember(String memberId);
+
 
 
 	

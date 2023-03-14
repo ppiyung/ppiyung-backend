@@ -46,6 +46,9 @@ public interface RecruitService {
 
 	public List<Suggest> getJobOfferOfMember(String memberId);
 
+	public List<Suggest> getJobOfferOfCompany(String companyId);
+
+
 
 
 	

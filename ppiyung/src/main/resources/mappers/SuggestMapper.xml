@@ -27,4 +27,12 @@
           WHERE member_id = #{memberId}
         ]]>
    </select>
+  
+   <!-- 기업회원-기업별 보낸 입사제안 조회 -->
+   <select id="selectByCompany" parameterType="String" resultMap="SuggestMapped">
+        <![CDATA[
+          SELECT * FROM suggest_tb
+          WHERE company_id = #{companyId}
+        ]]>
+   </select>
  </mapper>  

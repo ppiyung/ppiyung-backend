@@ -418,6 +418,7 @@ public class RecruitController {
 
 	}
     
+    
     // 기업회원 - 입사 제안 보내기
     @PostMapping(value="/suggest/{member_id}")
     public ResponseEntity<BasicResponseEntity<Object>> 
@@ -487,7 +488,36 @@ public class RecruitController {
 		return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
 
 	}
-    
+    //기업회원 - 기업별 보낸 입사제안 목록 조회
+    @GetMapping(value="/suggest/company/{company_id}")
+    public ResponseEntity<BasicResponseEntity<Object>> 
+    getJobOfferOfCompany(@PathVariable("company_id") String companyId, 
+    		Authentication authentication) {
+        
+		BasicResponseEntity<Object> respBody = null;
+		int respCode = 0;
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+		
+		List<Suggest> result = null;
+		
+		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
+		
+		if (userDetails.getUsername().equals(companyId)) {
+			
+			result = service.getJobOfferOfCompany(companyId);
+			
+			respBody = new BasicResponseEntity<Object>(true, "개별회원 입사제안 조회 성공하였습니다.", result);
+			respCode = HttpServletResponse.SC_OK;
+
+		} else {
+			
+			respBody = new BasicResponseEntity<Object>(false, "개별회원입사제안 조회 실패하였습니다.", result);
+			respCode = HttpServletResponse.SC_BAD_REQUEST;
+		}
+		return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
+
+	}
     //채용공고 상세조회
 	 @GetMapping(value="/recruitDetail/{recruit_id}")
 	 public ResponseEntity<BasicResponseEntity<Object>> 

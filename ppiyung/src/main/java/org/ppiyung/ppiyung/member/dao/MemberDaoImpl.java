@@ -3,6 +3,7 @@ package org.ppiyung.ppiyung.member.dao;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
+import org.ppiyung.ppiyung.common.entity.PagingEntity;
 import org.ppiyung.ppiyung.member.vo.Image;
 import org.ppiyung.ppiyung.member.vo.Member;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,8 +47,8 @@ public class MemberDaoImpl implements MemberDao {
 
 
 	@Override
-	public List<Member> getAllMember() {
-		List<Member> list = session.selectList("org.ppiyung.ppiyung.member.selectAll");
+	public List<Member> getAllMember(PagingEntity pagingEntity) {
+		List<Member> list = session.selectList("org.ppiyung.ppiyung.member.selectAll",pagingEntity);
 
 		return list;
 

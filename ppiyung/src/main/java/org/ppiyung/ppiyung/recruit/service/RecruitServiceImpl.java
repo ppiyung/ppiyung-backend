@@ -103,6 +103,7 @@ public class RecruitServiceImpl implements RecruitService{
     	List<HashMap<String, Object>> list = dao.selectByRecruit(recruitId);
     	return list;
     }
+    
     @Override
     public boolean jobOffer(Suggest suggest) {
     	try {
@@ -119,6 +120,13 @@ public class RecruitServiceImpl implements RecruitService{
     	List<Suggest> list = dao.selectSuggestByMember(memberId);
     	
     	return list;
+    }
+    
+    @Override
+    public List<Suggest> getJobOfferOfCompany(String companyId) {
+        List<Suggest> list = dao.selectSuggestByCompany(companyId);
+    	
+    	return list;    
     }
     
 	@Override

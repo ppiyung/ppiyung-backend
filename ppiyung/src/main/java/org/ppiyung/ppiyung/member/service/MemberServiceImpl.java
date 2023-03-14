@@ -3,6 +3,7 @@ package org.ppiyung.ppiyung.member.service;
 import java.util.HashMap;
 import java.util.List;
 
+import org.ppiyung.ppiyung.common.entity.PagingEntity;
 import org.ppiyung.ppiyung.common.util.JwtTokenUtil;
 import org.ppiyung.ppiyung.member.dao.MemberDao;
 import org.ppiyung.ppiyung.member.vo.Image;
@@ -84,8 +85,8 @@ public class MemberServiceImpl implements MemberService {
 
 	// 모든 멤버 조회
 	@Override
-	public List<Member> getAllMember() {
-		List<Member> list = dao.getAllMember();
+	public List<Member> getAllMember(PagingEntity pagingEntity) {
+		List<Member> list = dao.getAllMember(pagingEntity);
 		return list;
 	}
 

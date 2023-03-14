@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.ppiyung.ppiyung.common.entity.BasicResponseEntity;
+import org.ppiyung.ppiyung.common.entity.PagingEntity;
 import org.ppiyung.ppiyung.member.service.MemberService;
 import org.ppiyung.ppiyung.member.vo.Image;
 import org.ppiyung.ppiyung.member.vo.Member;
@@ -142,14 +143,16 @@ public class MemberController {
 	// 관리자 회원 전체조회
 	@GetMapping(value = "")
 	public ResponseEntity<BasicResponseEntity<Object>> 
-				getAllMember(Authentication authentication) {
+				getAllMember(@RequestParam("pagenum") int pageNum, @RequestParam("amount") int amount,Authentication authentication) {
 		
 		BasicResponseEntity<Object> respBody = null;
 		int respCode = 0;
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-		
-		List<Member> list = service.getAllMember();
+		PagingEntity pagingEntity = new PagingEntity();
+		pagingEntity.setpageNum(pageNum);
+		pagingEntity.setAmount(amount);
+		List<Member> list = service.getAllMember(pagingEntity);
 		
 		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
 		boolean hasAutority = userDetails.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"));

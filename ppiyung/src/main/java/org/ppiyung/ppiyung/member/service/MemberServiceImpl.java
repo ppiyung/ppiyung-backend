@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.ppiyung.ppiyung.common.util.JwtTokenUtil;
 import org.ppiyung.ppiyung.member.dao.MemberDao;
+import org.ppiyung.ppiyung.member.vo.Image;
 import org.ppiyung.ppiyung.member.vo.Member;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -116,5 +117,26 @@ public class MemberServiceImpl implements MemberService {
 	public List<Member> getResumeOpenMember(String workAreaId) {
 		List<Member> list = dao.getResumeOpenMember(workAreaId);
 		return list;
+	}
+
+	@Override
+	public boolean addImageFileInfo(Image image) {
+		try {
+			dao.insertMemberImage(image);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	@Override
+	public Image getImageFileInfo(Image image) {
+		try {
+			return dao.getMemberImage(image);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 }

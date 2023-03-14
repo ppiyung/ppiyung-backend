@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.ppiyung.ppiyung.common.entity.BasicResponseEntity;
+import org.ppiyung.ppiyung.common.entity.PagingEntity;
 import org.ppiyung.ppiyung.recruit.service.RecruitService;
 import org.ppiyung.ppiyung.recruit.vo.Apply;
 import org.ppiyung.ppiyung.recruit.vo.Recruit;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -130,9 +132,16 @@ public class RecruitController {
 	
 	// 전체 채용 공고 조회 
 	@GetMapping(value="")
-	public ResponseEntity<BasicResponseEntity<Object>> getRecruitList(){ 
+	public ResponseEntity<BasicResponseEntity<Object>> 
+	getRecruitList(@RequestParam("pagenum") int pageNum, @RequestParam("amount") int amount){ 
   		
-        List<Recruit> result = service.getRecruitList();
+		log.debug(pageNum + " " + amount );
+		PagingEntity pagingEntity = new PagingEntity();
+		pagingEntity.setpageNum(pageNum);
+		pagingEntity.setAmount(amount);
+		log.debug("!!" + pagingEntity.getSkip());
+		
+        List<Recruit> result = service.getRecruitList(pagingEntity);
 		
 		BasicResponseEntity<Object> respBody = null;
 		int respCode=0;
@@ -222,7 +231,8 @@ public class RecruitController {
     public ResponseEntity<BasicResponseEntity<Object>> 
     getRecruitStatusOfCompany(@PathVariable("company_id") String companyId, 
     		Authentication authentication) {
-       
+        
+    	
         BasicResponseEntity<Object> respBody = null;
         int respCode=0;
 

@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
+import org.ppiyung.ppiyung.common.entity.PagingEntity;
 import org.ppiyung.ppiyung.recruit.vo.Apply;
 import org.ppiyung.ppiyung.recruit.vo.Recruit;
 import org.ppiyung.ppiyung.recruit.vo.Suggest;
@@ -49,8 +50,8 @@ public class RecruitDaoImpl implements RecruitDao {
 	}
 
 	@Override
-	public List<Recruit> selectAll() {
-        List<Recruit> list = session.selectList("org.ppiyung.ppiyung.recruit.selectAll");
+	public List<Recruit> selectAll(PagingEntity pagingEntity) {
+        List<Recruit> list = session.selectList("org.ppiyung.ppiyung.recruit.selectAll", pagingEntity);
 		
 		return list;
 	}

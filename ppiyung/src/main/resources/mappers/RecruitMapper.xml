@@ -41,9 +41,11 @@
 	   </update>
 	   
 	   <!-- 전체 채용 공고 조회 -->
-	   <select id="selectAll" resultMap="RecruitMapped">
+	   <select id="selectAll" parameterType="PagingEntity" resultMap="RecruitMapped">
 	      <![CDATA[
 	         SELECT * FROM recruit_tb
+	         ORDER BY recruit_id DESC
+	         LIMIT #{skip}, #{amount}
 	      ]]>
 	   </select>
 	   

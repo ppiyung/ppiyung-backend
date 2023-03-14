@@ -3,6 +3,7 @@ package org.ppiyung.ppiyung.recruit.service;
 import java.util.HashMap;
 import java.util.List;
 
+import org.ppiyung.ppiyung.common.entity.PagingEntity;
 import org.ppiyung.ppiyung.recruit.dao.RecruitDaoImpl;
 import org.ppiyung.ppiyung.recruit.vo.Apply;
 import org.ppiyung.ppiyung.recruit.vo.Recruit;
@@ -50,8 +51,8 @@ public class RecruitServiceImpl implements RecruitService{
 	}
 	
 	@Override
-	public List<Recruit> getRecruitList() {
-		List<Recruit> list = dao.selectAll();
+	public List<Recruit> getRecruitList(PagingEntity pagingEntity) {
+		List<Recruit> list = dao.selectAll(pagingEntity);
 		return list;
 	}
 	

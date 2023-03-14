@@ -3,6 +3,7 @@ package org.ppiyung.ppiyung.recruit.service;
 import java.util.HashMap;
 import java.util.List;
 
+import org.ppiyung.ppiyung.common.entity.PagingEntity;
 import org.ppiyung.ppiyung.recruit.vo.Apply;
 import org.ppiyung.ppiyung.recruit.vo.BookMark;
 import org.ppiyung.ppiyung.recruit.vo.Recruit;
@@ -17,7 +18,7 @@ public interface RecruitService {
 
 	public boolean closeRecruitNotice(int recruitId);
 	
-    public List<Recruit> getRecruitList();
+    public List<Recruit> getRecruitList(PagingEntity pagingEntity);
 	
     public List<Recruit> getRecruitListByWorkAreaId(int work_area_id);
 
@@ -38,6 +39,10 @@ public interface RecruitService {
 	public boolean jobOffer(Suggest suggest);
 
 	public List<HashMap<String, Object>> getMyBookmarkList(String memberId);
+
+	public List<Apply> getApplyListOfMember(String memberId);
+
+	public List<HashMap<String, Object>> getApplicantsByRecruitNotice(int recruitId);
 
 
 

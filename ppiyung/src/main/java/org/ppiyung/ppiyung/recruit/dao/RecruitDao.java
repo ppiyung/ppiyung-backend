@@ -3,6 +3,7 @@ package org.ppiyung.ppiyung.recruit.dao;
 import java.util.HashMap;
 import java.util.List;
 
+import org.ppiyung.ppiyung.common.entity.PagingEntity;
 import org.ppiyung.ppiyung.recruit.vo.Apply;
 import org.ppiyung.ppiyung.recruit.vo.BookMark;
 import org.ppiyung.ppiyung.recruit.vo.Recruit;
@@ -14,7 +15,7 @@ public interface RecruitDao {
 	public void insertRecruitNotice(Recruit recruit) throws Exception;
 	public void updateRecruitNotice(Recruit recruit) throws Exception;
 	public void updateRecruitEndDate(int recruitId) throws Exception;
-	public List<Recruit> selectAll();
+	public List<Recruit> selectAll(PagingEntity pagingEntity);
 	public List<Recruit> selectByWorkAreaId(int work_area_id);
 	public List<Recruit> selectByKeyword(String keyword);
 	public HashMap<String, Object> selectByCompany(String companyId);
@@ -25,4 +26,7 @@ public interface RecruitDao {
 	public void insertBookmark(BookMark bookMark) throws Exception;
 	public void deleteBookmark(BookMark bookMark) throws Exception;
 	public List<HashMap<String, Object>> selectBookmarkList(String memberId);
+	public List<Apply> selectByMember(String memberId);
+	public List<HashMap<String, Object>> selectByRecruit(int recruitId);
+
 }

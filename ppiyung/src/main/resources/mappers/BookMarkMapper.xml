@@ -42,7 +42,6 @@
  			FROM recruit_tb AS A JOIN bookmark AS B
 			ON  A.recruit_id = B.recruit_id
   			JOIN member_tb AS C ON B.member_id = C.member_id  WHERE B.member_id = #{memberId}
-
 		]]>
 	</select>
 

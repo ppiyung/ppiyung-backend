@@ -1,5 +1,6 @@
 package org.ppiyung.ppiyung.board.service;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.ppiyung.ppiyung.board.vo.Board;
@@ -35,7 +36,5 @@ public interface BoardService {
 
 	// 게시판 상세조회 페이지
 	public List<Board> getdetailPost(int articleId);
-
-
-
+	
 }

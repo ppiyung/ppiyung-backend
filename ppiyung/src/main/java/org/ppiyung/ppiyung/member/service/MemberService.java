@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.ppiyung.ppiyung.member.vo.Member;
-import org.ppiyung.ppiyung.member.vo.Notification;
 
 public interface MemberService {
 
@@ -24,5 +23,4 @@ public interface MemberService {
 
 	public List<Member> getResumeOpenMember(String workAreaId);
 
-	public List<Notification> getNotificationList(String memberId);
 }

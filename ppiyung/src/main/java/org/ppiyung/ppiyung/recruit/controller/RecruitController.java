@@ -12,6 +12,7 @@ import org.ppiyung.ppiyung.common.entity.BasicResponseEntity;
 import org.ppiyung.ppiyung.recruit.service.RecruitService;
 import org.ppiyung.ppiyung.recruit.vo.Apply;
 import org.ppiyung.ppiyung.recruit.vo.Recruit;
+import org.ppiyung.ppiyung.recruit.vo.Suggest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -302,18 +303,20 @@ public class RecruitController {
     	    apply.setMemberId(memberId);
     	    apply.setRecruitId(recruitId);
     	    
+    	    log.debug(apply);
+    	    
     	    boolean result = service.applyForJob(apply);
     		
     		BasicResponseEntity<Object> respBody = null;
     		int respCode=0;
     		
     		if(result == true) {
-    			log.debug("공고 업로드 성공");
-    			respBody = new BasicResponseEntity<Object> (true, "공고 게시 완료", result);
+    			log.debug("지원하기 성공");
+    			respBody = new BasicResponseEntity<Object> (true, "지원하기 완료", result);
     			respCode = HttpServletResponse.SC_OK;
     		} else {
-    			log.debug("공고 업로드 실패");
-    			respBody = new BasicResponseEntity<Object> (false, "공고 게시 실패", result);
+    			log.debug("지원하기 실패");
+    			respBody = new BasicResponseEntity<Object> (false, "지원하기 실패", result);
     			respCode = HttpServletResponse.SC_BAD_REQUEST;
     		}
     		
@@ -324,9 +327,81 @@ public class RecruitController {
     		
     		return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
     		
-	
-
     }
+    
+    // 기업회원 - 입사 제안 보내기
+    @PostMapping(value="/suggest/{member_id}")
+    public ResponseEntity<BasicResponseEntity<Object>> 
+	
+    jobOffer(@PathVariable("member_id") String memberId, Authentication authentication){
+    	 
+    	    UserDetails userDetails = (UserDetails)authentication.getPrincipal();
+    	    String companyId = userDetails.getUsername();
+    	 
+    	    Suggest suggest = new Suggest();
+    	    suggest.setCompanyId(companyId);
+    	    suggest.setMemberId(memberId);
+    	    
+    	    log.debug(suggest);
+    	    
+    	    boolean result = service.jobOffer(suggest);
+    		
+    		BasicResponseEntity<Object> respBody = null;
+    		int respCode=0;
+    		
+    		if(result == true) {
+    			log.debug("입사제안하기 성공");
+    			respBody = new BasicResponseEntity<Object> (true, "입사제안하기 완료", result);
+    			respCode = HttpServletResponse.SC_OK;
+    		} else {
+    			log.debug("입사제안하기 실패");
+    			respBody = new BasicResponseEntity<Object> (false, "입사제안하기 실패", result);
+    			respCode = HttpServletResponse.SC_BAD_REQUEST;
+    		}
+    		
+    		
+    		HttpHeaders headers = new HttpHeaders();
+    		headers.setContentType(new MediaType("application", "json",
+    				Charset.forName("UTF-8")));
+    		
+    		return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
+    		
+    }
+      
+
+    
+    
+    
+    //채용공고 상세조회
+	 @GetMapping(value="/recruitDetail/{recruit_id}")
+	 public ResponseEntity<BasicResponseEntity<Object>> 
+	 		getRecruitDetailInfo(@PathVariable("recruit_id") String recruitId) {
+		 
+		   List<Recruit> result = service.getRecruitDetailInfo(recruitId);
+			log.debug(recruitId);
+			
+			log.debug(result);
+			BasicResponseEntity<Object> respBody = null;
+			int respCode=0;
+			
+			if(result != null) {
+				log.debug("채용공고 상세 조회 성공");
+				respBody = new BasicResponseEntity<Object> (true, "채용공고 상세 조회 성공", result);
+				respCode = HttpServletResponse.SC_OK;
+			} else {
+				log.debug("채용공고 상세 조회 실패");
+				respBody = new BasicResponseEntity<Object> (false, "채용공고 상세 조회 성공실패", result);
+				respCode = HttpServletResponse.SC_BAD_REQUEST;
+			}
+			
+			HttpHeaders headers = new HttpHeaders();
+			headers.setContentType(new MediaType("application", "json",
+					Charset.forName("UTF-8")));
+			
+			return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
+		 
+	 }
+	 
     
 	
 }

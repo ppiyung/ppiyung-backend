@@ -8,7 +8,6 @@ import org.apache.logging.log4j.Logger;
 import org.ppiyung.ppiyung.common.entity.BasicResponseEntity;
 import org.ppiyung.ppiyung.member.service.MemberService;
 import org.ppiyung.ppiyung.member.vo.Member;
-import org.ppiyung.ppiyung.member.vo.Notification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -58,6 +57,35 @@ public class MemberController {
 
 		return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
 	}
+	
+	// 아이디 중복 조회
+	@GetMapping(value = "/exist/{memberId}")
+	public ResponseEntity<BasicResponseEntity<Object>>
+	checkExistMemberHandler(@PathVariable("memberId") String memberIdFromUri,
+			Authentication authentication) {
+
+		BasicResponseEntity<Object> respBody = null;
+		int respCode = HttpServletResponse.SC_OK;
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+		
+		Member param = new Member();
+		param.setMemberId(memberIdFromUri);
+		Member result = service.getMemberInfo(param);
+		log.debug(result);
+		
+		if (result == null) {
+			respBody = new BasicResponseEntity<Object>(true,
+						memberIdFromUri + "(이)라는 아이디는 존재하지 않습니다. 회원가입이 가능합니다.",
+						null);
+		} else {
+			respBody = new BasicResponseEntity<Object>(false,
+					memberIdFromUri + "(이)라는 아이디가 이미 존재합니다. 회원가입이 불가능합니다.",
+					null);
+		}
+		
+		return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
+	}
 
 	// 개별회원조회
 	@GetMapping(value = "/{memberId}")
@@ -95,7 +123,6 @@ public class MemberController {
 			respCode = HttpServletResponse.SC_BAD_REQUEST;
 		}
 		return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
-
 	}
 
 	// 관리자 회원 전체조회
@@ -220,32 +247,6 @@ public class MemberController {
 		
 	}
 	
-	// 회원별 알림리스트 조회
-	@GetMapping(value="/notify/{memberId}")
-	public ResponseEntity<BasicResponseEntity<Object>> viewNotificationListByMember(@PathVariable("memberId") String memberId,Authentication authentication){
-		
-		BasicResponseEntity<Object> respBody = null;
-		int respCode = 0;
-		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-		
-		List<Notification> notify = service.getNotificationList(memberId);
-		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
-		boolean hasAutority = userDetails.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"));
-		
-		// 관리자가 아닌 일반회원 및 기업 회원  그리고 회원아이디가 자기의 ID 일치할 경우
-		if (userDetails.getUsername().equals(memberId) && !hasAutority) {
-			log.debug("회원별 알림 리스트 조회 성공");
-			respBody = new BasicResponseEntity<Object>(true, "알림 리스트 내역 조회 완료" , notify);
-			respCode = HttpServletResponse.SC_OK;
-		}else {
-			log.debug("회원별 알림 리스트 조회 실패");
-			respBody = new BasicResponseEntity<Object>(false, "알림 리스트 내역 조회 실패.", notify);
-			respCode = HttpServletResponse.SC_BAD_REQUEST;
-		}
-		return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
-		
-	}
 	
 	
 

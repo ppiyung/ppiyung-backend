@@ -42,10 +42,10 @@ public class BoardController {
 
 	// 커뮤니티 전체 게시글 가져오기
 	@GetMapping("/article")
-	public ResponseEntity<BasicResponseEntity<Object>> getCommunityList(@RequestParam("pageNum") int pageNum, @RequestParam("amount") int amount, Authentication authentication) {
+	public ResponseEntity<BasicResponseEntity<Object>> getCommunityList(@RequestParam("page") int page, @RequestParam("size") int size, Authentication authentication) {
 		PagingEntity criteria = new PagingEntity();
-		criteria.setpageNum(pageNum);
-		criteria.setAmount(amount);
+		criteria.setpageNum(page);
+		criteria.setAmount(size);
 		
 		List<BoardList> result = service.getListPaging(criteria);
 		BasicResponseEntity<Object> respBody = null;

@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 import org.ppiyung.ppiyung.member.vo.Member;
-import org.ppiyung.ppiyung.member.vo.Notification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -69,10 +68,4 @@ public class MemberDaoImpl implements MemberDao {
 		return list;
 	}
 
-	// 회원별 알림리스트 조회
-	@Override
-	public List<Notification> getNotificationList(String param) {
-		List<Notification> list = session.selectList("org.ppiyung.ppiyung.member.selectNotifyList",param);
-		return list;
-	}
 }

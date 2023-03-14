@@ -6,7 +6,6 @@ import java.util.List;
 import org.ppiyung.ppiyung.common.util.JwtTokenUtil;
 import org.ppiyung.ppiyung.member.dao.MemberDao;
 import org.ppiyung.ppiyung.member.vo.Member;
-import org.ppiyung.ppiyung.member.vo.Notification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -119,10 +118,5 @@ public class MemberServiceImpl implements MemberService {
 		return list;
 	}
 
-	// 회원별 알람 리스트 
-	@Override
-	public List<Notification> getNotificationList(String memberId) {
-		List<Notification> list = dao.getNotificationList(memberId);
-		return list;
-	}
+
 }

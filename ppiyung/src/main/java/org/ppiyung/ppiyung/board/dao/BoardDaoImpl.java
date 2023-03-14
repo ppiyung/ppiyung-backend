@@ -9,7 +9,7 @@ import org.ppiyung.ppiyung.board.vo.Board;
 import org.ppiyung.ppiyung.board.vo.BoardList;
 import org.ppiyung.ppiyung.board.vo.Like;
 import org.ppiyung.ppiyung.board.vo.Reply;
-import org.ppiyung.ppiyung.common.entity.Criteria;
+import org.ppiyung.ppiyung.common.entity.PagingEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -24,7 +24,7 @@ public class BoardDaoImpl implements BoardDao {
 		
 	// 커뮤니티 전체 게시글 목록 (페이징 수행)
 	@Override
-	public List<BoardList> pagingInsertBoard(Criteria criteria) {
+	public List<BoardList> pagingInsertBoard(PagingEntity criteria) {
 		
 		return session.selectList("org.ppiyung.ppiyung.board.getListPaging",criteria);
 

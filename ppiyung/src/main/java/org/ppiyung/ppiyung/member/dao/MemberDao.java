@@ -3,6 +3,7 @@ package org.ppiyung.ppiyung.member.dao;
 import java.util.List;
 
 import org.ppiyung.ppiyung.member.vo.Member;
+import org.ppiyung.ppiyung.member.vo.Notification;
 
 public interface MemberDao {
 
@@ -22,5 +23,7 @@ public interface MemberDao {
 	public void leaveMember(String memberId) throws Exception;
 
 	public List<Member> getResumeOpenMember(String workAreaId);
+
+	public List<Notification> getNotificationList(String memberId);
 	
 }

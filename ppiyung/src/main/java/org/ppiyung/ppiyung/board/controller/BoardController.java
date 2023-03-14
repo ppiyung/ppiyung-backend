@@ -13,7 +13,7 @@ import org.ppiyung.ppiyung.board.service.BoardService;
 import org.ppiyung.ppiyung.board.vo.Board;
 import org.ppiyung.ppiyung.board.vo.BoardList;
 import org.ppiyung.ppiyung.board.vo.Like;
-import org.ppiyung.ppiyung.common.entity.Criteria;
+import org.ppiyung.ppiyung.common.entity.PagingEntity;
 import org.ppiyung.ppiyung.board.vo.Reply;
 import org.ppiyung.ppiyung.common.entity.BasicResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +43,7 @@ public class BoardController {
 	// 커뮤니티 전체 게시글 가져오기
 	@GetMapping("/article")
 	public ResponseEntity<BasicResponseEntity<Object>> getCommunityList(@RequestParam("pageNum") int pageNum, @RequestParam("amount") int amount, Authentication authentication) {
-		Criteria criteria = new Criteria();
+		PagingEntity criteria = new PagingEntity();
 		criteria.setpageNum(pageNum);
 		criteria.setAmount(amount);
 		

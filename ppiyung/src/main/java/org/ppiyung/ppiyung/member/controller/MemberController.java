@@ -8,6 +8,7 @@ import org.apache.logging.log4j.Logger;
 import org.ppiyung.ppiyung.common.entity.BasicResponseEntity;
 import org.ppiyung.ppiyung.member.service.MemberService;
 import org.ppiyung.ppiyung.member.vo.Member;
+import org.ppiyung.ppiyung.member.vo.Notification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -219,8 +220,32 @@ public class MemberController {
 		
 	}
 	
-	
-	
+	// 회원별 알림리스트 조회
+	@GetMapping(value="/notify/{memberId}")
+	public ResponseEntity<BasicResponseEntity<Object>> viewNotificationListByMember(@PathVariable("memberId") String memberId,Authentication authentication){
+		
+		BasicResponseEntity<Object> respBody = null;
+		int respCode = 0;
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+		
+		List<Notification> notify = service.getNotificationList(memberId);
+		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
+		boolean hasAutority = userDetails.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"));
+		
+		// 관리자가 아닌 일반회원 및 기업 회원  그리고 회원아이디가 자기의 ID 일치할 경우
+		if (userDetails.getUsername().equals(memberId) && !hasAutority) {
+			log.debug("회원별 알림 리스트 조회 성공");
+			respBody = new BasicResponseEntity<Object>(true, "알림 리스트 내역 조회 완료" , notify);
+			respCode = HttpServletResponse.SC_OK;
+		}else {
+			log.debug("회원별 알림 리스트 조회 실패");
+			respBody = new BasicResponseEntity<Object>(false, "알림 리스트 내역 조회 실패.", notify);
+			respCode = HttpServletResponse.SC_BAD_REQUEST;
+		}
+		return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
+		
+	}
 	
 	
 

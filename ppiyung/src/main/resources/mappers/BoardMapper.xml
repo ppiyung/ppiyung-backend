@@ -33,7 +33,7 @@
 		<result property="replyCreatedAt" column="reply_created_at" />
 	</resultMap>
 
-	<select id="getListPaging" parameterType="Criteria"
+	<select id="getListPaging" parameterType="PagingEntity"
 		resultMap="BoardListMapped">
     	<![CDATA[
         select * from (
@@ -67,7 +67,7 @@
 	<!-- 커뮤니티 게시글 삭제 -->
 	<delete id="deleteBoard" parameterType="Board">
 		<![CDATA[
-		DELETE FROM community_article_tb
+		DELETE FROM nosuggest_id,apply_id,notification_created_at
 		WHERE article_id=#{articleId}
 		]]>
 	</delete>

@@ -16,8 +16,7 @@
 	<!-- 북마크 생성 -->
 	<insert id="insertBookMark" parameterType="BookMark">   
 	   		  <![CDATA[
-	   		  INSERT INTO bookmark (recruit_id,member_id)
-	   	
+	   		  INSERT INTO bookmark (recruit_id, member_id)
 	   		  VALUES (#{recruitId}, #{memberId});
 	   		  ]]>
 	</insert>

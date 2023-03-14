@@ -41,7 +41,7 @@ public class RecruitDaoImpl implements RecruitDao {
 		
 	}
 
-    @Override
+  @Override
 	public List<Recruit> selectByWorkAreaId(int workAreaId) {
 		List<Recruit> list = session.selectList("org.ppiyung.ppiyung.recruit.selectByWorkAreaId", workAreaId);
 		
@@ -94,7 +94,7 @@ public class RecruitDaoImpl implements RecruitDao {
 		}
 		
 	}
-	
+  
 	@Override
 	public void insertSuggest(Suggest suggest) throws Exception {
 		int count = session.insert("org.ppiyung.ppiyung.suggest.insert", suggest);
@@ -103,4 +103,10 @@ public class RecruitDaoImpl implements RecruitDao {
 		}
 		
 	}
+
+	  @Override public List<Recruit> selectAllDetailRecruit(String recruitId) {
+	  List<Recruit> list = session.selectList("org.ppiyung.ppiyung.recruit.selectAllDetailRecruit", recruitId);
+	  
+	 return list; 
+	 }
 }

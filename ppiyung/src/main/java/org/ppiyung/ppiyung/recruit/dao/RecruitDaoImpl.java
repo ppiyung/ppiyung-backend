@@ -119,10 +119,18 @@ public class RecruitDaoImpl implements RecruitDao {
 		}
 		
 	}
+	
+	@Override
+	public List<Suggest> selectSuggestByMember(String memberId) {
+		
+		List<Suggest> list = session.selectList("org.ppiyung.ppiyung.suggest.selectByMember", memberId);		  
+		return list; 
+	}
 
-	  @Override public List<Recruit> selectAllDetailRecruit(String recruitId) {
+    @Override 
+    public List<Recruit> selectAllDetailRecruit(String recruitId) {
 	  List<Recruit> list = session.selectList("org.ppiyung.ppiyung.recruit.selectAllDetailRecruit", recruitId);
 	  
-	 return list; 
+	  return list; 
 	 }
 }

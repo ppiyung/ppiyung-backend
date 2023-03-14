@@ -112,6 +112,13 @@ public class RecruitServiceImpl implements RecruitService{
 		}
     }
     
+    @Override
+    public List<Suggest> getJobOfferOfMember(String memberId) {
+    	List<Suggest> list = dao.selectSuggestByMember(memberId);
+    	
+    	return list;
+    }
+    
 	@Override
 	public List<Recruit> getRecruitDetailInfo(String recruitId) {
 		List<Recruit> list = dao.selectAllDetailRecruit(recruitId);

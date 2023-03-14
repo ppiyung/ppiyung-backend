@@ -330,5 +330,38 @@ public class RecruitController {
 
     }
     
+    
+    
+    //채용공고 상세조회
+	 @GetMapping(value="/recruitDetail/{recruit_id}")
+	 public ResponseEntity<BasicResponseEntity<Object>> 
+	 		getRecruitDetailInfo(@PathVariable("recruit_id") String recruitId) {
+		 
+		   List<Recruit> result = service.getRecruitDetailInfo(recruitId);
+			log.debug(recruitId);
+			
+			log.debug(result);
+			BasicResponseEntity<Object> respBody = null;
+			int respCode=0;
+			
+			if(result != null) {
+				log.debug("채용공고 상세 조회 성공");
+				respBody = new BasicResponseEntity<Object> (true, "채용공고 상세 조회 성공", result);
+				respCode = HttpServletResponse.SC_OK;
+			} else {
+				log.debug("채용공고 상세 조회 실패");
+				respBody = new BasicResponseEntity<Object> (false, "채용공고 상세 조회 성공실패", result);
+				respCode = HttpServletResponse.SC_BAD_REQUEST;
+			}
+			
+			HttpHeaders headers = new HttpHeaders();
+			headers.setContentType(new MediaType("application", "json",
+					Charset.forName("UTF-8")));
+			
+			return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
+		 
+	 }
+	 
+    
 	
 }

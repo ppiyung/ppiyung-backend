@@ -25,6 +25,8 @@ public interface RecruitService {
 	public List<Recruit> getRecruitListOfCompany(String companyId);
 
 	public boolean applyForJob(Apply apply);
+	
+	public List<Recruit> getRecruitDetailInfo(String recruitId);
 
 
 	

@@ -87,4 +87,10 @@ public class RecruitServiceImpl implements RecruitService{
 			return false;
 		}
     }
+
+	@Override
+	public List<Recruit> getRecruitDetailInfo(String recruitId) {
+		List<Recruit> list = dao.selectAllDetailRecruit(recruitId);
+		return list;
+	}
 }

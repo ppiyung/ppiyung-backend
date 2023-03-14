@@ -17,4 +17,5 @@ public interface RecruitDao {
 	public HashMap<String, Object> selectByCompany(String companyId);
 	public List<Recruit> selectAllByCompany(String companyId);
 	public void insertApply(Apply apply) throws Exception;
+	public List<Recruit> selectAllDetailRecruit(String recruitId);
 }

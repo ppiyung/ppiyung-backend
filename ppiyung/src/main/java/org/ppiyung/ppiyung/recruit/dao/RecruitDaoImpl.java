@@ -93,4 +93,14 @@ public class RecruitDaoImpl implements RecruitDao {
 		}
 		
 	}
+
+
+
+	
+	  @Override public List<Recruit> selectAllDetailRecruit(String recruitId) {
+	  List<Recruit> list = session.selectList("org.ppiyung.ppiyung.recruit.selectAllDetailRecruit", recruitId);
+	  
+	 return list; 
+	 }
+	 
 }

@@ -2,6 +2,8 @@ package org.ppiyung.ppiyung.member.dao;
 
 import java.util.List;
 
+import org.ppiyung.ppiyung.common.entity.PagingEntity;
+import org.ppiyung.ppiyung.member.vo.Image;
 import org.ppiyung.ppiyung.member.vo.Member;
 
 public interface MemberDao {
@@ -17,10 +19,14 @@ public interface MemberDao {
 	public void updateInfo(Member member) throws Exception;
 	
 	//관리자일경우 모든회원
-	public List<Member>  getAllMember();
+	public List<Member>  getAllMember(PagingEntity pagingEntity);
 
 	public void leaveMember(String memberId) throws Exception;
 
 	public List<Member> getResumeOpenMember(String workAreaId);
+
+	public void insertMemberImage(Image image) throws Exception;
+
+	public Image getMemberImage(Image image);
 	
 }

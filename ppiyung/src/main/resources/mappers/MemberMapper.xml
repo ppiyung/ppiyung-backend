@@ -190,6 +190,16 @@
 			VALUES 	(#{memberId},#{imgLocation},#{imgFilename},#{imgFiletype}, default)
 		]]>
 	</insert>
+
+	<!-- 이미지 정보 수정 -->
+	<insert id="updateImg" parameterType = "Image">
+		<![CDATA[
+			UPDATE img_tb
+			SET img_location = #{imgLocation}, img_filename= #{imgFilename},
+				img_filetype = #{imgFiletype}, img_updated_at = NOW()
+			WHERE member_id = #{memberId}
+		]]>
+	</insert>
 	
 	<!-- 이미지 정보 조회 -->
 	<select id="selectImg" parameterType="Image" resultMap="ImageMapped">

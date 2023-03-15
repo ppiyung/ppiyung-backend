@@ -92,4 +92,13 @@ public class MemberDaoImpl implements MemberDao {
 	public Image getMemberImage(Image image) {
 		return session.selectOne("org.ppiyung.ppiyung.member.selectImg" , image);
 	}
+
+
+	@Override
+	public void updateMemberImage(Image image) throws Exception {
+		int count = session.update("org.ppiyung.ppiyung.member.updateImg", image);
+		if (count != 1) {
+			throw new Exception();
+		}
+	}
 }

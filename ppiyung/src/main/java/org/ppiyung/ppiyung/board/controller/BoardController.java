@@ -214,7 +214,6 @@ public class BoardController {
 
 	}
 
-	
 	// 커뮤니티 게시글의 댓글 수정
 	@PutMapping(value="/reply/{reply_id}")
 	public ResponseEntity<BasicResponseEntity<Object>>

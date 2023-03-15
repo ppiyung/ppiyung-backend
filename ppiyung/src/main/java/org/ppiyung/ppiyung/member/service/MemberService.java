@@ -3,7 +3,10 @@ package org.ppiyung.ppiyung.member.service;
 import java.util.HashMap;
 import java.util.List;
 
+import org.ppiyung.ppiyung.common.entity.PagingEntity;
+import org.ppiyung.ppiyung.member.vo.Image;
 import org.ppiyung.ppiyung.member.vo.Member;
+import org.ppiyung.ppiyung.member.vo.MemberExtended;
 
 public interface MemberService {
 
@@ -16,10 +19,16 @@ public interface MemberService {
 	public boolean modifyMember(Member param);
 
 	public Member getMemberInfo(Member member);
+	
+	public MemberExtended getMemberInfoJoinned(Member member);
 
-	public List<Member> getAllMember();
+	public List<Member> getAllMember(PagingEntity pagingEntity);
 
 	public boolean leaveMember(String memberId);
 
 	public List<Member> getResumeOpenMember(String workAreaId);
+
+	public boolean addImageFileInfo(Image image);
+
+	public Image getImageFileInfo(Image image);
 }

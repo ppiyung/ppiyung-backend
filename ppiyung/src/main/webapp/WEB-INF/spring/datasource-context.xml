@@ -35,8 +35,13 @@
             <value>classpath:mappers/MemberMapper.xml</value>
            	<value>classpath:mappers/BoardMapper.xml</value>
             <value>classpath:mappers/RecruitMapper.xml</value>
+            <value>classpath:mappers/BookMarkMapper.xml</value>
             <value>classpath:mappers/ApplyMapper.xml</value>
+<<<<<<< HEAD
             <value>classpath:mappers/NotifyMapper.xml</value>
+=======
+            <value>classpath:mappers/SuggestMapper.xml</value>
+>>>>>>> 493f3f8da4b27e6b2d4baeb23d99c785115b4f09
          </list>
       </property>
    </bean>

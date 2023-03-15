@@ -15,10 +15,33 @@
     
     <!-- 일반회원 - 지원하기 -->
     <insert id="insert" parameterType="Apply" >
-      <![CDATA[INSERT INTO apply_tb (member_id, recruit_id)
+      <![CDATA[
+      INSERT INTO apply_tb (member_id, recruit_id)
       VALUES (#{memberId}, #{recruitId})
       ]]>
     </insert>
     
+    <!-- 일반회원 -지원 현황 조회 -->
+    <select id="selectByMember" parameterType="String" resultMap="ApplyMapped">
+      <![CDATA[
+      SELECT * FROM apply_tb
+      WHERE member_id = #{memberId}
+      ]]>
+    </select>
+    
+    <!-- 기업회원-채용 공고별 지원자 목록 조회 -->
+    <select id="selectByRecruit" parameterType="Integer" resultType="HashMap">
+      <![CDATA[
+      SELECT a.apply_id, a.apply_result, a.member_id, a.recruit_id, a.apply_created_at, 
+      m.member_name, m.member_birth, m.member_gender, m.member_phone, m.member_addr, m.member_email, m.work_area_id, 
+      r.resume_location, r.resume_filename, r.resume_filetype 
+      FROM apply_tb AS a
+      LEFT JOIN member_tb AS m
+      ON a.member_id = m.member_id
+      LEFT JOIN resume_tb AS r
+      ON r.member_id = a.member_id
+      WHERE recruit_id=#{recruitId}
+      ]]>
+    </select>
   </mapper>
   

@@ -66,4 +66,12 @@
         <filter-name>springSecurityFilterChain</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
+    
+    <!-- 파일 업로드 -->
+	<multipart-config>
+		<location>C:\\dev\\ppiyung\\files</location>
+		<max-file-size>10000000</max-file-size> <!-- 파일 당 최대크기 -->
+		<max-request-size>10000000</max-request-size> <!-- 한번에 올릴 수 있는 최대 크기 -->
+		<file-size-threshold>20971520</file-size-threshold> <!-- 메모리 -->
+	</multipart-config>
 </web-app>

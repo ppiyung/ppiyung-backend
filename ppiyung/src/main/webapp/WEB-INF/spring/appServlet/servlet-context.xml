@@ -28,19 +28,6 @@
 		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
 	</context:component-scan>
 	
-	<!-- Interceptors -->
-<!-- 	<interceptors>
-         <interceptor>
-           <mapping path="/**" />
-           <exclude-mapping path="/auth/login"/>
-           <exclude-mapping path="/auth/logout"/>
-           <exclude-mapping path="/auth/verify"/>
-           <exclude-mapping path="/member/register"/>
-           <exclude-mapping path="/member/signin"/>
-           <beans:bean class="org.ppiyung.ppiyung.common.interceptor.AuthInterceptor" />
-         </interceptor>
-	</interceptors> -->
-	
 	<!-- 프로퍼티 불러오기 -->
 	<beans:bean class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
 		<beans:property name="locations">
@@ -48,6 +35,9 @@
 		</beans:property>
 	</beans:bean>
 	
-
+	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<beans:property name="maxUploadSize" value="10000000" />
+		<beans:property name="defaultEncoding" value="utf-8" />
+	</beans:bean>
 	
 </beans:beans>

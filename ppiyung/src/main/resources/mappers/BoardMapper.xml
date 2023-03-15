@@ -3,36 +3,56 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-
+  
 <mapper namespace="org.ppiyung.ppiyung.board">
-	<resultMap id="BoardMapped" type="Board">
-		<result property="articleId" column="article_id" />
-		<result property="memberNickname" column="member_nickname" />
-		<result property="articleTitle" column="article_title" />
-		<result property="articleContent" column="article_content" />
-		<result property="memberId" column="member_id" />
-		<result property="articleCreatedAt" column="article_created_at" />
-	</resultMap>
 
-	<resultMap id="BoardListMapped" type="BoardList">
-		<result property="articleId" column="article_id" />
-		<result property="memberNickname" column="member_nickname" />
-		<result property="articleTitle" column="article_title" />
-		<result property="articleContent" column="article_content" />
-		<result property="memberId" column="member_id" />
-		<result property="articleCreatedAt" column="article_created_at" />
-		<result property="commentCnt" column="comment_cnt" />
-		<result property="likeCnt" column="like_cnt" />
-	</resultMap>
+  	<resultMap id="BoardMapped" type="Board">
+	    <result property="articleId" column="article_id" />
+	    <result property="memberNickname" column="member_nickname" />
+	    <result property="articleTitle" column="article_title" />
+	    <result property="articleContent" column="article_content" />
+	    <result property="memberId" column="member_id" />
+	    <result property="articleCreatedAt" column="article_created_at" />
+    </resultMap>
+ 
+ 	<resultMap id="BoardListMapped" type="BoardList">
+	    <result property="articleId" column="article_id" />
+	    <result property="memberNickname" column="member_nickname" />
+	    <result property="articleTitle" column="article_title" />
+	    <result property="articleContent" column="article_content" />
+	    <result property="memberId" column="member_id" />
+	    <result property="articleCreatedAt" column="article_created_at" />
+   	    <result property="commentCnt" column="comment_cnt" />
+	    <result property="likeCnt" column="like_cnt" />
+    </resultMap>
+    
+ 	<resultMap id="ReplyMapped" type="Reply">
+	    <result property="replyId" column="reply_id" />
+	    <result property="replyContent" column="reply_content" />
+	    <result property="articleId" column="article_id" />
+	    <result property="memberId" column="member_id" />
+	    <result property="replyCreatedAt" column="reply_created_at" />
+    </resultMap>
 
-	<resultMap id="ReplyMapped" type="Reply">
-		<result property="replyId" column="reply_id" />
-		<result property="replyContent" column="reply_content" />
-		<result property="articleId" column="article_id" />
-		<result property="memberId" column="member_id" />
-		<result property="replyCreatedAt" column="reply_created_at" />
-	</resultMap>
+   	<resultMap id="LikeMapped" type="Like">
+	    <result property="articleId" column="article_id" />
+	    <result property="memberId" column="member_id" />
+	    <result property="likeCreatedAt" column="like_created_at" />
+    </resultMap>
 
+	<!-- 해당 게시물 상세 조회 -->
+	<select id="detailBoard" parameterType="Integer" resultMap="BoardListMapped">
+		<![CDATA[
+		SELECT B.article_id, B.article_title, B.article_content, B.member_id, B.article_created_at,
+		(SELECT count(*) FROM community_reply_tb as C  WHERE B.article_id = C.article_id) AS comment_cnt,
+		(SELECT count(*) FROM community_like_tb as L WHERE L.article_id = B.article_id) AS like_cnt,
+		(SELECT M.member_nickname FROM member_tb as M where M.member_id = B.member_id) as member_nickname
+        FROM community_article_tb as B
+        where B.article_id = #{articleId};
+		]]>
+	</select>
+	
+	<!-- 커뮤니티 전체 게시글 목록 조회 (페이징 수행) -->
 	<select id="getListPaging" parameterType="PagingEntity"
 		resultMap="BoardListMapped">
     	<![CDATA[
@@ -44,7 +64,20 @@
 		FROM community_article_tb as B order by B.article_id desc) as T1 
         limit #{skip},#{amount}
     	]]>
+    </select>
+	<!-- LIMIT {SKIP}, {amount} 의미 : LIMIT 0,10 이면 1번부터 10개 출력해주라는 의미, LIMIT 10,10 이면 11부터  + 10개 출력해달라는 뜻 -->
+	<!-- 커뮤니티 게시글 전체 목록 출력
+	<select id="allBoard" resultMap="BoardListMapped">		
+		<![CDATA[
+		SELECT Distinct B.article_id, B.article_title, B.article_content, B.member_id, B.article_created_at,
+		(SELECT count(*) FROM community_reply_tb as C  WHERE B.article_id = C.article_id) AS comment_cnt,
+		(SELECT count(*) FROM community_like_tb as L WHERE L.article_id = B.article_id) AS like_cnt,
+		(SELECT M.member_nickname FROM member_tb as M where M.member_id = B.member_id) as member_nickname
+		FROM community_article_tb as B
+		]]>
 	</select>
+	-->
+
 	<!-- LIMIT {SKIP}, {amount} 의미 : LIMIT 0,10 이면 1번부터 10개 출력해주라는 의미, LIMIT 
 		10,10 이면 11부터 + 10개 출력해달라는 뜻 -->
 
@@ -55,9 +88,10 @@
 		FROM community_like_tb as L WHERE L.article_id = B.article_id) AS like_cnt, 
 		(SELECT M.member_nickname FROM member_tb as M where M.member_id = B.member_id) 
 		as member_nickname FROM community_article_tb as B ]]> </select> -->
+
 	<!-- 커뮤니티 게시글 삽입 -->
 	<insert id="insertBoard" parameterType="Board">
-	
+
 		<![CDATA[
 		INSERT INTO community_article_tb (article_title, article_content, member_id, article_created_at)
 		VALUES (#{articleTitle},#{articleContent}, #{memberId},#{articleCreatedAt});
@@ -67,21 +101,21 @@
 	<!-- 커뮤니티 게시글 삭제 -->
 	<delete id="deleteBoard" parameterType="Board">
 		<![CDATA[
-		DELETE FROM nosuggest_id,apply_id,notification_created_at
+		DELETE FROM community_article_tb
 		WHERE article_id=#{articleId}
 		]]>
 	</delete>
-
-	<select id="login" parameterType="Reply" resultType="Reply">		
+	
+	<!-- 커뮤니티 게시글 수정 -->
+	<update id="updateBoard" parameterType="Board">
 		<![CDATA[
-			SELECT reply_id, reply_content, article_id,
-					member_id, reply_created_at
-			FROM community_reply_tb 
-			WHERE reply_id = #{reply_id}
+			UPDATE community_article_tb
+			SET article_title=#{articleTitle}, article_content = #{articleContent}, article_created_at = #{articleCreatedAt}
+			WHERE article_id = #{articleId}
 		]]>
-	</select>
+	</update>
 
-	<!-- 댓글 생성 -->
+	<!-- 커뮤니티 댓글 생성 -->
 	<insert id="insertReply" parameterType="Reply">
 		<![CDATA[
 			INSERT INTO community_reply_tb (reply_content, article_id, member_id, reply_created_at)
@@ -89,49 +123,39 @@
 		]]>
 	</insert>
 
-	<!-- 댓글 삭제 -->
+	<!-- 커뮤니티 댓글 삭제 -->
 	<delete id="deleteReply" parameterType="Reply">
 		<![CDATA[
 			DELETE FROM community_reply_tb 
 			WHERE reply_id = #{replyId}
 		]]>
 	</delete>
-
-	<!-- 댓글 수정 -->
+	
+	<!-- 커뮤니티 댓글 수정 -->
 	<update id="updateReply" parameterType="Reply">
-
 		<![CDATA[
 			UPDATE community_reply_tb
 			SET reply_content = #{replyContent}, reply_created_at = #{replyCreatedAt}
 			WHERE reply_id = #{replyId}
 		]]>
 	</update>
-
-	<!-- 게시글 수정 -->
-	<update id="updateBoard" parameterType="Board">
+	
+	<!-- 커뮤니티 게시글 좋아요 생성 -->
+	<insert id="insertLike" parameterType="Like">
 		<![CDATA[
-			UPDATE community_article_tb
-			SET article_title=#{articleTitle}, article_content=#{articleContent}, article_created_at = #{articleCreatedAt}
-			WHERE article_id = #{articleId}
+			INSERT INTO community_like_tb (article_id, member_id, like_created_at)
+			VALUES(#{articleId}, #{memberId}, #{likeCreatedAt})
 		]]>
-	</update>
-	<!-- 좋아요 삭제 -->
+	</insert>
+
+	<!-- 커뮤니티 게시글 좋아요 삭제 -->
 	<delete id="deleteLike" parameterType="Like">
 		<![CDATA[
 			DELETE FROM community_like_tb
 			WHERE member_id=#{memberId} and article_id=#{articleId}
 		]]>
 	</delete>
-	
-	<!-- 해당 게시물 세부 내역 -->
-	<select id="detailBoard" parameterType="Integer" resultMap="BoardListMapped">
-		<![CDATA[
-		SELECT B.article_id, B.article_title, B.article_content, B.member_id, B.article_created_at,
-		(SELECT count(*) FROM community_reply_tb as C  WHERE B.article_id = C.article_id) AS comment_cnt,
-		(SELECT count(*) FROM community_like_tb as L WHERE L.article_id = B.article_id) AS like_cnt,
-		(SELECT M.member_nickname FROM member_tb as M where M.member_id = B.member_id) as member_nickname
-        FROM community_article_tb as B
-        where B.article_id = #{articleId};
-		]]>
-	</select>
+
+
+
 </mapper>

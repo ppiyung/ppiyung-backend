@@ -29,4 +29,5 @@ public class MemberExtended {
 	private int workAreaId;
 	private boolean memberVerified;
 	private Image profileImage;
+	private Resume memberResume;
 }

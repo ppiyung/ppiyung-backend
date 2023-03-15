@@ -22,6 +22,12 @@ public class BoardServiceImpl implements BoardService {
 	public List<BoardList> getListPaging(PagingEntity criteria) {
 		return dao.pagingInsertBoard(criteria);
 	}
+	
+	// 커뮤니티 게시글 상세조회
+	@Override
+	public List<BoardList> getdetailPost(int articleId){
+		return dao.detailBoard(articleId);
+	}
 
 	// 커뮤니티 게시글 작성
 	@Override
@@ -46,44 +52,8 @@ public class BoardServiceImpl implements BoardService {
 			return false;
 		}
 	}
-
-	// 댓글 생성
-	@Override
-	public boolean insertReply(Reply reply) {
-		try {
-			dao.insertReply(reply);
-			return true;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		}
-	}
-
-	// 댓글 삭제
-	@Override
-	public boolean deleteReply(int reply_id) {
-		try {
-			dao.deleteReply(reply_id);
-			return true;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		}
-	}
-
-	// 댓글 수정
-	@Override
-	public boolean updateReply(Reply reply) {
-		try {
-			dao.updateReply(reply);
-			return true;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		}
-	}
-
-	// 게시글 수정
+	
+	// 커뮤니티 게시글 수정
 	@Override
 	public boolean editCommunit(Board boardContent) {
 
@@ -96,7 +66,57 @@ public class BoardServiceImpl implements BoardService {
 		}
 
 	}
+		
+	// 커뮤니티 게시글 댓글 생성
+	@Override
+	public boolean insertReply(Reply reply) {
+		try {
+			dao.insertReply(reply);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
 
+	
+	// 커뮤니티 게시글 댓글 삭제
+	@Override
+	public boolean deleteReply(int reply_id) {
+		try {
+			dao.deleteReply(reply_id);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	// 커뮤니티 게시글 댓글 수정
+	@Override
+	public boolean updateReply(Reply reply) {
+		try {
+			dao.updateReply(reply);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	// 커뮤니티 게시글 좋아요 작성
+	@Override
+	public boolean insetLike(Like like) {
+		
+		try {
+			dao.insertLike(like);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
 	// 커뮤니티 게시글 좋아요 삭제
 	@Override
 	public boolean deleteCoummunityLike(Like like) {
@@ -109,12 +129,5 @@ public class BoardServiceImpl implements BoardService {
 			return false;
 		}
 	}
-	// 게시판 상세 조회 페이지
-	@Override
-	public List<BoardList> getdetailPost(int articleId){
-		return dao.detailBoard(articleId);
-	
-	}
-
 
 }

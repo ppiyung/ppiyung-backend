@@ -37,8 +37,8 @@
             <value>classpath:mappers/RecruitMapper.xml</value>
             <value>classpath:mappers/BookMarkMapper.xml</value>
             <value>classpath:mappers/ApplyMapper.xml</value>
-            <value>classpath:mappers/SuggestMapper.xml</value>
             <value>classpath:mappers/NotifyMapper.xml</value>
+            <value>classpath:mappers/SuggestMapper.xml</value>
          </list>
       </property>
    </bean>

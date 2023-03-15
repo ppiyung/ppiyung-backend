@@ -178,7 +178,7 @@ public class MemberServiceImpl implements MemberService {
 			return null;
 		}
 	}
-	
+  
 	private boolean fileSaveHelper(MultipartFile file, String uploadLocation, String saveFileName) {
 		Resource resource = rsLoader.getResource(uploadLocation);
 		String uploadFolder = "";

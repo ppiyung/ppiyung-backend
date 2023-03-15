@@ -40,4 +40,5 @@ public interface MemberDao {
 
 	public void insertMemberResume(Resume resume) throws Exception;
 	
+
 }

@@ -30,6 +30,13 @@ public class BoardDaoImpl implements BoardDao {
 
 	}
 	
+	// 커뮤니티 게시글 상세조회
+	@Override
+	public List<BoardList> detailBoard(int articleId) {
+		return session.selectList("org.ppiyung.ppiyung.board.detailBoard",articleId);
+
+	}
+	
 	// 커뮤니티 게시글 삽입
 	@Override
 	public void insertBoardpost(Board param) throws Exception {
@@ -52,7 +59,7 @@ public class BoardDaoImpl implements BoardDao {
 		
 	}
 	
-	// 게시글 수정
+	// 커뮤니티 게시글 수정
 	@Override
 	public void updateBoardPost(Board parm) throws Exception {
 		int count = session.update("org.ppiyung.ppiyung.board.updateBoard", parm);
@@ -62,7 +69,7 @@ public class BoardDaoImpl implements BoardDao {
 		}
 	}
 
-	// 게시글 댓글 생성
+	// 커뮤니티 게시글 댓글 생성
 	@Override
 	public void insertReply(Reply param) throws Exception {
 		log.debug(param);
@@ -73,7 +80,7 @@ public class BoardDaoImpl implements BoardDao {
 		}
 	}
 
-	// 게시글 댓글 삭제
+	// 커뮤니티 게시글 댓글 삭제
 	@Override
 	public void deleteReply(int reply_id) throws Exception {
 		int count = session.delete("org.ppiyung.ppiyung.board.deleteReply", reply_id);
@@ -82,7 +89,7 @@ public class BoardDaoImpl implements BoardDao {
 		}
 	}
 
-	// 게시글 댓글 수정
+	// 커뮤니티 게시글 댓글 수정
 	@Override
 	public void updateReply(Reply reply) throws Exception {
 		
@@ -94,7 +101,7 @@ public class BoardDaoImpl implements BoardDao {
 		}
 	}
 
-	// 게시글 좋아요 작성
+	// 커뮤니티 게시글 좋아요 작성
 	@Override
 	public void insertLike(Like like) throws Exception {
 		
@@ -103,12 +110,11 @@ public class BoardDaoImpl implements BoardDao {
 		if (count != 1) {
 			log.debug("Dao단 오류 확인");
 			throw new Exception();
-		}
-		
+		}	
 	}
 
 
-	// 게시글 좋아요  삭제
+	// 커뮤니티 게시글 좋아요  삭제
 	@Override
 	public void deleteLike(Like like) throws Exception {
 		log.debug(like);
@@ -117,21 +123,6 @@ public class BoardDaoImpl implements BoardDao {
 		if(count != 1) {
 			throw new Exception();
 		}
-		
-	}
-<<<<<<< HEAD
-
-
-	@Override
-	public List<BoardList> getCurrentBoard() {
-		// TODO Auto-generated method stub
-		return null;
-=======
-	// 게시글 세부조회
-	@Override
-	public List<BoardList> detailBoard(int articleId) {
-		return session.selectList("org.ppiyung.ppiyung.board.detailBoard",articleId);
->>>>>>> becceea8e79af99341788791d8db1a6eb1624ff4
 	}
 	
 }

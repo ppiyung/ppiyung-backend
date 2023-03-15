@@ -1,18 +1,21 @@
 package org.ppiyung.ppiyung.notify.vo;
 
+import java.util.Date;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-@ToString
+@NoArgsConstructor
 public class Notification {
 	
-	private int notificationId; // 알림 ID
-	private String memberId; // 회원 ID
-	private String suggestId; // 지원이력 ID 
-	private String notificationCreatedAt; // 등록일시
+	private int notificationId;
+	private String memberId;
+	private int suggestId;
+	private int applyId;
+	private Date notificationCreatedAt;
+
+
 }

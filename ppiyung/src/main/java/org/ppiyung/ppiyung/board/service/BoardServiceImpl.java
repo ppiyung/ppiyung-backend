@@ -22,6 +22,12 @@ public class BoardServiceImpl implements BoardService {
 	public List<BoardList> getListPaging(PagingEntity criteria) {
 		return dao.pagingInsertBoard(criteria);
 	}
+	
+	// 커뮤니티 게시글 상세조회
+	@Override
+	public List<BoardList> getdetailPost(int articleId){
+		return dao.detailBoard(articleId);
+	}
 
 	// 커뮤니티 게시글 작성
 	@Override
@@ -123,12 +129,5 @@ public class BoardServiceImpl implements BoardService {
 			return false;
 		}
 	}
-	// 게시판 상세 조회 페이지
-	@Override
-	public List<BoardList> getdetailPost(int articleId){
-		return dao.detailBoard(articleId);
-	
-	}
-
 
 }

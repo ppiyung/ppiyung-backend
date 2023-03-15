@@ -13,6 +13,9 @@ public interface BoardService {
 	// 페이징 적용하는 게시물 출력
 	public List<BoardList> getListPaging(PagingEntity criteria);
 	
+	// 게시판 상세조회 페이지
+	public List<BoardList> getdetailPost(int articleId);
+	
 	// 게시글 작성 service
 	public boolean writeCommunit(Board boardContent);
 
@@ -31,14 +34,10 @@ public interface BoardService {
 	// 게시글 댓글 수정 service
 	public boolean updateReply(Reply reply);
 
-
 	// 게시글 좋아요 service
 	public boolean insetLike(Like like);
 	
 	// 게시글 좋아요 삭제 service
 	boolean deleteCoummunityLike(Like like);
-
-	// 게시판 상세조회 페이지
-	public List<BoardList> getdetailPost(int articleId);
 	
 }

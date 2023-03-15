@@ -67,6 +67,31 @@ public class BoardController {
 		return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
 	}
 
+	// 커뮤니티 게시글 개별 상세조회
+	@GetMapping("/article/{articleId}")
+	public ResponseEntity<BasicResponseEntity<Object>> detailsCommunity(@PathVariable("articleId") int articleId ,@RequestParam("page") int page, @RequestParam("size") int size){
+		
+		List<BoardList> result = service.getdetailPost(articleId);
+		BasicResponseEntity<Object> respBody = null;
+		int respCode = 0;
+
+		if (result != null) {
+			log.debug("전체 게시글 조회 성공");
+			respBody = new BasicResponseEntity<Object>(true, "전체 커뮤니티 게시글 완료",result);
+			respCode = HttpServletResponse.SC_OK;
+		} else {
+			log.debug("전체 게시글 조회 실폐");
+			respBody = new BasicResponseEntity<Object>(false, "전체 커뮤니티 게시글 실패", result);
+			respCode = HttpServletResponse.SC_BAD_REQUEST;
+		}
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+		return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
+		
+	}
+	
 	// 커뮤니티 게시글 삽입
 	@PostMapping("/article")
 	public ResponseEntity<BasicResponseEntity<Object>> writeCommunityPosts(@RequestBody Board boardContent) {
@@ -114,7 +139,7 @@ public class BoardController {
 			respCode = HttpServletResponse.SC_OK;
 
 		} else {
-			log.debug("커뮤니티 게시글 작성 실패");
+			log.debug("커뮤니티 게시글 삭제 실패");
 			respBody = new BasicResponseEntity<Object>(false, "게시글 삭제 실퍠", result);
 			respCode = HttpServletResponse.SC_BAD_REQUEST;
 		}
@@ -302,29 +327,5 @@ public class BoardController {
 		
 	}
 	
-	// 게시글 개별 상세조회
-	@GetMapping("/article/{articleId}")
-	public ResponseEntity<BasicResponseEntity<Object>> detailsCommunity(@PathVariable("articleId") int articleId ,@RequestParam("page") int page, @RequestParam("size") int size){
-		
-		List<BoardList> result = service.getdetailPost(articleId);
-		BasicResponseEntity<Object> respBody = null;
-		int respCode = 0;
-
-		if (result != null) {
-			log.debug("전체 게시글 조회 성공");
-			respBody = new BasicResponseEntity<Object>(true, "전체 커뮤니티 게시글 완료",result);
-			respCode = HttpServletResponse.SC_OK;
-		} else {
-			log.debug("전체 게시글 조회 실폐");
-			respBody = new BasicResponseEntity<Object>(false, "전체 커뮤니티 게시글 실패", result);
-			respCode = HttpServletResponse.SC_BAD_REQUEST;
-		}
-
-		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-
-		return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
-		
-	}
 	
 }

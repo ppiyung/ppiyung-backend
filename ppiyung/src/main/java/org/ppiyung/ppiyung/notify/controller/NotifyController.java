@@ -80,6 +80,7 @@ public class NotifyController {
 		notification.setMemberId(memberId);
 		notification.setSuggestId(suggestId);
 		
+		
 		boolean result = service.insertSuggestNotify(notification);
 		
 		BasicResponseEntity<Object> respBody = null;

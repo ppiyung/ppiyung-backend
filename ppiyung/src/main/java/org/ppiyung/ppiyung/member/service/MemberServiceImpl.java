@@ -2,10 +2,15 @@ package org.ppiyung.ppiyung.member.service;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.ppiyung.ppiyung.common.entity.PagingEntity;
@@ -14,6 +19,7 @@ import org.ppiyung.ppiyung.member.dao.MemberDao;
 import org.ppiyung.ppiyung.member.vo.Image;
 import org.ppiyung.ppiyung.member.vo.Member;
 import org.ppiyung.ppiyung.member.vo.MemberExtended;
+import org.ppiyung.ppiyung.member.vo.Resume;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
@@ -166,16 +172,13 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public Image getImageFileInfo(Image image) {
 		try {
-			return dao.getMemberImage(image);
+			return dao.selectMemberImage(image);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
 		}
 	}
-<<<<<<< HEAD
-
-=======
-	
+  
 	private boolean fileSaveHelper(MultipartFile file, String uploadLocation, String saveFileName) {
 		Resource resource = rsLoader.getResource(uploadLocation);
 		String uploadFolder = "";
@@ -191,7 +194,7 @@ public class MemberServiceImpl implements MemberService {
 		File saveFile = new File(uploadFolder + "/" + saveFileName);
 		try {
 			file.transferTo(saveFile);
-			log.debug("파일 저장 성공");
+			log.debug("파일 저장 성공: " + uploadFolder + "/" + saveFileName);
 			return true;
 		} catch (IllegalStateException e) {
 			e.printStackTrace();
@@ -233,5 +236,100 @@ public class MemberServiceImpl implements MemberService {
 			return null;
 		}
 	}
->>>>>>> df47f3d2fd9cb166da862599c8526b49e686890b
+
+	@Override
+	public Resume getResumeFileInfo(Resume resume) {
+		try {
+			return dao.selectMemberResume(resume);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	@Override
+	public boolean updateResumeFileInfo(Resume resume) {
+		try {
+			dao.updateMemberResume(resume);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	@Override
+	public boolean addResumeFileInfo(Resume resume) {
+		try {
+			dao.insertMemberResume(resume);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	@Override
+	public Resume saveResumeFile(MultipartFile file, String memberId, boolean isUpdate) {
+		String filenameOriginalFull = file.getOriginalFilename();
+		String filenameOriginal = 
+				filenameOriginalFull.substring(0, filenameOriginalFull.lastIndexOf("."));
+		String fileExtension = 
+				filenameOriginalFull.substring(filenameOriginalFull.lastIndexOf(".") + 1, filenameOriginalFull.length());
+		UUID uuid = UUID.randomUUID();
+	
+		boolean fileSaveResult = fileSaveHelper(file, "resources/resumes", uuid.toString());
+				
+		Resume resume = null;
+		boolean dbResult = false;
+		if (fileSaveResult) {
+			resume = new Resume(memberId, uuid.toString(),
+					filenameOriginal, fileExtension, null, false);
+			
+			if (isUpdate) {
+				dbResult = updateResumeFileInfo(resume);
+			} else {
+				dbResult = addResumeFileInfo(resume);
+			}
+		}
+		
+		if (fileSaveResult && dbResult) {
+			return getResumeFileInfo(resume);
+		} else {
+			return null;
+		}
+	}
+
+	@Override
+	public void serveResumeFile(Resume resume, HttpServletResponse response) {
+		String saveFilename = resume.getResumeLocation();
+		String originalFilename = resume.getResumeFilename() + "." + resume.getResumeFiletype();
+		
+		Resource resource = rsLoader.getResource("resources/resumes");
+		String uploadFolder = "";
+		try {
+			uploadFolder = resource.getFile().getCanonicalPath();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		
+		File downloadFile = new File(uploadFolder + "/" + saveFilename);
+		
+		try(ServletOutputStream stream = response.getOutputStream()) {
+			byte fileByte[] = FileUtils.readFileToByteArray(downloadFile);
+	        
+	        response.setContentType("application/octet-stream");
+	        response.setContentLength(fileByte.length);
+	        
+	        response.setHeader("Content-Disposition", "attachment; fileName=\"" + URLEncoder.encode(originalFilename,"UTF-8") +"\";");
+	        response.setHeader("Content-Transfer-Encoding", "binary");
+	        
+	        stream.write(fileByte);
+	        stream.flush();
+	        
+	        log.debug("이력서 파일 전송 완료");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }

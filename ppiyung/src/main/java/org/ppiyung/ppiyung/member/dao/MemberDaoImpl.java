@@ -7,6 +7,7 @@ import org.ppiyung.ppiyung.common.entity.PagingEntity;
 import org.ppiyung.ppiyung.member.vo.Image;
 import org.ppiyung.ppiyung.member.vo.Member;
 import org.ppiyung.ppiyung.member.vo.MemberExtended;
+import org.ppiyung.ppiyung.member.vo.Resume;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -89,7 +90,7 @@ public class MemberDaoImpl implements MemberDao {
 
 
 	@Override
-	public Image getMemberImage(Image image) {
+	public Image selectMemberImage(Image image) {
 		return session.selectOne("org.ppiyung.ppiyung.member.selectImg" , image);
 	}
 
@@ -97,6 +98,30 @@ public class MemberDaoImpl implements MemberDao {
 	@Override
 	public void updateMemberImage(Image image) throws Exception {
 		int count = session.update("org.ppiyung.ppiyung.member.updateImg", image);
+		if (count != 1) {
+			throw new Exception();
+		}
+	}
+
+
+	@Override
+	public Resume selectMemberResume(Resume resume) {
+		return session.selectOne("org.ppiyung.ppiyung.member.selectResume" , resume);
+	}
+
+
+	@Override
+	public void updateMemberResume(Resume resume) throws Exception {
+		int count = session.update("org.ppiyung.ppiyung.member.updateResume", resume);
+		if (count != 1) {
+			throw new Exception();
+		}
+	}
+
+
+	@Override
+	public void insertMemberResume(Resume resume) throws Exception {
+		int count = session.insert("org.ppiyung.ppiyung.member.insertResume", resume);
 		if (count != 1) {
 			throw new Exception();
 		}

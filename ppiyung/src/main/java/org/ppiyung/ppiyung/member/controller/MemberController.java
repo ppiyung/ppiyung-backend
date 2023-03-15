@@ -16,6 +16,7 @@ import org.ppiyung.ppiyung.common.entity.PagingEntity;
 import org.ppiyung.ppiyung.member.service.MemberService;
 import org.ppiyung.ppiyung.member.vo.Image;
 import org.ppiyung.ppiyung.member.vo.Member;
+import org.ppiyung.ppiyung.member.vo.MemberExtended;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
@@ -106,6 +107,7 @@ public class MemberController {
 	@GetMapping(value = "/{memberId}")
 	public ResponseEntity<BasicResponseEntity<Object>>
 	getMember(@PathVariable("memberId") String memberIdFromUri,
+			@RequestParam("isCompany") boolean isCompany,
 			Authentication authentication) {
 
 		BasicResponseEntity<Object> respBody = null;
@@ -113,14 +115,15 @@ public class MemberController {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 		
-		Member result = null;
+		MemberExtended result = null;
 		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
 		
 		if (userDetails.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
 			log.debug("개별회원조회 성공");
 			Member param = new Member();
 			param.setMemberId(memberIdFromUri);
-			result = service.getMemberInfo(param);
+			result = service.getMemberInfoJoinned(param);
+			result.setMemberPw("");
 			
 			respBody = new BasicResponseEntity<Object>(true, "개별회원조회 성공하였습니다.", result);
 			respCode = HttpServletResponse.SC_OK;
@@ -128,10 +131,26 @@ public class MemberController {
 		} else if (userDetails.getUsername().equals(memberIdFromUri)) {
 			Member param = new Member();
 			param.setMemberId(memberIdFromUri);
-			result = service.getMemberInfo(param);
+			result = service.getMemberInfoJoinned(param);
+			result.setMemberPw("");
 			
 			respBody = new BasicResponseEntity<Object>(true, "개별회원조회 성공하였습니다.", result);
 			respCode = HttpServletResponse.SC_OK;
+		} else if (isCompany) {
+			Member param = new Member();
+			param.setMemberId(memberIdFromUri);
+			result = service.getMemberInfoJoinned(param);
+			result.setMemberPw("");
+			
+			if (result.getMemberType() == 'C') {
+				respBody = new BasicResponseEntity<Object>(true, "개별회원조회 성공하였습니다.", result);
+				respCode = HttpServletResponse.SC_OK;
+			} else {
+				result = null;
+				respBody = new BasicResponseEntity<Object>(false, "개별회원조회 실패하였습니다.", result);
+				respCode = HttpServletResponse.SC_BAD_REQUEST;
+			}
+			
 		} else {
 			log.debug("개별회원조회 실패");
 			respBody = new BasicResponseEntity<Object>(false, "개별회원조회 실패하였습니다.", result);

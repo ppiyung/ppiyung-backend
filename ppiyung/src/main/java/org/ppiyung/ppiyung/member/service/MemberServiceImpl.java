@@ -8,6 +8,7 @@ import org.ppiyung.ppiyung.common.util.JwtTokenUtil;
 import org.ppiyung.ppiyung.member.dao.MemberDao;
 import org.ppiyung.ppiyung.member.vo.Image;
 import org.ppiyung.ppiyung.member.vo.Member;
+import org.ppiyung.ppiyung.member.vo.MemberExtended;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -81,6 +82,13 @@ public class MemberServiceImpl implements MemberService {
 
 		return result;
 
+	}
+
+	@Override
+	public MemberExtended getMemberInfoJoinned(Member member) {
+		MemberExtended result = dao.selectMemberIdJoinned(member);
+
+		return result;
 	}
 
 	// 모든 멤버 조회

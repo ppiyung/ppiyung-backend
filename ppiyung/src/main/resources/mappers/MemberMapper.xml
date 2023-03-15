@@ -26,6 +26,28 @@
    	    <result property="memberVerified" column="member_verified" />
     </resultMap>
     
+   	<resultMap id="MemberExtendedMapped" type="MemberExtended">
+	    <result property="memberId" column="member_id" />
+	    <result property="memberPw" column="member_pw" />
+	    <result property="memberName" column="member_name" />
+	    <result property="memberBirth" column="member_birth" />
+	    <result property="memberGender" column="member_gender" />
+	    <result property="memberPhone" column="member_phone" />
+   	    <result property="memberAddr" column="member_addr" />
+	    <result property="memberCoordX" column="member_coord_x" />
+	    <result property="memberCoordY" column="member_coord_y" />
+	    <result property="memberNickname" column="member_nickname" />
+	    <result property="memberEmail" column="member_email" />
+	    <result property="memberType" column="member_type" />
+   	    <result property="memberRegNum" column="member_reg_num" />
+	    <result property="memberInfo" column="member_info" />
+	    <result property="memberActive" column="member_active" />
+	    <result property="memberCreatedAt" column="member_created_at" />
+	    <result property="workAreaId" column="work_area_id" />
+   	    <result property="memberVerified" column="member_verified" />
+   	    <association property="profileImage" resultMap="ImageMapped"></association>
+    </resultMap>
+    
     <resultMap id="ImageMapped" type="Image">
 	    <result property="memberId" column="member_id" />
 	    <result property="imgLocation" column="img_location" />
@@ -69,6 +91,22 @@
 					member_active, member_created_at, work_area_id, member_verified
 			FROM member_tb 
 			WHERE member_id = #{memberId}
+		]]>
+	</select>
+	
+		<!-- 개별회원조회 (조인) -->
+	<select id="selectJoinned" parameterType="Member"
+   			resultMap="MemberExtendedMapped">		
+		<![CDATA[
+			SELECT m.member_id, member_name, member_birth,
+					member_gender, member_phone, member_addr, member_coord_x, member_coord_y,
+					member_nickname, member_email, member_type, member_reg_num, member_info,
+					member_active, member_created_at, work_area_id, member_verified,
+					img_location, img_filename, img_filename, img_filetype
+			FROM member_tb m
+			LEFT JOIN img_tb i
+			ON m.member_id = i.member_id 
+			WHERE m.member_id = #{memberId}
 		]]>
 	</select>
 	

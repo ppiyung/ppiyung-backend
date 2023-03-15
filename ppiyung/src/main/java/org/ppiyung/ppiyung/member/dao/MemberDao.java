@@ -6,6 +6,7 @@ import org.ppiyung.ppiyung.common.entity.PagingEntity;
 import org.ppiyung.ppiyung.member.vo.Image;
 import org.ppiyung.ppiyung.member.vo.Member;
 import org.ppiyung.ppiyung.member.vo.MemberExtended;
+import org.ppiyung.ppiyung.member.vo.Resume;
 
 public interface MemberDao {
 
@@ -29,8 +30,14 @@ public interface MemberDao {
 
 	public void insertMemberImage(Image image) throws Exception;
 
-	public Image getMemberImage(Image image);
+	public Image selectMemberImage(Image image);
 
 	public void updateMemberImage(Image image) throws Exception;
+
+	public Resume selectMemberResume(Resume resume);
+
+	public void updateMemberResume(Resume resume) throws Exception;
+
+	public void insertMemberResume(Resume resume) throws Exception;
 	
 }

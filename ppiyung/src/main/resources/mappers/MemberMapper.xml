@@ -45,7 +45,8 @@
 	    <result property="memberCreatedAt" column="member_created_at" />
 	    <result property="workAreaId" column="work_area_id" />
    	    <result property="memberVerified" column="member_verified" />
-   	    <association property="profileImage" resultMap="ImageMapped"></association>
+   	    <association property="profileImage" resultMap="ImageMapped" />
+   	    <association property="memberResume" resultMap="ResumeMapped" />
     </resultMap>
     
     <resultMap id="ImageMapped" type="Image">
@@ -54,6 +55,15 @@
 	    <result property="imgFilename" column="img_filename" />
 	    <result property="imgFiletype" column="img_filetype" />
 	    <result property="imgUpdatedAt" column="img_updated_at" />
+    </resultMap>
+    
+    <resultMap id="ResumeMapped" type="Resume">
+	    <result property="memberId" column="member_id" />
+	    <result property="resumeLocation" column="resume_location" />
+	    <result property="resumeFilename" column="resume_filename" />
+	    <result property="resumeFiletype" column="resume_filetype" />
+	    <result property="resumeUpdatedAt" column="resume_updated_at" />
+	    <result property="resumeOpen" column="resume_open" />
     </resultMap>
 
 	<select id="login" parameterType="Member"
@@ -102,10 +112,13 @@
 					member_gender, member_phone, member_addr, member_coord_x, member_coord_y,
 					member_nickname, member_email, member_type, member_reg_num, member_info,
 					member_active, member_created_at, work_area_id, member_verified,
-					img_location, img_filename, img_filename, img_filetype
+					img_location, img_filename, img_filename, img_filetype, img_updated_at,
+					resume_location, resume_filename, resume_filetype, resume_updated_at, resume_open
 			FROM member_tb m
 			LEFT JOIN img_tb i
 			ON m.member_id = i.member_id 
+			LEFT JOIN resume_tb r
+			ON m.member_id = r.member_id
 			WHERE m.member_id = #{memberId}
 		]]>
 	</select>
@@ -168,26 +181,14 @@
 			WHERE A.work_area_id= #{workAreaId}
 			AND B.resume_open=1
 		 ]]>
-	
-	
 	</select>
-
-<!-- 
-
-	    <result property="memberId" column="memberId" />
-	    <result property="img_location" column="imgLocation" />
-	    <result property="img_filename" column="imgFilename" />
-	    <result property="img_filetype" column="imgFiletype" />
-	    <result property="img_updated_at" column="imgUpdatedAt" />
-
- -->
 
 	<!-- 이미지 정보 추가 -->
 	<insert id="insertImg" parameterType = "Image">
 		<![CDATA[
 			INSERT INTO img_tb 
 			(member_id, img_location, img_filename, img_filetype, img_updated_at) 
-			VALUES 	(#{memberId},#{imgLocation},#{imgFilename},#{imgFiletype}, default)
+			VALUES 	(#{memberId}, #{imgLocation}, #{imgFilename}, #{imgFiletype}, default)
 		]]>
 	</insert>
 
@@ -206,6 +207,34 @@
 		<![CDATA[
 			SELECT member_id, img_location, img_filename, img_filetype, img_updated_at
 			FROM  img_tb
+			WHERE member_id = #{memberId}
+		 ]]>
+	</select>
+	
+	<!-- 이력서 정보 추가 -->
+	<insert id="insertResume" parameterType = "Resume">
+		<![CDATA[
+			INSERT INTO resume_tb 
+			(member_id, resume_location, resume_filename, resume_filetype, resume_updated_at, resume_open) 
+			VALUES 	(#{memberId}, #{resumeLocation}, #{resumeFilename}, #{resumeFiletype}, default, #{resumeOpen})
+		]]>
+	</insert>
+
+	<!-- 이력서 정보 수정 -->
+	<insert id="updateResume" parameterType = "Resume">
+		<![CDATA[
+			UPDATE resume_tb
+			SET resume_location = #{resumeLocation}, resume_filename= #{resumeFilename},
+				resume_filetype = #{resumeFiletype}, resume_updated_at = NOW(), resume_open = #{resumeOpen}
+			WHERE member_id = #{memberId}
+		]]>
+	</insert>
+	
+	<!-- 이력서 정보 조회 -->
+	<select id="selectResume" parameterType="Resume" resultMap="ResumeMapped">
+		<![CDATA[
+			SELECT member_id, resume_location, resume_filename, resume_filetype, resume_updated_at, resume_open
+			FROM  resume_tb
 			WHERE member_id = #{memberId}
 		 ]]>
 	</select>

@@ -1,11 +1,7 @@
 package org.ppiyung.ppiyung.member.controller;
 
-import java.io.File;
-import java.io.IOException;
 import java.nio.charset.Charset;
-import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -17,9 +13,8 @@ import org.ppiyung.ppiyung.member.service.MemberService;
 import org.ppiyung.ppiyung.member.vo.Image;
 import org.ppiyung.ppiyung.member.vo.Member;
 import org.ppiyung.ppiyung.member.vo.MemberExtended;
+import org.ppiyung.ppiyung.member.vo.Resume;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -40,7 +35,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping(value = "/member")
-@CrossOrigin(origins = "${auth.allowOrigin}", allowCredentials = "true")
+@CrossOrigin(origins = "${auth.allowOrigin}", allowCredentials = "true", exposedHeaders = {"Content-Disposition"})
 public class MemberController {
 
 	private Logger log = LogManager.getLogger("base");
@@ -104,7 +99,7 @@ public class MemberController {
 	@GetMapping(value = "/{memberId}")
 	public ResponseEntity<BasicResponseEntity<Object>>
 	getMember(@PathVariable("memberId") String memberIdFromUri,
-			@RequestParam("isCompany") boolean isCompany,
+			@RequestParam(value = "isCompany", defaultValue = "false") boolean isCompany,
 			Authentication authentication) {
 
 		BasicResponseEntity<Object> respBody = null;
@@ -298,7 +293,6 @@ public class MemberController {
 			result = service.saveImageFile(file, memberId, true);
 		}
 
-		// 리스폰스 만들기
 		BasicResponseEntity<Object> respBody = null;
 		int respCode = 0;
 		HttpHeaders headers = new HttpHeaders();
@@ -317,37 +311,57 @@ public class MemberController {
 		return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
 	}
 	
-	@GetMapping(value="/img/{memberId}")
+	@PostMapping(value="/resume")
 	public ResponseEntity<BasicResponseEntity<Object>>
-		getImageHandler(@PathVariable("memberId") String memberId,
-			Authentication authentication) {
-
-		Image result = null;
-		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
-
-		if (userDetails.getUsername().equals(memberId)) {
-			Image param = new Image();
-			param.setMemberId(memberId);
-
-			result = service.getImageFileInfo(param);
-			log.debug("테스트:" + result);
-		}
+		uploadResumeHandler(@RequestParam("file") MultipartFile file, Authentication authentication) {
 		
+
+		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
+		final String memberId = userDetails.getUsername();
+		
+		Resume result = null;
+		
+		Resume param = new Resume();
+		param.setMemberId(memberId);
+		if (service.getResumeFileInfo(param) == null) {
+			result = service.saveResumeFile(file, memberId, false);
+		} else {
+			result = service.saveResumeFile(file, memberId, true);
+		}
+
 		BasicResponseEntity<Object> respBody = null;
 		int respCode = 0;
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 		
 		if (result != null) {
-			log.debug("이미지 정보 조회 성공");
-			respBody = new BasicResponseEntity<Object>(true, "이미지 정보 조회에 성공하였습니다.", result);
+			log.debug("이력서 업로드 성공");
+			respBody = new BasicResponseEntity<Object>(true, "이력서 업로드에 성공하였습니다.", result);
 			respCode = HttpServletResponse.SC_OK;
 		} else {
-			log.debug("이미지 정보 조회 실패");
-			respBody = new BasicResponseEntity<Object>(false, "이미지 정보 조회에 실패하였습니다.", null);
+			log.debug("이력서 업로드 실패");
+			respBody = new BasicResponseEntity<Object>(false, "이력서 업로드에 실패하였습니다.", null);
 			respCode = HttpServletResponse.SC_BAD_REQUEST;
 		}
 		
 		return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
+	}
+	
+	@GetMapping(value="/{memberId}/resume")
+	public void downloadResumeHandler(
+			@PathVariable("memberId") String memberId, Authentication authentication,
+			HttpServletResponse response) {
+		
+		Resume resume = null;
+		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
+		if (userDetails.getUsername().equals(memberId)
+				|| userDetails.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))
+				|| userDetails.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_COMPANY"))) {
+			Resume param = new Resume();
+			param.setMemberId(memberId);
+			resume = service.getResumeFileInfo(param);
+		}
+		
+		service.serveResumeFile(resume, response);
 	}
 }

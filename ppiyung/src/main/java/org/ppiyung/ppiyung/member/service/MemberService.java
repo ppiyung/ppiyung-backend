@@ -3,10 +3,13 @@ package org.ppiyung.ppiyung.member.service;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.ppiyung.ppiyung.common.entity.PagingEntity;
 import org.ppiyung.ppiyung.member.vo.Image;
 import org.ppiyung.ppiyung.member.vo.Member;
 import org.ppiyung.ppiyung.member.vo.MemberExtended;
+import org.ppiyung.ppiyung.member.vo.Resume;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface MemberService {
@@ -36,4 +39,14 @@ public interface MemberService {
 	public Image getImageFileInfo(Image image);
 
 	public boolean updateImageFileInfo(Image image);
+
+	public Resume getResumeFileInfo(Resume resume);
+	
+	public boolean updateResumeFileInfo(Resume resume);
+	
+	public boolean addResumeFileInfo(Resume resume);
+
+	public Resume saveResumeFile(MultipartFile file, String memberId, boolean isUpdate);
+
+	public void serveResumeFile(Resume resume, HttpServletResponse response);
 }

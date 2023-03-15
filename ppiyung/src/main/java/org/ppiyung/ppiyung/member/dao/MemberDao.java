@@ -5,6 +5,7 @@ import java.util.List;
 import org.ppiyung.ppiyung.common.entity.PagingEntity;
 import org.ppiyung.ppiyung.member.vo.Image;
 import org.ppiyung.ppiyung.member.vo.Member;
+import org.ppiyung.ppiyung.member.vo.MemberExtended;
 
 public interface MemberDao {
 
@@ -15,6 +16,7 @@ public interface MemberDao {
 	//개별회원
 	public Member selectMemberId(Member member);
 	
+	public MemberExtended selectMemberIdJoinned(Member member);
 	
 	public void updateInfo(Member member) throws Exception;
 	

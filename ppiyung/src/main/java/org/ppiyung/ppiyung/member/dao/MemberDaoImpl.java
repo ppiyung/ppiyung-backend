@@ -6,6 +6,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.ppiyung.ppiyung.common.entity.PagingEntity;
 import org.ppiyung.ppiyung.member.vo.Image;
 import org.ppiyung.ppiyung.member.vo.Member;
+import org.ppiyung.ppiyung.member.vo.MemberExtended;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -27,6 +28,13 @@ public class MemberDaoImpl implements MemberDao {
 		return member;
 	}
 	
+	@Override
+	public MemberExtended selectMemberIdJoinned(Member param) {
+		MemberExtended member = session.selectOne("org.ppiyung.ppiyung.member.selectJoinned", param);
+		return member;
+	}
+
+
 	@Override
 	public void insertMember(Member param) throws Exception {
 		int count = session.insert("org.ppiyung.ppiyung.member.signin", param);

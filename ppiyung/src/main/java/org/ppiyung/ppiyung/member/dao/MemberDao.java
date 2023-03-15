@@ -31,4 +31,5 @@ public interface MemberDao {
 
 	public Image getMemberImage(Image image);
 	
+
 }

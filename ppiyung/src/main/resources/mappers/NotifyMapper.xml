@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!DOCTYPE mapper
@@ -39,4 +40,44 @@
 	</delete>
 	
 
+=======
+<?xml version="1.0" encoding="UTF-8"?>	
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.ppiyung.ppiyung.notify">
+	<resultMap id="NotifyMapped" type="Notify">
+		<result property="notificationId" column="notification_id" />
+		<result property="memberId" column="member_id" />
+		<result property="suggestId" column="suggest_id" />
+		<result property="notificationCreatedAt" column="notification_created_at" />
+	</resultMap>
+
+	<!-- 회원별 알림 목록 조회 -->
+	<select id="selectNotifyList" parameterType="String" resultType="HashMap"> 
+		<![CDATA[
+			select m.member_name, n.notification_created_at, a.apply_result, r.company_id,r.recruit_detail,r.recruit_title, s.company_id, s.suggest_id
+			from notification_tb as n
+			join apply_tb as a on a.apply_id = n.apply_id
+			join recruit_tb as r on  r.recruit_id = a.recruit_id
+			join suggest_tb as s on  n.suggest_id = s.suggest_id
+			join member_tb as m on m.member_id = n.member_id
+			where n.member_id = #{memberId};
+		]]>
+	</select>
+	
+	<!-- 알림 세부내역 조회 -->
+	<select id="detailNotify" parameterType="Integer" resultType="HashMap"> 
+		<![CDATA[
+			select m.member_name, n.notification_created_at, a.apply_result, r.company_id,r.recruit_detail,r.recruit_title, s.company_id, s.suggest_id
+			from notification_tb as n
+			join apply_tb as a on a.apply_id = n.apply_id
+			join recruit_tb as r on  r.recruit_id = a.recruit_id
+			join suggest_tb as s on  n.suggest_id = s.suggest_id
+			join member_tb as m on m.member_id = n.member_id
+			where notification_id = #{notificationId}
+		]]>
+	</select>
+>>>>>>> becceea8e79af99341788791d8db1a6eb1624ff4
 </mapper>

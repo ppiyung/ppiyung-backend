@@ -7,7 +7,7 @@ import org.ppiyung.ppiyung.board.vo.Board;
 import org.ppiyung.ppiyung.board.vo.BoardList;
 import org.ppiyung.ppiyung.board.vo.Like;
 import org.ppiyung.ppiyung.board.vo.Reply;
-import org.ppiyung.ppiyung.common.entity.Criteria;
+import org.ppiyung.ppiyung.common.entity.PagingEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +19,7 @@ public class BoardServiceImpl implements BoardService {
 
 	// 커뮤니티 게시글 전체 목록 출력 서비스
 	@Override
-	public List<BoardList> getListPaging(Criteria criteria) {
+	public List<BoardList> getListPaging(PagingEntity criteria) {
 		return dao.pagingInsertBoard(criteria);
 	}
 
@@ -123,5 +123,12 @@ public class BoardServiceImpl implements BoardService {
 			return false;
 		}
 	}
+	// 게시판 상세 조회 페이지
+	@Override
+	public List<BoardList> getdetailPost(int articleId){
+		return dao.detailBoard(articleId);
+	
+	}
+
 
 }

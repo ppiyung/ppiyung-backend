@@ -1,6 +1,6 @@
 package org.ppiyung.ppiyung.board.vo;
 
-import org.ppiyung.ppiyung.common.entity.Criteria;
+import org.ppiyung.ppiyung.common.entity.PagingEntity;
 
 import lombok.Data;
 import lombok.Getter;
@@ -28,11 +28,11 @@ public class BoardPage {
     private int total;
     
     /* 현재 페이지, 페이지당 게시물 표시수 정보 */
-    private Criteria cri;
+    private PagingEntity cri;
     
     
     // 생성자
-    public BoardPage(Criteria cri, int total) {
+    public BoardPage(PagingEntity cri, int total) {
         
         this.cri = cri;
         this.total = total;

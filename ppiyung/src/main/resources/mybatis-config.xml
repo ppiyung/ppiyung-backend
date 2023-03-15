@@ -17,13 +17,25 @@
 		<typeAlias type="org.ppiyung.ppiyung.common.entity.PagingEntity" alias="PagingEntity"/>
 	 	<typeAlias type="org.ppiyung.ppiyung.recruit.vo.Recruit" alias="Recruit"/>
 	 	<typeAlias type="org.ppiyung.ppiyung.board.vo.Reply" alias="Reply"/>
+<<<<<<< HEAD
 	 	<typeAlias type="org.ppiyung.ppiyung.common.entity.Criteria" alias="Criteria"/>
 	 	<typeAlias type="org.ppiyung.ppiyung.board.vo.Like" alias="Like"/>
+=======
+	 	<typeAlias type="org.ppiyung.ppiyung.common.entity.PagingEntity" alias="PagingEntity"/>
+	 	<typeAlias type="org.ppiyung.ppiyung.board.vo.Like" alias="Like"/>
+	 	<typeAlias type="org.ppiyung.ppiyung.notify.vo.Notification" alias="Notify"/>
+	 	<typeAlias type="org.ppiyung.ppiyung.recruit.vo.Suggest" alias="Suggest"/>
+>>>>>>> becceea8e79af99341788791d8db1a6eb1624ff4
 	 	<typeAlias type="org.ppiyung.ppiyung.recruit.vo.Apply" alias="Apply"/>
 	 	<typeAlias type="org.ppiyung.ppiyung.notify.vo.Notify" alias="Notify"/>
 	 	<typeAlias type="org.ppiyung.ppiyung.recruit.vo.BookMark" alias="BookMark"/>
 	 	<typeAlias type="org.ppiyung.ppiyung.recruit.vo.Suggest" alias="Suggest"/>
+<<<<<<< HEAD
 	 	 	<typeAlias type="org.ppiyung.ppiyung.recruit.vo.RecruitBookMark" alias="RecruitBookMark"/>
+=======
+	 	<typeAlias type="org.ppiyung.ppiyung.recruit.vo.RecruitBookMark" alias="RecruitBookMark"/>
+
+>>>>>>> becceea8e79af99341788791d8db1a6eb1624ff4
 	 </typeAliases>
-	 
+
 </configuration>

@@ -31,4 +31,5 @@ public interface MemberService {
 	public boolean addImageFileInfo(Image image);
 
 	public Image getImageFileInfo(Image image);
+
 }

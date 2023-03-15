@@ -62,7 +62,7 @@
 	         SELECT r.*, m.member_name FROM recruit_tb AS r
 	         JOIN member_tb AS m
              ON r.company_id=m.member_id
-	         WHERE work_area_id=#{workAreaId}
+	         WHERE r.work_area_id=#{workAreaId}
 	      ]]>
 	   </select>
 	   

@@ -47,9 +47,6 @@ public class MemberController {
 
 	@Autowired
 	private MemberService service;
-	
-	@Autowired
-	ResourceLoader rsLoader;
 
 	// 회원가입
 	@PostMapping(value = "signin")
@@ -283,60 +280,33 @@ public class MemberController {
 		
 	}
 	
-	
 	@PostMapping(value="/img")
 	public ResponseEntity<BasicResponseEntity<Object>>
 		uploadImageHandler(@RequestParam("file") MultipartFile file, Authentication authentication) {
 		
-		boolean fileSaveResult = false;
+
+		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
+		final String memberId = userDetails.getUsername();
 		
-		String filenameOriginal = file.getOriginalFilename();
-		long size = file.getSize();
+		Image result = null;
 		
-		String fileExtension = filenameOriginal.substring(filenameOriginal.lastIndexOf("."),filenameOriginal.length());
-		
-		Resource resource = rsLoader.getResource("resources/images");
-		String uploadFolder = "";
-		try {
-			uploadFolder = resource.getFile().getCanonicalPath();
-		} catch (IOException e1) {
-			fileSaveResult = false;
-			e1.printStackTrace();
+		Image param = new Image();
+		param.setMemberId(memberId);
+		if (service.getImageFileInfo(param) == null) {
+			result = service.saveImageFile(file, memberId, false);
+		} else {
+			result = service.saveImageFile(file, memberId, true);
 		}
-		
-		UUID uuid = UUID.randomUUID();
-		String filenameForSaving = uuid.toString();
-		
-		File saveFile = new File(uploadFolder + "/" + filenameForSaving + fileExtension);
-		try {
-			file.transferTo(saveFile);
-			fileSaveResult = true;
-			log.debug(saveFile);
-		} catch (IllegalStateException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
+
+		// 리스폰스 만들기
 		BasicResponseEntity<Object> respBody = null;
 		int respCode = 0;
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 		
-		Image image = null;
-		boolean dbResult = false;
-		if (fileSaveResult) {
-			UserDetails userDetails = (UserDetails)authentication.getPrincipal();
-			
-			image = new Image(userDetails.getUsername(),
-					filenameForSaving + fileExtension,
-					filenameOriginal, fileExtension, null);
-			dbResult = service.addImageFileInfo(image);
-		}
-		
-		if (fileSaveResult && dbResult) {
+		if (result != null) {
 			log.debug("이미지 업로드 성공");
-			respBody = new BasicResponseEntity<Object>(true, "이미지 업로드에 성공하였습니다.", image);
+			respBody = new BasicResponseEntity<Object>(true, "이미지 업로드에 성공하였습니다.", result);
 			respCode = HttpServletResponse.SC_OK;
 		} else {
 			log.debug("이미지 업로드 실패");

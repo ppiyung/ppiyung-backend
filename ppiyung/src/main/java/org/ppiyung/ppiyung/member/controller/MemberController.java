@@ -317,6 +317,7 @@ public class MemberController {
 		return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
 	}
 	
+
 	@GetMapping(value="/img/{memberId}")
 	public ResponseEntity<BasicResponseEntity<Object>>
 		getImageHandler(@PathVariable("memberId") String memberId,
@@ -324,6 +325,7 @@ public class MemberController {
 
 		Image result = null;
 		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
+
 
 		if (userDetails.getUsername().equals(memberId)) {
 			Image param = new Image();

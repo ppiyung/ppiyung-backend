@@ -33,4 +33,5 @@ public interface MemberDao {
 
 	public void updateMemberImage(Image image) throws Exception;
 	
+
 }

@@ -158,7 +158,7 @@
 	<!-- 직무별 이력서 공개 회원 조회 -->
 	<select id="seletResumeOpenMember" parameterType="String" resultMap="MemberMapped">
 		<![CDATA[
-			 SELECT A.member_id, member_name, member_birth,
+			SELECT A.member_id, member_name, member_birth,
 				member_gender, member_phone, member_addr,
 				member_nickname, member_email, member_info,
 				work_area_id

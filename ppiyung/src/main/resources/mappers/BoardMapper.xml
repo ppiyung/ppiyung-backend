@@ -89,6 +89,12 @@
 		(SELECT M.member_nickname FROM member_tb as M where M.member_id = B.member_id) 
 		as member_nickname FROM community_article_tb as B ]]> </select> -->
 
+	<select id="totalCount" resultType="_int">
+    	<![CDATA[
+        select COUNT(*) from community_article_tb
+    	]]>
+    </select>
+
 	<!-- 커뮤니티 게시글 삽입 -->
 	<insert id="insertBoard" parameterType="Board">
 

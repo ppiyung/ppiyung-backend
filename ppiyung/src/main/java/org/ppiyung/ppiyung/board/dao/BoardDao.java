@@ -41,5 +41,7 @@ public interface BoardDao  {
 	
 	// 커뮤니티 커뮤니티 좋아요 삭제
 	void deleteLike(Like like) throws Exception;
+
+	public int totalCount();
 	
 }

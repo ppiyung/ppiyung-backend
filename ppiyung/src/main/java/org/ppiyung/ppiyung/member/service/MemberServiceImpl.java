@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.ServletOutputStream;
@@ -19,6 +20,7 @@ import org.ppiyung.ppiyung.member.dao.MemberDao;
 import org.ppiyung.ppiyung.member.vo.Image;
 import org.ppiyung.ppiyung.member.vo.Member;
 import org.ppiyung.ppiyung.member.vo.MemberExtended;
+import org.ppiyung.ppiyung.member.vo.OpenResumeOption;
 import org.ppiyung.ppiyung.member.vo.Resume;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -142,8 +144,8 @@ public class MemberServiceImpl implements MemberService {
 
 	//직무별 이력서 공개 멤버조회
 	@Override
-	public List<Member> getResumeOpenMember(String workAreaId) {
-		List<Member> list = dao.getResumeOpenMember(workAreaId);
+	public List<MemberExtended> getResumeOpenMember(OpenResumeOption option) {
+		List<MemberExtended> list = dao.getResumeOpenMember(option);
 		return list;
 	}
 

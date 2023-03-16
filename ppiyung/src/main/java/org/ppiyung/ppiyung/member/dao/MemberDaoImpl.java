@@ -1,12 +1,14 @@
 package org.ppiyung.ppiyung.member.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.ppiyung.ppiyung.common.entity.PagingEntity;
 import org.ppiyung.ppiyung.member.vo.Image;
 import org.ppiyung.ppiyung.member.vo.Member;
 import org.ppiyung.ppiyung.member.vo.MemberExtended;
+import org.ppiyung.ppiyung.member.vo.OpenResumeOption;
 import org.ppiyung.ppiyung.member.vo.Resume;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -74,8 +76,8 @@ public class MemberDaoImpl implements MemberDao {
 
 
 	@Override
-	public List<Member> getResumeOpenMember(String param) {
-		List<Member> list = session.selectList("org.ppiyung.ppiyung.member.seletResumeOpenMember" , param);
+	public List<MemberExtended> getResumeOpenMember(OpenResumeOption param) {
+		List<MemberExtended> list = session.selectList("org.ppiyung.ppiyung.member.seletResumeOpenMember" , param);
 		return list;
 	}
 

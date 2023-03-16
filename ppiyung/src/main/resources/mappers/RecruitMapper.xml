@@ -45,8 +45,75 @@
 		  ]]>
 	   </update>
 	   
-	   <!-- 전체 채용 공고 조회 -->
+   	   <select id="countTotal" parameterType="RecruitOption" resultType="Integer">
+         SELECT COUNT(*) FROM recruit_tb AS r
+         JOIN member_tb AS m
+            ON r.company_id=m.member_id
+         <where>
+         	<if test="recruitId != 0">
+         		recruit_id = #{recruitId}
+         	</if>
+         	<if test="companyId != null">
+         		AND company_id = #{companyId}
+         	</if>
+         	<if test="keyword != null">
+         		AND (recruit_title LIKE CONCAT ('%',#{keyword},'%') OR recruit_detail LIKE CONCAT ('%',#{keyword},'%'))
+         	</if>
+         	<if test="workAreaId != 0">
+         		AND r.work_area_id = #{workAreaId}
+         	</if>
+         	<if test="includeClosed == false">
+         		<![CDATA[
+	         		AND r.recruit_start_at <= NOW() AND r.recruit_end_at >= NOW()
+         		]]>
+         	</if>
+         </where>
+         ORDER BY recruit_id DESC
+	   </select>
+	   
+   	   <select id="select" parameterType="RecruitOption" resultMap="RecruitMapped">
+         SELECT r.*, m.member_name FROM recruit_tb AS r
+         JOIN member_tb AS m
+            ON r.company_id=m.member_id
+         <where>
+         	<if test="recruitId != 0">
+         		recruit_id = #{recruitId}
+         	</if>
+         	<if test="companyId != null">
+         		AND company_id = #{companyId}
+         	</if>
+         	<if test="keyword != null">
+         		AND (recruit_title LIKE CONCAT ('%',#{keyword},'%') OR recruit_detail LIKE CONCAT ('%',#{keyword},'%'))
+         	</if>
+         	<if test="workAreaId != 0">
+         		AND r.work_area_id = #{workAreaId}
+         	</if>
+         	<if test="includeClosed == false">
+         		<![CDATA[
+	         		AND r.recruit_start_at <= NOW() AND r.recruit_end_at >= NOW()
+         		]]>
+         	</if>
+         </where>
+         ORDER BY recruit_id DESC
+         <if test="skip != null and amount != null">
+         	LIMIT #{skip}, #{amount}
+         </if>
+	   </select>
+	   
+	   <!-- 전체 채용 공고 조회 (마감 공고 포함 안함) -->
 	   <select id="selectAll" parameterType="PagingEntity" resultMap="RecruitMapped">
+	      <![CDATA[
+	         SELECT r.*, m.member_name FROM recruit_tb AS r
+	         JOIN member_tb AS m
+             ON r.company_id=m.member_id
+             WHERE r.recruit_start_at <= NOW() AND r.recruit_end_at >= NOW()
+	         ORDER BY recruit_id DESC
+	         LIMIT #{skip}, #{amount}
+	      ]]>
+	   </select>
+	   	   
+	   <!-- 전체 채용 공고 조회 (마감 공고 포함) -->
+	   <select id="selectAllIncludeClosed" parameterType="PagingEntity" resultMap="RecruitMapped">
 	      <![CDATA[
 	         SELECT r.*, m.member_name FROM recruit_tb AS r
 	         JOIN member_tb AS m
@@ -56,7 +123,7 @@
 	      ]]>
 	   </select>
 	   
-	   <!-- 직무별 채용 공고 조회 -->
+	   <!-- 직무별 채용 공고 조회 (마감 공고 포함 안함) -->
 	   <select id="selectByWorkAreaId" parameterType="Integer" resultMap="RecruitMapped">
 	      <![CDATA[
 	         SELECT r.*, m.member_name FROM recruit_tb AS r
@@ -101,6 +168,21 @@
 				SELECT COUNT(apply_id) FROM apply_tb 
 				WHERE recruit_id 
 				IN (SELECT recruit_id FROM recruit_tb WHERE company_id = #{companyId}) ]]>
+		</select>
+		
+		<!-- 전체 채용 통계 조회 -->
+	   <select id="selectStatistic" resultType="HashMap">
+			<![CDATA[ 
+				SELECT
+					(SELECT COUNT(*)
+						FROM recruit_tb
+						WHERE recruit_start_at <= NOW() AND recruit_end_at >= NOW())
+					AS ongoingRecruits,
+					(SELECT COUNT(*)
+						FROM apply_tb
+						WHERE apply_id
+							IN (SELECT recruit_id  FROM recruit_tb WHERE recruit_start_at <= NOW() AND recruit_end_at >= NOW()))
+					AS applyMembers; ]]>
 		</select>
 	   
 	   <!-- 기업별 채용 공고 전체 목록 조회 -->

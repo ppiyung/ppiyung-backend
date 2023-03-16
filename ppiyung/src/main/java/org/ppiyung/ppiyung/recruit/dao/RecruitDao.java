@@ -7,6 +7,7 @@ import org.ppiyung.ppiyung.common.entity.PagingEntity;
 import org.ppiyung.ppiyung.recruit.vo.Apply;
 import org.ppiyung.ppiyung.recruit.vo.BookMark;
 import org.ppiyung.ppiyung.recruit.vo.Recruit;
+import org.ppiyung.ppiyung.recruit.vo.RecruitOption;
 import org.ppiyung.ppiyung.recruit.vo.Suggest;
 
 public interface RecruitDao {
@@ -14,7 +15,8 @@ public interface RecruitDao {
 	public void insertRecruitNotice(Recruit recruit) throws Exception;
 	public void updateRecruitNotice(Recruit recruit) throws Exception;
 	public void updateRecruitEndDate(int recruitId) throws Exception;
-	public List<Recruit> selectAll(PagingEntity pagingEntity);
+	public List<Recruit> selectAll(RecruitOption option);
+	public int selectAllTotal(RecruitOption option);
 	public List<Recruit> selectByWorkAreaId(int work_area_id);
 	public List<Recruit> selectByKeyword(String keyword);
 	public HashMap<String, Object> selectByCompany(String companyId);

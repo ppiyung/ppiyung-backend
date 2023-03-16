@@ -38,6 +38,7 @@ public class RecruitOption {
 	/* 생성자 => 원하는 pageNum, 원하는 amount */
 	public RecruitOption(int pageNum, int amount) {
 		this.pageNum = pageNum;
+		this.skip = (pageNum-1) * amount;
 		this.amount = amount;
 	}
 

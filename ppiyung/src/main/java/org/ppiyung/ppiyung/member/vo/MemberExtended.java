@@ -30,4 +30,5 @@ public class MemberExtended {
 	private boolean memberVerified;
 	private Image profileImage;
 	private Resume memberResume;
+	private Date lastSuggested;
 }

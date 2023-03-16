@@ -1,11 +1,13 @@
 package org.ppiyung.ppiyung.member.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.ppiyung.ppiyung.common.entity.PagingEntity;
 import org.ppiyung.ppiyung.member.vo.Image;
 import org.ppiyung.ppiyung.member.vo.Member;
 import org.ppiyung.ppiyung.member.vo.MemberExtended;
+import org.ppiyung.ppiyung.member.vo.OpenResumeOption;
 import org.ppiyung.ppiyung.member.vo.Resume;
 
 public interface MemberDao {
@@ -26,7 +28,7 @@ public interface MemberDao {
 
 	public void leaveMember(String memberId) throws Exception;
 
-	public List<Member> getResumeOpenMember(String workAreaId);
+	public List<MemberExtended> getResumeOpenMember(OpenResumeOption option);
 
 	public void insertMemberImage(Image image) throws Exception;
 

@@ -66,7 +66,7 @@
 	    <result property="resumeUpdatedAt" column="resume_updated_at" />
 	    <result property="resumeOpen" column="resume_open" />
     </resultMap>
-
+    
 	<select id="login" parameterType="Member"
 	        resultMap="MemberMapped">		
 	        
@@ -81,15 +81,54 @@
 		]]>
 	</select>
 	
+	<!-- 회원전체조회 전체 행 수-->
+	<select id="selectAllTotal" parameterType="MemberOption" resultType="_int">		
+			SELECT COUNT(*)
+			FROM member_tb
+			 <where>
+				 <if test="memberId != null">
+					 member_id = #{memberId}
+				 </if>
+				 <if test="memberType != null">
+					 AND member_type = #{memberType}
+				 </if>
+				 <if test="memberName != null">
+					 AND member_name = #{memberName}
+				 </if>
+				 <if test="memberName != null">
+					 AND member_name = #{memberName}
+				 </if>
+				 <if test="noVerified == true">
+					 AND member_verified = 0
+				 </if>
+			 </where>
+	</select>
+	
 	<!-- 회원전체조회 -->
-		<select id="selectAll" parameterType="PagingEntity"  resultMap="MemberMapped">		
-		<![CDATA[
+		<select id="selectAll" parameterType="MemberOption" resultMap="MemberMapped">		
 			SELECT member_id, member_pw, member_name, member_birth,
 					member_gender, member_phone, member_addr, member_coord_x, member_coord_y,
 					member_nickname, member_email, member_type, member_reg_num, member_info,
 					member_active, member_created_at, work_area_id, member_verified
-			FROM member_tb   ORDER BY  member_created_at DESC LIMIT #{skip}, #{amount}
-		]]>
+			FROM member_tb
+			 <where>
+				 <if test="memberId != null">
+					 member_id = #{memberId}
+				 </if>
+				 <if test="memberType != null">
+					 AND member_type = #{memberType}
+				 </if>
+				 <if test="memberName != null">
+					 AND member_name = #{memberName}
+				 </if>
+				 <if test="memberName != null">
+					 AND member_name = #{memberName}
+				 </if>
+				 <if test="noVerified == true">
+					 AND member_verified = 0
+				 </if>
+			 </where>
+			ORDER BY member_created_at DESC LIMIT #{skip}, #{amount}
 	</select>
 	
 	<!-- 개별회원조회 -->

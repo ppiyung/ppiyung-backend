@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.ServletOutputStream;
@@ -14,12 +13,12 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.ppiyung.ppiyung.common.entity.PagingEntity;
 import org.ppiyung.ppiyung.common.util.JwtTokenUtil;
 import org.ppiyung.ppiyung.member.dao.MemberDao;
 import org.ppiyung.ppiyung.member.vo.Image;
 import org.ppiyung.ppiyung.member.vo.Member;
 import org.ppiyung.ppiyung.member.vo.MemberExtended;
+import org.ppiyung.ppiyung.member.vo.MemberOption;
 import org.ppiyung.ppiyung.member.vo.OpenResumeOption;
 import org.ppiyung.ppiyung.member.vo.Resume;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -114,9 +113,14 @@ public class MemberServiceImpl implements MemberService {
 
 	// 모든 멤버 조회
 	@Override
-	public List<Member> getAllMember(PagingEntity pagingEntity) {
-		List<Member> list = dao.getAllMember(pagingEntity);
+	public List<Member> getAllMember(MemberOption option) {
+		List<Member> list = dao.getAllMember(option);
 		return list;
+	}
+
+	@Override
+	public int getAllMemberCount(MemberOption option) {
+		return dao.getAllMemberCount(option);
 	}
 
 	// 토큰

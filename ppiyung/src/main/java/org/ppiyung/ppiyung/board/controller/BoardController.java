@@ -3,7 +3,9 @@ package org.ppiyung.ppiyung.board.controller;
 import java.nio.charset.Charset;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -46,22 +48,29 @@ public class BoardController {
 	@GetMapping("/article")
 	public ResponseEntity<BasicResponseEntity<Object>> getCommunityList(@RequestParam("page") int page,
 			@RequestParam("size") int size, 
-			@RequestParam("")Authentication authentication) {
+			Authentication authentication) {
 		PagingEntity criteria = new PagingEntity();
 		criteria.setpageNum(page);
 		criteria.setAmount(size);
 		
 		List<BoardList> result = service.getListPaging(criteria);
+		int total = service.getArticlesCount();
+		
 		BasicResponseEntity<Object> respBody = null;
 		int respCode = 0;
 
 		if (result != null) {
 			log.debug("전체 게시글 조회 성공");
-			respBody = new BasicResponseEntity<Object>(true, "전체 커뮤니티 게시글 완료",result);
+			
+			Map<String, Object> payload = new HashMap<String, Object>();
+			payload.put("total", total);
+			payload.put("list", result);
+			
+			respBody = new BasicResponseEntity<Object>(true, "전체 커뮤니티 게시글 완료", payload);
 			respCode = HttpServletResponse.SC_OK;
 		} else {
 			log.debug("전체 게시글 조회 실폐");
-			respBody = new BasicResponseEntity<Object>(false, "전체 커뮤니티 게시글 실패", result);
+			respBody = new BasicResponseEntity<Object>(false, "전체 커뮤니티 게시글 실패", null);
 			respCode = HttpServletResponse.SC_BAD_REQUEST;
 		}
 

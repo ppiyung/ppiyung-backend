@@ -130,4 +130,9 @@ public class BoardServiceImpl implements BoardService {
 		}
 	}
 
+	@Override
+	public int getArticlesCount() {
+		return dao.totalCount();
+	}
+
 }

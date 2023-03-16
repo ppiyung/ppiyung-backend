@@ -51,6 +51,10 @@ public interface RecruitService {
 
 	public List<Suggest> getJobOfferOfCompany(String companyId);
 
+	public HashMap<String, Object> getRecruitStatus();
+
+	public int getRecruitListTotal(RecruitOption option);
+
 
 	
 }

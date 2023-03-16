@@ -60,6 +60,12 @@ public class RecruitDaoImpl implements RecruitDao {
 	}
 
 	@Override
+	public int selectAllTotal(RecruitOption option) {
+		int count = session.selectOne("org.ppiyung.ppiyung.recruit.countTotal", option);
+		return count;
+	}
+
+	@Override
 	public List<Recruit> selectByKeyword(String keyword) {
 		List<Recruit> list = session.selectList("org.ppiyung.ppiyung.recruit.selectByKeyword", keyword);
 
@@ -81,6 +87,10 @@ public class RecruitDaoImpl implements RecruitDao {
 		map.put("applicantsPassed", applicatnsPassedNum);
 
 		return map;
+	}
+
+	public HashMap<String, Object> selectStatistic() {
+		return session.selectOne("org.ppiyung.ppiyung.recruit.selectStatistic");
 	}
 
 	@Override

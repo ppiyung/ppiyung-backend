@@ -16,6 +16,7 @@ public interface RecruitDao {
 	public void updateRecruitNotice(Recruit recruit) throws Exception;
 	public void updateRecruitEndDate(int recruitId) throws Exception;
 	public List<Recruit> selectAll(RecruitOption option);
+	public int selectAllTotal(RecruitOption option);
 	public List<Recruit> selectByWorkAreaId(int work_area_id);
 	public List<Recruit> selectByKeyword(String keyword);
 	public HashMap<String, Object> selectByCompany(String companyId);

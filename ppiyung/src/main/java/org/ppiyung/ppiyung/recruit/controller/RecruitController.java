@@ -3,6 +3,7 @@ package org.ppiyung.ppiyung.recruit.controller;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -156,6 +157,7 @@ public class RecruitController {
 			option.setKeyword(keyword);
 		}
 		
+		int total = service.getRecruitListTotal(option);
 		List<Recruit> result = service.getRecruitList(option);	
         log.debug("!!" + result);
 		BasicResponseEntity<Object> respBody = null;
@@ -163,11 +165,16 @@ public class RecruitController {
 		
 		if(result != null) {
 			log.debug("전체 공고 조회 성공");
-			respBody = new BasicResponseEntity<Object> (true, "전체 공고 조회 완료", result);
+			
+			Map<String, Object> payload = new HashMap<String, Object>();
+			payload.put("total", total);
+			payload.put("list", result);
+			
+			respBody = new BasicResponseEntity<Object> (true, "전체 공고 조회 완료", payload);
 			respCode = HttpServletResponse.SC_OK;
 		} else {
 			log.debug("전체 공고 조회 실패");
-			respBody = new BasicResponseEntity<Object> (false, "전체 조회 실패", result);
+			respBody = new BasicResponseEntity<Object> (false, "전체 조회 실패", null);
 			respCode = HttpServletResponse.SC_BAD_REQUEST;
 		}
 		
@@ -197,23 +204,63 @@ public class RecruitController {
 		
 		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
 		
-		if (userDetails.getUsername().equals(companyId)) {
+		if (userDetails.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
 			
 			result = service.getRecruitStatusOfCompany(companyId);
 		    log.debug(result);
 		    
 			if(result != null) {   
-			log.debug("공고 조회 성공");
-			respBody = new BasicResponseEntity<Object> (true, "공고 조회 완료", result);
-			respCode = HttpServletResponse.SC_OK;
+				log.debug("조회 성공");
+				respBody = new BasicResponseEntity<Object> (true, "조회 완료", result);
+				respCode = HttpServletResponse.SC_OK;
 		    } else {
-		    	log.debug("공고 조회 실패");
-				respBody = new BasicResponseEntity<Object> (false, "공고 조회 실패", result);
+		    	log.debug("조회 실패");
+				respBody = new BasicResponseEntity<Object> (false, "조회 실패", result);
 				respCode = HttpServletResponse.SC_BAD_REQUEST;
 		    }
 		} else {
-			log.debug("공고 조회 실패");
-			respBody = new BasicResponseEntity<Object> (false, "공고 조회 실패", result);
+			log.debug("조회 실패");
+			respBody = new BasicResponseEntity<Object> (false, "조회 실패", result);
+			respCode = HttpServletResponse.SC_BAD_REQUEST;
+		}
+		
+    	return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
+
+    }
+    
+ // 전체 채용 공고 현황 조회 
+    @GetMapping(value="/statistics")
+    public ResponseEntity<BasicResponseEntity<Object>> getRecruitStatus(Authentication authentication) {
+        
+    	
+        BasicResponseEntity<Object> respBody = null;
+        int respCode=0;
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(new MediaType("application", "json",
+				Charset.forName("UTF-8")));
+		
+		HashMap<String, Object> result = null;
+		
+		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
+		
+		if (userDetails.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
+			
+			result = service.getRecruitStatus();
+		    log.debug(result);
+		    
+			if(result != null) {   
+			log.debug("조회 성공");
+			respBody = new BasicResponseEntity<Object> (true, "조회 완료", result);
+			respCode = HttpServletResponse.SC_OK;
+		    } else {
+		    	log.debug("조회 실패");
+				respBody = new BasicResponseEntity<Object> (false, "조회 실패", result);
+				respCode = HttpServletResponse.SC_BAD_REQUEST;
+		    }
+		} else {
+			log.debug("조회 실패");
+			respBody = new BasicResponseEntity<Object> (false, "조회 실패", result);
 			respCode = HttpServletResponse.SC_BAD_REQUEST;
 		}
 		

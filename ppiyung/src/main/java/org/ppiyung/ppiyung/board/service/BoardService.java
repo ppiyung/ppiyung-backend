@@ -40,4 +40,7 @@ public interface BoardService {
 	// 게시글 좋아요 삭제 service
 	boolean deleteCoummunityLike(Like like);
 	
+	// 게시글 개수 세기
+	public int getArticlesCount();
+	
 }

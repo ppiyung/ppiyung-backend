@@ -45,6 +45,7 @@
 	    <result property="memberCreatedAt" column="member_created_at" />
 	    <result property="workAreaId" column="work_area_id" />
    	    <result property="memberVerified" column="member_verified" />
+    	<result property="lastSuggested" column="last_suggested" />
    	    <association property="profileImage" resultMap="ImageMapped" />
    	    <association property="memberResume" resultMap="ResumeMapped" />
     </resultMap>
@@ -169,17 +170,24 @@
 	
 	
 	<!-- 직무별 이력서 공개 회원 조회 -->
-	<select id="seletResumeOpenMember" parameterType="String" resultMap="MemberMapped">
+	<select id="seletResumeOpenMember" parameterType="OpenResumeOption" resultMap="MemberExtendedMapped">
 		<![CDATA[
 			SELECT A.member_id, member_name, member_birth,
 				member_gender, member_phone, member_addr,
 				member_nickname, member_email, member_info,
-				work_area_id
+				work_area_id, resume_updated_at, resume_open,
+				(SELECT suggest_created_at
+					FROM suggest_tb
+					WHERE member_id = A.member_id AND company_id = #{companyId}
+					ORDER BY suggest_created_at
+					DESC LIMIT 1) AS last_suggested
 			FROM 
 			member_tb AS A JOIN resume_tb AS B
 			ON  A.member_id = B.member_id 
 			WHERE A.work_area_id= #{workAreaId}
 			AND B.resume_open=1
+            ORDER BY resume_updated_at DESC
+            LIMIT #{skip}, #{amount}
 		 ]]>
 	</select>
 

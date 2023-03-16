@@ -2,6 +2,7 @@ package org.ppiyung.ppiyung.member.service;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -9,6 +10,7 @@ import org.ppiyung.ppiyung.common.entity.PagingEntity;
 import org.ppiyung.ppiyung.member.vo.Image;
 import org.ppiyung.ppiyung.member.vo.Member;
 import org.ppiyung.ppiyung.member.vo.MemberExtended;
+import org.ppiyung.ppiyung.member.vo.OpenResumeOption;
 import org.ppiyung.ppiyung.member.vo.Resume;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -30,7 +32,7 @@ public interface MemberService {
 
 	public boolean leaveMember(String memberId);
 
-	public List<Member> getResumeOpenMember(String workAreaId);
+	public List<MemberExtended> getResumeOpenMember(OpenResumeOption option);
 
 	public Image saveImageFile(MultipartFile file, String memberId, boolean isUpdate);
 	

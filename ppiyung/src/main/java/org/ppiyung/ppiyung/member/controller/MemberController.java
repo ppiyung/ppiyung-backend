@@ -1,7 +1,9 @@
 package org.ppiyung.ppiyung.member.controller;
 
 import java.nio.charset.Charset;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -13,6 +15,7 @@ import org.ppiyung.ppiyung.member.service.MemberService;
 import org.ppiyung.ppiyung.member.vo.Image;
 import org.ppiyung.ppiyung.member.vo.Member;
 import org.ppiyung.ppiyung.member.vo.MemberExtended;
+import org.ppiyung.ppiyung.member.vo.OpenResumeOption;
 import org.ppiyung.ppiyung.member.vo.Resume;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -252,21 +255,27 @@ public class MemberController {
 	//직무 분야별 이력서 공개한 회원 목록 조회 
 	@GetMapping(value="/resume/{workAreaId}")
 	public ResponseEntity<BasicResponseEntity<Object>> 
-				workAreaOpenMember(@PathVariable("workAreaId") String workAreaId ,Authentication authentication) {
+				workAreaOpenMember(@PathVariable("workAreaId") int workAreaId,
+				Authentication authentication,
+				@RequestParam(value="page", defaultValue = "1") int page,
+				@RequestParam(value="size", defaultValue = "10") int size) {
 		BasicResponseEntity<Object> respBody = null;
 		int respCode = 0;
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 		
-		List<Member> list = service.getResumeOpenMember(workAreaId);
-		
 		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
-		boolean hasAutority = userDetails.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_COMPANY"));
-		if(list != null && hasAutority) {
+		if(userDetails.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_COMPANY"))) {	
+			OpenResumeOption option = new OpenResumeOption(page, size);
+			option.setWorkAreaId(workAreaId);
+			option.setCompanyId(userDetails.getUsername());
+			
+			List<MemberExtended> list = service.getResumeOpenMember(option);
+			
 			log.debug(" 공개한 회원 목록 조회 성공");
 			respBody = new BasicResponseEntity<Object>(true, " 공개한 회원 목록 조회성공하였습니다.", list);
 			respCode = HttpServletResponse.SC_OK;
-		}else {
+		} else {
 			log.debug(" 공개한 회원 목록 조회 실패");
 			respBody = new BasicResponseEntity<Object>(false, " 공개한 회원 목록 조회 실패하였습니다.", null);
 			respCode = HttpServletResponse.SC_BAD_REQUEST;

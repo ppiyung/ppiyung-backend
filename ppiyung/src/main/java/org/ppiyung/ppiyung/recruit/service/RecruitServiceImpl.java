@@ -60,6 +60,12 @@ public class RecruitServiceImpl implements RecruitService{
 	}
 
 	@Override
+	public int getRecruitListTotal(RecruitOption option) {
+		int count = dao.selectAllTotal(option);
+		return count;
+	}
+
+	@Override
 	public  List<Recruit> getRecruitListByWorkAreaId(int work_area_id) {
 		List<Recruit> list = dao.selectByWorkAreaId(work_area_id);
 		return list;
@@ -73,10 +79,17 @@ public class RecruitServiceImpl implements RecruitService{
     
     @Override
 	public HashMap<String, Object> getRecruitStatusOfCompany(String companyId) {
-	   HashMap<String, Object> map = dao.selectByCompany(companyId);
-	return map;
-}
+    	HashMap<String, Object> map = dao.selectByCompany(companyId);
+		return map;
+	}
+    
     @Override
+	public HashMap<String, Object> getRecruitStatus() {
+    	HashMap<String, Object> map = dao.selectStatistic();
+		return map;
+	}
+
+	@Override
     public List<Recruit> getRecruitListOfCompany(String companyId) {
     	List<Recruit> list = dao.selectAllByCompany(companyId);
 		return list;

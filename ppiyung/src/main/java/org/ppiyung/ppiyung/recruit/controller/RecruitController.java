@@ -458,7 +458,9 @@ public class RecruitController {
     // 일반회원 -회원별 받은 입사 제안 조회
     @GetMapping(value="/suggest/member/{member_id}")
     public ResponseEntity<BasicResponseEntity<Object>> 
-    getJobOfferOfMember(@PathVariable("member_id") String memberId, 
+    getJobOfferOfMember(@PathVariable("member_id") String memberId,
+    		@RequestParam("page") int pageNum,
+			@RequestParam("size") int amount,
     		Authentication authentication) {
         
 		BasicResponseEntity<Object> respBody = null;

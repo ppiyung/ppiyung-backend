@@ -9,6 +9,7 @@ import org.ppiyung.ppiyung.recruit.vo.Apply;
 import org.ppiyung.ppiyung.recruit.vo.BookMark;
 import org.ppiyung.ppiyung.recruit.vo.Recruit;
 import org.ppiyung.ppiyung.recruit.vo.RecruitBookMark;
+import org.ppiyung.ppiyung.recruit.vo.RecruitOption;
 import org.ppiyung.ppiyung.recruit.vo.Suggest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -53,8 +54,8 @@ public class RecruitDaoImpl implements RecruitDao {
 
 	@Override
 
-	public List<Recruit> selectAll(PagingEntity pagingEntity) {
-        List<Recruit> list = session.selectList("org.ppiyung.ppiyung.recruit.selectAll", pagingEntity);
+	public List<Recruit> selectAll(RecruitOption option) {
+        List<Recruit> list = session.selectList("org.ppiyung.ppiyung.recruit.select", option);
 		return list;
 	}
 

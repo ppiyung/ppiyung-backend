@@ -3,6 +3,7 @@ package org.ppiyung.ppiyung.recruit.controller;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -15,6 +16,7 @@ import org.ppiyung.ppiyung.recruit.vo.Apply;
 import org.ppiyung.ppiyung.recruit.vo.ApplyExtended;
 import org.ppiyung.ppiyung.recruit.vo.BookMark;
 import org.ppiyung.ppiyung.recruit.vo.Recruit;
+import org.ppiyung.ppiyung.recruit.vo.RecruitOption;
 import org.ppiyung.ppiyung.recruit.vo.Suggest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -136,27 +138,44 @@ public class RecruitController {
 	
 	// 전체 채용 공고 조회 
 	@GetMapping(value="")
-	public ResponseEntity<BasicResponseEntity<Object>> 
-	getRecruitList(@RequestParam("pagenum") int pageNum, @RequestParam("amount") int amount){ 
+	public ResponseEntity<BasicResponseEntity<Object>> getRecruitList(@RequestParam("page") int pageNum,
+			@RequestParam("size") int amount,
+			@RequestParam(value = "workArea", defaultValue = "0") int workAreaId,
+			@RequestParam(value = "company", defaultValue = "") String companyId,
+			@RequestParam(value = "keyword", defaultValue = "") String keyword,
+			@RequestParam(value = "closed", defaultValue = "false") boolean closed){ 
   		
-		log.debug(pageNum + " " + amount );
-		PagingEntity pagingEntity = new PagingEntity();
-		pagingEntity.setpageNum(pageNum);
-		pagingEntity.setAmount(amount);
+		RecruitOption option = new RecruitOption(pageNum, amount);
+		option.setRecruitId(0);
+		option.setIncludeClosed(closed);
+		if (workAreaId != 0) {
+			option.setWorkAreaId(workAreaId);
+		}
+		if (!companyId.equals("")) {
+			option.setCompanyId(companyId);
+		}
+		if (!keyword.equals("")) {
+			option.setKeyword(keyword);
+		}
 		
-		
-        List<Recruit> result = service.getRecruitList(pagingEntity);
+		int total = service.getRecruitListTotal(option);
+		List<Recruit> result = service.getRecruitList(option);	
         log.debug("!!" + result);
 		BasicResponseEntity<Object> respBody = null;
 		int respCode=0;
 		
 		if(result != null) {
 			log.debug("전체 공고 조회 성공");
-			respBody = new BasicResponseEntity<Object> (true, "전체 공고 조회 완료", result);
+			
+			Map<String, Object> payload = new HashMap<String, Object>();
+			payload.put("total", total);
+			payload.put("list", result);
+			
+			respBody = new BasicResponseEntity<Object> (true, "전체 공고 조회 완료", payload);
 			respCode = HttpServletResponse.SC_OK;
 		} else {
 			log.debug("전체 공고 조회 실패");
-			respBody = new BasicResponseEntity<Object> (false, "전체 조회 실패", result);
+			respBody = new BasicResponseEntity<Object> (false, "전체 조회 실패", null);
 			respCode = HttpServletResponse.SC_BAD_REQUEST;
 		}
 		
@@ -166,68 +185,6 @@ public class RecruitController {
 		
 		return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
 		
-	}
-	
-	// 직무별 채용공고 조회
-	@GetMapping(value="/workarea/{work_area_id}")
-	public ResponseEntity<BasicResponseEntity<Object>> 
-		getRecruitListByWorkAreaId(@PathVariable("work_area_id") int work_area_id){ 
-		
-		log.debug(work_area_id);
-		
-		List<Recruit> result = service.getRecruitListByWorkAreaId( work_area_id );
-		
-		BasicResponseEntity<Object> respBody = null;
-		int respCode=0;
-		
-		if(result != null) {
-			log.debug("직무별 공고 조회 성공");
-			respBody = new BasicResponseEntity<Object> (true, "직무별 공고 조회 완료", result);
-			respCode = HttpServletResponse.SC_OK;
-		} else {
-			log.debug("직무별 공고 조회 실패");
-			respBody = new BasicResponseEntity<Object> (false, "직무별 공고 조회 실패", result);
-			respCode = HttpServletResponse.SC_BAD_REQUEST;
-		}
-		
-		
-		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(new MediaType("application", "json",
-				Charset.forName("UTF-8")));
-		
-		return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
-
-      }
-	
-	// 키워드로 채용공고 조회(제목+본문 검색)
-	@GetMapping(value="/{keyword}")
-	public ResponseEntity<BasicResponseEntity<Object>> 
-		getRecruitListByKeyword(@PathVariable("keyword") String keyword){ 
-		
-		log.debug(keyword);
-		
-		List<Recruit> result = service.getRecruitListByKeyword(keyword);
-		
-		BasicResponseEntity<Object> respBody = null;
-		int respCode=0;
-		
-		if(result != null) {
-			log.debug("공고 조회 성공");
-			respBody = new BasicResponseEntity<Object> (true, "공고 조회 완료", result);
-			respCode = HttpServletResponse.SC_OK;
-		} else {
-			log.debug("공고 조회 실패");
-			respBody = new BasicResponseEntity<Object> (false, "공고 조회 실패", result);
-			respCode = HttpServletResponse.SC_BAD_REQUEST;
-		}
-		
-		
-		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(new MediaType("application", "json",
-				Charset.forName("UTF-8")));
-		
-		return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
-
 	}
 	
 	// 기업별 채용 공고 현황 조회 
@@ -248,23 +205,63 @@ public class RecruitController {
 		
 		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
 		
-		if (userDetails.getUsername().equals(companyId)) {
+		if (userDetails.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
 			
 			result = service.getRecruitStatusOfCompany(companyId);
 		    log.debug(result);
 		    
 			if(result != null) {   
-			log.debug("공고 조회 성공");
-			respBody = new BasicResponseEntity<Object> (true, "공고 조회 완료", result);
-			respCode = HttpServletResponse.SC_OK;
+				log.debug("조회 성공");
+				respBody = new BasicResponseEntity<Object> (true, "조회 완료", result);
+				respCode = HttpServletResponse.SC_OK;
 		    } else {
-		    	log.debug("공고 조회 실패");
-				respBody = new BasicResponseEntity<Object> (false, "공고 조회 실패", result);
+		    	log.debug("조회 실패");
+				respBody = new BasicResponseEntity<Object> (false, "조회 실패", result);
 				respCode = HttpServletResponse.SC_BAD_REQUEST;
 		    }
 		} else {
-			log.debug("공고 조회 실패");
-			respBody = new BasicResponseEntity<Object> (false, "공고 조회 실패", result);
+			log.debug("조회 실패");
+			respBody = new BasicResponseEntity<Object> (false, "조회 실패", result);
+			respCode = HttpServletResponse.SC_BAD_REQUEST;
+		}
+		
+    	return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
+
+    }
+    
+ // 전체 채용 공고 현황 조회 
+    @GetMapping(value="/statistics")
+    public ResponseEntity<BasicResponseEntity<Object>> getRecruitStatus(Authentication authentication) {
+        
+    	
+        BasicResponseEntity<Object> respBody = null;
+        int respCode=0;
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(new MediaType("application", "json",
+				Charset.forName("UTF-8")));
+		
+		HashMap<String, Object> result = null;
+		
+		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
+		
+		if (userDetails.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
+			
+			result = service.getRecruitStatus();
+		    log.debug(result);
+		    
+			if(result != null) {   
+			log.debug("조회 성공");
+			respBody = new BasicResponseEntity<Object> (true, "조회 완료", result);
+			respCode = HttpServletResponse.SC_OK;
+		    } else {
+		    	log.debug("조회 실패");
+				respBody = new BasicResponseEntity<Object> (false, "조회 실패", result);
+				respCode = HttpServletResponse.SC_BAD_REQUEST;
+		    }
+		} else {
+			log.debug("조회 실패");
+			respBody = new BasicResponseEntity<Object> (false, "조회 실패", result);
 			respCode = HttpServletResponse.SC_BAD_REQUEST;
 		}
 		
@@ -463,7 +460,9 @@ public class RecruitController {
     // 일반회원 -회원별 받은 입사 제안 조회
     @GetMapping(value="/suggest/member/{member_id}")
     public ResponseEntity<BasicResponseEntity<Object>> 
-    getJobOfferOfMember(@PathVariable("member_id") String memberId, 
+    getJobOfferOfMember(@PathVariable("member_id") String memberId,
+    		@RequestParam("page") int pageNum,
+			@RequestParam("size") int amount,
     		Authentication authentication) {
         
 		BasicResponseEntity<Object> respBody = null;
@@ -520,8 +519,9 @@ public class RecruitController {
 		return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
 
 	}
+    
     //채용공고 상세조회
-	 @GetMapping(value="/recruitDetail/{recruit_id}")
+	 @GetMapping(value="/{recruit_id}")
 	 public ResponseEntity<BasicResponseEntity<Object>> 
 	 		getRecruitDetailInfo(@PathVariable("recruit_id") String recruitId) {
 		 

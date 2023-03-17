@@ -9,6 +9,7 @@ import org.ppiyung.ppiyung.recruit.vo.ApplyExtended;
 import org.ppiyung.ppiyung.recruit.vo.BookMark;
 import org.ppiyung.ppiyung.recruit.vo.Recruit;
 import org.ppiyung.ppiyung.recruit.vo.RecruitBookMark;
+import org.ppiyung.ppiyung.recruit.vo.RecruitOption;
 import org.ppiyung.ppiyung.recruit.vo.Suggest;
 
 public interface RecruitService {
@@ -19,10 +20,12 @@ public interface RecruitService {
 
 	public boolean closeRecruitNotice(int recruitId);
 	
-    public List<Recruit> getRecruitList(PagingEntity pagingEntity);
+    public List<Recruit> getRecruitList(RecruitOption option);
 	
+    @Deprecated
     public List<Recruit> getRecruitListByWorkAreaId(int work_area_id);
 
+    @Deprecated
 	public List<Recruit> getRecruitListByKeyword(String keyword);
 
 	public HashMap<String, Object> getRecruitStatusOfCompany(String companyId);
@@ -49,10 +52,10 @@ public interface RecruitService {
 
 	public List<Suggest> getJobOfferOfCompany(String companyId);
 
+	public HashMap<String, Object> getRecruitStatus();
+
+	public int getRecruitListTotal(RecruitOption option);
 
 
-
-	
-	
 	
 }

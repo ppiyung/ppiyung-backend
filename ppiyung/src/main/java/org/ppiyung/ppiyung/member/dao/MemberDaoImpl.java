@@ -3,10 +3,11 @@ package org.ppiyung.ppiyung.member.dao;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
-import org.ppiyung.ppiyung.common.entity.PagingEntity;
 import org.ppiyung.ppiyung.member.vo.Image;
 import org.ppiyung.ppiyung.member.vo.Member;
 import org.ppiyung.ppiyung.member.vo.MemberExtended;
+import org.ppiyung.ppiyung.member.vo.MemberOption;
+import org.ppiyung.ppiyung.member.vo.OpenResumeOption;
 import org.ppiyung.ppiyung.member.vo.Resume;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -56,11 +57,17 @@ public class MemberDaoImpl implements MemberDao {
 
 
 	@Override
-	public List<Member> getAllMember(PagingEntity pagingEntity) {
-		List<Member> list = session.selectList("org.ppiyung.ppiyung.member.selectAll",pagingEntity);
+	public List<Member> getAllMember(MemberOption option) {
+		List<Member> list = session.selectList("org.ppiyung.ppiyung.member.selectAll", option);
 
 		return list;
 
+	}
+
+
+	@Override
+	public int getAllMemberCount(MemberOption option) {
+		return session.selectOne("org.ppiyung.ppiyung.member.selectAllTotal", option);
 	}
 
 
@@ -74,8 +81,8 @@ public class MemberDaoImpl implements MemberDao {
 
 
 	@Override
-	public List<Member> getResumeOpenMember(String param) {
-		List<Member> list = session.selectList("org.ppiyung.ppiyung.member.seletResumeOpenMember" , param);
+	public List<MemberExtended> getResumeOpenMember(OpenResumeOption param) {
+		List<MemberExtended> list = session.selectList("org.ppiyung.ppiyung.member.seletResumeOpenMember" , param);
 		return list;
 	}
 

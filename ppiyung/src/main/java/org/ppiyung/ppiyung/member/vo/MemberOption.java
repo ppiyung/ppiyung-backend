@@ -1,16 +1,18 @@
-package org.ppiyung.ppiyung.common.entity;
+package org.ppiyung.ppiyung.member.vo;
 
+
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.NoArgsConstructor;
 
-// 페이지에 페이징 번트들을 만들기 위한 계산 클래스
 @Data
-@Getter
-@Setter
-@ToString
-public class PagingEntity {
+@AllArgsConstructor
+public class MemberOption {
+
+	private String memberId;
+	private String memberType;
+	private String memberName;
+	private boolean noVerified;
 	
 	/* 현재 페이지 */
 	private int pageNum;
@@ -26,12 +28,12 @@ public class PagingEntity {
     
     
 	/* 기본 생성자 -> 기봅 세팅 : pageNum = 1, amount = 10 */
-	public PagingEntity() {
+	public MemberOption() {
 		this(1, 10);
 	}
 
 	/* 생성자 => 원하는 pageNum, 원하는 amount */
-	public PagingEntity(int pageNum, int amount) {
+	public MemberOption(int pageNum, int amount) {
 		this.pageNum = pageNum;
 		this.skip = (pageNum-1) * amount;
 		this.amount = amount;

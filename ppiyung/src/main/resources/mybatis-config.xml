@@ -11,12 +11,15 @@
 	 <typeAliases>
 	 	<typeAlias type="org.ppiyung.ppiyung.member.vo.Member" alias="Member"/>
 	 	<typeAlias type="org.ppiyung.ppiyung.member.vo.MemberExtended" alias="MemberExtended"/>
+	 	<typeAlias type="org.ppiyung.ppiyung.member.vo.MemberOption" alias="MemberOption"/>
+	 	<typeAlias type="org.ppiyung.ppiyung.member.vo.OpenResumeOption" alias="OpenResumeOption"/>
 	 	<typeAlias type="org.ppiyung.ppiyung.member.vo.Image" alias="Image"/>
 	 	<typeAlias type="org.ppiyung.ppiyung.member.vo.Resume" alias="Resume"/>
 	 	<typeAlias type="org.ppiyung.ppiyung.board.vo.BoardList" alias="BoardList" />
 		<typeAlias type="org.ppiyung.ppiyung.board.vo.Board" alias="Board"/>
 		<typeAlias type="org.ppiyung.ppiyung.common.entity.PagingEntity" alias="PagingEntity"/>
 	 	<typeAlias type="org.ppiyung.ppiyung.recruit.vo.Recruit" alias="Recruit"/>
+	 	<typeAlias type="org.ppiyung.ppiyung.recruit.vo.RecruitOption" alias="RecruitOption"/>
 	 	<typeAlias type="org.ppiyung.ppiyung.board.vo.Reply" alias="Reply"/>
 	 	<typeAlias type="org.ppiyung.ppiyung.board.vo.Like" alias="Like"/>
 	 	<typeAlias type="org.ppiyung.ppiyung.notify.vo.Notification" alias="Notify"/>

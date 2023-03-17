@@ -45,6 +45,7 @@
 	    <result property="memberCreatedAt" column="member_created_at" />
 	    <result property="workAreaId" column="work_area_id" />
    	    <result property="memberVerified" column="member_verified" />
+    	<result property="lastSuggested" column="last_suggested" />
    	    <association property="profileImage" resultMap="ImageMapped" />
    	    <association property="memberResume" resultMap="ResumeMapped" />
     </resultMap>
@@ -65,7 +66,7 @@
 	    <result property="resumeUpdatedAt" column="resume_updated_at" />
 	    <result property="resumeOpen" column="resume_open" />
     </resultMap>
-
+    
 	<select id="login" parameterType="Member"
 	        resultMap="MemberMapped">		
 	        
@@ -80,15 +81,56 @@
 		]]>
 	</select>
 	
+	<!-- 회원전체조회 전체 행 수-->
+	<select id="selectAllTotal" parameterType="MemberOption" resultType="_int">		
+			SELECT COUNT(*)
+			FROM member_tb
+			 <where>
+ 			 	member_active = true
+				 <if test="memberId != null">
+					 member_id = #{memberId}
+				 </if>
+				 <if test="memberType != null">
+					 AND member_type = #{memberType}
+				 </if>
+				 <if test="memberName != null">
+					 AND member_name = #{memberName}
+				 </if>
+				 <if test="memberName != null">
+					 AND member_name = #{memberName}
+				 </if>
+				 <if test="noVerified == true">
+					 AND member_verified = 0
+				 </if>
+			 </where>
+	</select>
+	
 	<!-- 회원전체조회 -->
-		<select id="selectAll" parameterType="PagingEntity"  resultMap="MemberMapped">		
-		<![CDATA[
-			SELECT member_id, member_pw, member_name, member_birth,
+		<select id="selectAll" parameterType="MemberOption" resultMap="MemberMapped">		
+			SELECT member_id, member_name, member_birth,
 					member_gender, member_phone, member_addr, member_coord_x, member_coord_y,
 					member_nickname, member_email, member_type, member_reg_num, member_info,
 					member_active, member_created_at, work_area_id, member_verified
-			FROM member_tb   ORDER BY  member_created_at DESC LIMIT #{skip}, #{amount}
-		]]>
+			FROM member_tb
+			 <where>
+			 	member_active = true
+				 <if test="memberId != null">
+					 AND member_id = #{memberId}
+				 </if>
+				 <if test="memberType != null">
+					 AND member_type = #{memberType}
+				 </if>
+				 <if test="memberName != null">
+					 AND member_name = #{memberName}
+				 </if>
+				 <if test="memberName != null">
+					 AND member_name = #{memberName}
+				 </if>
+				 <if test="noVerified == true">
+					 AND member_verified = 0
+				 </if>
+			 </where>
+			ORDER BY member_created_at DESC LIMIT #{skip}, #{amount}
 	</select>
 	
 	<!-- 개별회원조회 -->
@@ -143,16 +185,17 @@
 	
 	<!-- 회원정보수정 -->
 	<update id="updateMember" parameterType="Member">
-		<![CDATA[ 
-			UPDATE member_tb 
-			SET 
-			member_pw= #{memberPw} , member_name=#{memberName}, member_birth= #{memberBirth},
-			member_phone = #{memberPhone}, member_addr = #{memberAddr},
-			member_coord_x = #{memberCoordX} , member_coord_y = #{memberCoordY}, member_nickname = #{memberNickname},
-			member_email =  #{memberEmail}, member_info = #{memberInfo} ,work_area_id= #{workAreaId},member_verified = #{memberVerified}
-			WHERE
-		    member_id= #{memberId}
-		]]>
+		UPDATE member_tb 
+		SET
+		<if test="memberPw != null">
+			member_pw= #{memberPw},
+		</if>
+		member_name=#{memberName}, member_birth= #{memberBirth},
+		member_phone = #{memberPhone}, member_addr = #{memberAddr},
+		member_coord_x = #{memberCoordX} , member_coord_y = #{memberCoordY}, member_nickname = #{memberNickname},
+		member_email =  #{memberEmail}, member_info = #{memberInfo} ,work_area_id= #{workAreaId},member_verified = #{memberVerified}
+		WHERE
+	    member_id= #{memberId}
 	</update>
 	
 	<!-- 회원탈퇴 기능 -->
@@ -169,17 +212,24 @@
 	
 	
 	<!-- 직무별 이력서 공개 회원 조회 -->
-	<select id="seletResumeOpenMember" parameterType="String" resultMap="MemberMapped">
+	<select id="seletResumeOpenMember" parameterType="OpenResumeOption" resultMap="MemberExtendedMapped">
 		<![CDATA[
 			SELECT A.member_id, member_name, member_birth,
 				member_gender, member_phone, member_addr,
 				member_nickname, member_email, member_info,
-				work_area_id
+				work_area_id, resume_updated_at, resume_open,
+				(SELECT suggest_created_at
+					FROM suggest_tb
+					WHERE member_id = A.member_id AND company_id = #{companyId}
+					ORDER BY suggest_created_at
+					DESC LIMIT 1) AS last_suggested
 			FROM 
 			member_tb AS A JOIN resume_tb AS B
 			ON  A.member_id = B.member_id 
 			WHERE A.work_area_id= #{workAreaId}
 			AND B.resume_open=1
+            ORDER BY resume_updated_at DESC
+            LIMIT #{skip}, #{amount}
 		 ]]>
 	</select>
 

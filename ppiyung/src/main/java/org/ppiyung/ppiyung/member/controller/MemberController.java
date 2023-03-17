@@ -15,6 +15,7 @@ import org.ppiyung.ppiyung.member.service.MemberService;
 import org.ppiyung.ppiyung.member.vo.Image;
 import org.ppiyung.ppiyung.member.vo.Member;
 import org.ppiyung.ppiyung.member.vo.MemberExtended;
+import org.ppiyung.ppiyung.member.vo.MemberOption;
 import org.ppiyung.ppiyung.member.vo.OpenResumeOption;
 import org.ppiyung.ppiyung.member.vo.Resume;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -156,27 +157,52 @@ public class MemberController {
 
 	// 관리자 회원 전체조회
 	@GetMapping(value = "")
-	public ResponseEntity<BasicResponseEntity<Object>> 
-				getAllMember(@RequestParam("pagenum") int pageNum, @RequestParam("amount") int amount,Authentication authentication) {
+	public ResponseEntity<BasicResponseEntity<Object>> getAllMember(@RequestParam("page") int pageNum,
+			@RequestParam("size") int amount,
+			@RequestParam(value="memberType", defaultValue = "") String memberType,
+			@RequestParam(value="memberId", defaultValue = "") String memberId,
+			@RequestParam(value="memberName", defaultValue = "") String memberName,
+			@RequestParam(value="noVerified", defaultValue = "false") boolean noVerified,
+			Authentication authentication) {
 		
+		MemberOption option = new MemberOption(pageNum, amount);
+		if (!memberType.equals("")) {
+			option.setMemberType(memberType);
+		}
+		if (!memberId.equals("")) {
+			option.setMemberId(memberId);
+		}
+		if (!memberName.equals("")) {
+			option.setMemberName(memberName);
+		}
+		option.setNoVerified(noVerified);
+
 		BasicResponseEntity<Object> respBody = null;
 		int respCode = 0;
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-		PagingEntity pagingEntity = new PagingEntity();
-		pagingEntity.setpageNum(pageNum);
-		pagingEntity.setAmount(amount);
-		List<Member> list = service.getAllMember(pagingEntity);
 		
 		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
-		boolean hasAutority = userDetails.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"));
-		if(list != null && hasAutority) {
-			log.debug("관리자-회원전체조회 성공");
-			respBody = new BasicResponseEntity<Object>(true, "전체회원조회 성공하였습니다.", list);
-			respCode = HttpServletResponse.SC_OK;
+		if(userDetails.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
+			
+			List<Member> list = service.getAllMember(option);
+			int total = service.getAllMemberCount(option);
+			if (list != null) {
+				log.debug("관리자-회원전체조회 성공");
+				Map<String, Object> payload = new HashMap<String, Object>();
+				payload.put("total", total);
+				payload.put("list", list);
+				
+				respBody = new BasicResponseEntity<Object>(true, "전체회원조회 성공하였습니다.", payload);
+				respCode = HttpServletResponse.SC_OK;
+			} else {
+				log.debug("관리자-회원전체조회 실패"); 
+				respBody = new BasicResponseEntity<Object>(false, "전체회원조회 실패하였습니다.", null);
+				respCode = HttpServletResponse.SC_BAD_REQUEST;
+			}
 		}else {
-			log.debug("관리자-회원전체조회 실패");
-			respBody = new BasicResponseEntity<Object>(false, "전체회원조회 실패하였습니다.", null);
+			log.debug("관리자-회원전체조회 실패 - 권한 없음");
+			respBody = new BasicResponseEntity<Object>(false, "전체회원조회 실패하였습니다. 권한이 없습니다.", null);
 			respCode = HttpServletResponse.SC_BAD_REQUEST;
 		}
 		return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
@@ -200,7 +226,12 @@ public class MemberController {
 		if (userDetails.getUsername().equals(memberId) ||
 				hasAuthority) { // 자신의 정보를 수정하는 경우이거나 관리자인 경우
 			log.debug("회원정보수정 - 권한 확인됨");
+			
 			reqUpdateInfo.setMemberId(memberId);
+			if (reqUpdateInfo.getMemberPw() != null && reqUpdateInfo.getMemberPw().equals("")) {
+				reqUpdateInfo.setMemberPw(null);
+			}
+			
 			result = service.modifyMember(reqUpdateInfo);
 		}
 		

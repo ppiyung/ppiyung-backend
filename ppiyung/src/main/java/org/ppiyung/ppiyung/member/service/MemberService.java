@@ -10,6 +10,7 @@ import org.ppiyung.ppiyung.common.entity.PagingEntity;
 import org.ppiyung.ppiyung.member.vo.Image;
 import org.ppiyung.ppiyung.member.vo.Member;
 import org.ppiyung.ppiyung.member.vo.MemberExtended;
+import org.ppiyung.ppiyung.member.vo.MemberOption;
 import org.ppiyung.ppiyung.member.vo.OpenResumeOption;
 import org.ppiyung.ppiyung.member.vo.Resume;
 import org.springframework.web.multipart.MultipartFile;
@@ -28,7 +29,9 @@ public interface MemberService {
 	
 	public MemberExtended getMemberInfoJoinned(Member member);
 
-	public List<Member> getAllMember(PagingEntity pagingEntity);
+	public List<Member> getAllMember(MemberOption option);
+	
+	public int getAllMemberCount(MemberOption option);
 
 	public boolean leaveMember(String memberId);
 

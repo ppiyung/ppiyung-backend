@@ -30,6 +30,11 @@ public class BoardDaoImpl implements BoardDao {
 
 	}
 	
+	@Override
+	public int totalCount() {
+		return session.selectOne("org.ppiyung.ppiyung.board.totalCount");
+	}
+
 	// 커뮤니티 게시글 상세조회
 	@Override
 	public List<BoardList> detailBoard(int articleId) {

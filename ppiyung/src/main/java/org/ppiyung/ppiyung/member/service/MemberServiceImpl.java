@@ -21,6 +21,7 @@ import org.ppiyung.ppiyung.member.vo.MemberExtended;
 import org.ppiyung.ppiyung.member.vo.MemberOption;
 import org.ppiyung.ppiyung.member.vo.OpenResumeOption;
 import org.ppiyung.ppiyung.member.vo.Resume;
+import org.ppiyung.ppiyung.member.vo.SecurityUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;

@@ -112,8 +112,9 @@
 					member_active, member_created_at, work_area_id, member_verified
 			FROM member_tb
 			 <where>
+			 	member_active = true
 				 <if test="memberId != null">
-					 member_id = #{memberId}
+					 AND member_id = #{memberId}
 				 </if>
 				 <if test="memberType != null">
 					 AND member_type = #{memberType}

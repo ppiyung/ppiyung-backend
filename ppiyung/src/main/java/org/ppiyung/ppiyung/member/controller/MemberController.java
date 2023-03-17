@@ -265,7 +265,8 @@ public class MemberController {
 		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
 
 	
-		if (userDetails.getUsername().equals(memberId)) {
+		if (userDetails.getUsername().equals(memberId)
+			|| userDetails.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
 			log.debug("회원탈퇴 - 권한 확인됨" + memberId);
 			result = service.leaveMember(memberId);
 			

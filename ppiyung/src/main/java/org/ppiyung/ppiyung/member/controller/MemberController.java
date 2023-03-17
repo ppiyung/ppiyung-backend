@@ -226,7 +226,12 @@ public class MemberController {
 		if (userDetails.getUsername().equals(memberId) ||
 				hasAuthority) { // 자신의 정보를 수정하는 경우이거나 관리자인 경우
 			log.debug("회원정보수정 - 권한 확인됨");
+			
 			reqUpdateInfo.setMemberId(memberId);
+			if (reqUpdateInfo.getMemberPw() != null && reqUpdateInfo.getMemberPw().equals("")) {
+				reqUpdateInfo.setMemberPw(null);
+			}
+			
 			result = service.modifyMember(reqUpdateInfo);
 		}
 		

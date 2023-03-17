@@ -183,16 +183,17 @@
 	
 	<!-- 회원정보수정 -->
 	<update id="updateMember" parameterType="Member">
-		<![CDATA[ 
-			UPDATE member_tb 
-			SET 
-			member_pw= #{memberPw} , member_name=#{memberName}, member_birth= #{memberBirth},
-			member_phone = #{memberPhone}, member_addr = #{memberAddr},
-			member_coord_x = #{memberCoordX} , member_coord_y = #{memberCoordY}, member_nickname = #{memberNickname},
-			member_email =  #{memberEmail}, member_info = #{memberInfo} ,work_area_id= #{workAreaId},member_verified = #{memberVerified}
-			WHERE
-		    member_id= #{memberId}
-		]]>
+		UPDATE member_tb 
+		SET
+		<if test="memberPw != null">
+			member_pw= #{memberPw},
+		</if>
+		member_name=#{memberName}, member_birth= #{memberBirth},
+		member_phone = #{memberPhone}, member_addr = #{memberAddr},
+		member_coord_x = #{memberCoordX} , member_coord_y = #{memberCoordY}, member_nickname = #{memberNickname},
+		member_email =  #{memberEmail}, member_info = #{memberInfo} ,work_area_id= #{workAreaId},member_verified = #{memberVerified}
+		WHERE
+	    member_id= #{memberId}
 	</update>
 	
 	<!-- 회원탈퇴 기능 -->

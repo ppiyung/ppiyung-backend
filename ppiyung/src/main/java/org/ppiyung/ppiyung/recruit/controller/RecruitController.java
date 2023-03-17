@@ -12,6 +12,7 @@ import org.ppiyung.ppiyung.common.entity.BasicResponseEntity;
 import org.ppiyung.ppiyung.common.entity.PagingEntity;
 import org.ppiyung.ppiyung.recruit.service.RecruitService;
 import org.ppiyung.ppiyung.recruit.vo.Apply;
+import org.ppiyung.ppiyung.recruit.vo.ApplyExtended;
 import org.ppiyung.ppiyung.recruit.vo.BookMark;
 import org.ppiyung.ppiyung.recruit.vo.Recruit;
 import org.ppiyung.ppiyung.recruit.vo.Suggest;
@@ -356,7 +357,7 @@ public class RecruitController {
 		headers.setContentType(new MediaType("application", "json",
 				Charset.forName("UTF-8")));
 		
-		List<Apply> result = null;
+		List<ApplyExtended> result = null;
 		
 		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
 		
@@ -367,6 +368,7 @@ public class RecruitController {
 		    
 			if(result != null) {   
 			log.debug("회원별 지원 현황 조회 성공");
+			log.debug(result);
 			respBody = new BasicResponseEntity<Object> (true, "공고 조회 완료", result);
 			respCode = HttpServletResponse.SC_OK;
 		    } else {

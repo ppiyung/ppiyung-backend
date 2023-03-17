@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.ibatis.session.SqlSession;
 import org.ppiyung.ppiyung.common.entity.PagingEntity;
 import org.ppiyung.ppiyung.recruit.vo.Apply;
+import org.ppiyung.ppiyung.recruit.vo.ApplyExtended;
 import org.ppiyung.ppiyung.recruit.vo.BookMark;
 import org.ppiyung.ppiyung.recruit.vo.Recruit;
 import org.ppiyung.ppiyung.recruit.vo.RecruitBookMark;
@@ -99,8 +100,8 @@ public class RecruitDaoImpl implements RecruitDao {
 	}
 
 	@Override
-	public List<Apply> selectByMember(String memberId) {
-		List<Apply> list = session.selectList("org.ppiyung.ppiyung.apply.selectByMember",memberId);
+	public List<ApplyExtended> selectByMember(String memberId) {
+		List<ApplyExtended> list = session.selectList("org.ppiyung.ppiyung.apply.selectByMember",memberId);
 		
 		return list;
 	}

@@ -86,6 +86,7 @@
 			SELECT COUNT(*)
 			FROM member_tb
 			 <where>
+ 			 	member_active = true
 				 <if test="memberId != null">
 					 member_id = #{memberId}
 				 </if>

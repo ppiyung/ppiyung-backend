@@ -56,6 +56,8 @@ public interface RecruitService {
 
 	public int getRecruitListTotal(RecruitOption option);
 
+	public boolean setApplyResult(Apply param);
+
 
 	
 }

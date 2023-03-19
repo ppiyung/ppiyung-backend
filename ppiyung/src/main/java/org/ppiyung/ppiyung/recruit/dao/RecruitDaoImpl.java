@@ -176,5 +176,13 @@ public class RecruitDaoImpl implements RecruitDao {
 		return list;
 	}
 
+	@Override
+	public void updateApply(Apply apply) throws Exception {
+		int count = session.update("org.ppiyung.ppiyung.apply.update", apply);
+		if (count != 1) {
+			throw new Exception();
+		}
+	}
+
 
 }

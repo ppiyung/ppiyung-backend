@@ -15,10 +15,6 @@
 		<result property="recruitEndAt" column="recruit_end_at" />
 		<result property="companyName" column="member_name" />
 	</resultMap>
-	
-	
-	
-	
   
       <!-- 기업 회원 - 새 공고 게시 -->
       <insert id="insert" parameterType="Recruit" >

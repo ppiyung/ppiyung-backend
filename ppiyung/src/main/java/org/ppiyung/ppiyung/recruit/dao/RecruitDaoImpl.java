@@ -112,8 +112,9 @@ public class RecruitDaoImpl implements RecruitDao {
 
 	@Override
 	public List<ApplyExtended> selectByMember(String memberId) {
+
 		List<ApplyExtended> list = session.selectList("org.ppiyung.ppiyung.apply.selectByMember",memberId);
-		
+	
 		return list;
 	}
 	
@@ -132,11 +133,11 @@ public class RecruitDaoImpl implements RecruitDao {
 		}
 
 	}
-	
+	// 일반회원-회원별 받은 입사제안 조회 
 	@Override
 	public List<Suggest> selectSuggestByMember(String memberId) {
-		
-		List<Suggest> list = session.selectList("org.ppiyung.ppiyung.suggest.selectByMember", memberId);		  
+		List<Suggest> list = session.selectList("org.ppiyung.ppiyung.suggest.selectSuggestByMember", memberId);		  
+		System.out.println("list 03/19" + list);
 		return list; 
 	}
 

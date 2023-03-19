@@ -461,8 +461,8 @@ public class RecruitController {
     @GetMapping(value="/suggest/member/{member_id}")
     public ResponseEntity<BasicResponseEntity<Object>> 
     getJobOfferOfMember(@PathVariable("member_id") String memberId,
-    		@RequestParam("page") int pageNum,
-			@RequestParam("size") int amount,
+    		@RequestParam(value = "page", defaultValue = "1") int pageNum,
+			@RequestParam(value = "size", defaultValue = "15") int amount,
     		Authentication authentication) {
         
 		BasicResponseEntity<Object> respBody = null;
@@ -477,12 +477,11 @@ public class RecruitController {
 		if (userDetails.getUsername().equals(memberId)) {
 			
 			result = service.getJobOfferOfMember(memberId);
-			
 			respBody = new BasicResponseEntity<Object>(true, "개별회원 입사제안 조회 성공하였습니다.", result);
 			respCode = HttpServletResponse.SC_OK;
 
 		} else {
-			
+			log.debug(memberId + ", " + userDetails.getUsername());
 			respBody = new BasicResponseEntity<Object>(false, "개별회원입사제안 조회 실패하였습니다.", result);
 			respCode = HttpServletResponse.SC_BAD_REQUEST;
 		}
@@ -507,7 +506,7 @@ public class RecruitController {
 		if (userDetails.getUsername().equals(companyId)) {
 			
 			result = service.getJobOfferOfCompany(companyId);
-			
+			log.debug("개별회원 입사제안 조회"+ result);
 			respBody = new BasicResponseEntity<Object>(true, "개별회원 입사제안 조회 성공하였습니다.", result);
 			respCode = HttpServletResponse.SC_OK;
 

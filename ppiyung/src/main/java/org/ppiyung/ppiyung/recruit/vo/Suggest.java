@@ -15,5 +15,5 @@ public class Suggest {
 	private Date suggestCreatedAt;
 	private String companyId;
 	private String memberId;
-	
+	private String companyName;
 }

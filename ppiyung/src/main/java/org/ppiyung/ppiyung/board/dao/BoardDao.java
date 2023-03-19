@@ -12,6 +12,8 @@ import org.ppiyung.ppiyung.common.entity.PagingEntity;
 
 public interface BoardDao  {
 	
+
+
 	// 커뮤니티 게시글 (페이징 수행)
 	public List<BoardList> pagingInsertBoard(PagingEntity criteria);
 	
@@ -43,5 +45,6 @@ public interface BoardDao  {
 	void deleteLike(Like like) throws Exception;
 
 	public int totalCount();
-	
-}
+	//커뮤니티 게시글 회원ID별 게시글 조회
+	public List<BoardList> selectListCommmunityList(String memberId);
+	}

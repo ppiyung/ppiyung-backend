@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.ppiyung.ppiyung.common.entity.PagingEntity;
 import org.ppiyung.ppiyung.recruit.vo.Apply;
+import org.ppiyung.ppiyung.recruit.vo.ApplyExtended;
 import org.ppiyung.ppiyung.recruit.vo.BookMark;
 import org.ppiyung.ppiyung.recruit.vo.Recruit;
 import org.ppiyung.ppiyung.recruit.vo.RecruitOption;
@@ -27,7 +28,7 @@ public interface RecruitDao {
 	public void insertBookmark(BookMark bookMark) throws Exception;
 	public void deleteBookmark(BookMark bookMark) throws Exception;
 	public List<HashMap<String, Object>> selectBookmarkList(String memberId);
-	public List<Apply> selectByMember(String memberId);
+	public List<ApplyExtended> selectByMember(String memberId);
 	public List<HashMap<String, Object>> selectByRecruit(int recruitId);
 	public List<Suggest> selectSuggestByMember(String memberId);
 	public List<Suggest> selectSuggestByCompany(String companyId);

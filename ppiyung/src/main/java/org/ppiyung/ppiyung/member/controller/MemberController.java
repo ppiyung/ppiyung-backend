@@ -356,6 +356,7 @@ public class MemberController {
 		return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
 	}
 	
+	//이력서 
 	@PostMapping(value="/resume")
 	public ResponseEntity<BasicResponseEntity<Object>>
 		uploadResumeHandler(@RequestParam("file") MultipartFile file, Authentication authentication) {

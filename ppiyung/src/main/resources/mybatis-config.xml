@@ -25,6 +25,7 @@
 	 	<typeAlias type="org.ppiyung.ppiyung.notify.vo.Notification" alias="Notify"/>
 	 	<typeAlias type="org.ppiyung.ppiyung.recruit.vo.Suggest" alias="Suggest"/>
 	 	<typeAlias type="org.ppiyung.ppiyung.recruit.vo.Apply" alias="Apply"/>
+	 	<typeAlias type="org.ppiyung.ppiyung.recruit.vo.ApplyExtended" alias="ApplyExtended"/>
 	 	<typeAlias type="org.ppiyung.ppiyung.recruit.vo.BookMark" alias="BookMark"/>
 	 	<typeAlias type="org.ppiyung.ppiyung.recruit.vo.RecruitBookMark" alias="RecruitBookMark"/>
 

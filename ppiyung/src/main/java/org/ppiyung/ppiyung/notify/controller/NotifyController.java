@@ -141,7 +141,8 @@ public class NotifyController {
 	
 	// 알림 세부내역 조회
 	@GetMapping(value="/{memberId}/{notificationId}")
-	public ResponseEntity<BasicResponseEntity<Object>> viewNotificationDetails(@PathVariable("memberId") String memberId, @PathVariable("notificationId") int notificationId, Authentication authentication){
+	public ResponseEntity<BasicResponseEntity<Object>> viewNotificationDetails(@PathVariable("memberId") String memberId,
+			@PathVariable("notificationId") int notificationId, Authentication authentication){
 		
 		BasicResponseEntity<Object> respBody = null;
 		

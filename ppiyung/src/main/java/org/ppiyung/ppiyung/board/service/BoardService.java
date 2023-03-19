@@ -6,6 +6,7 @@ import org.ppiyung.ppiyung.board.vo.Board;
 import org.ppiyung.ppiyung.board.vo.BoardList;
 import org.ppiyung.ppiyung.board.vo.Like;
 import org.ppiyung.ppiyung.board.vo.Reply;
+import org.ppiyung.ppiyung.board.vo.ReplyDetail;
 import org.ppiyung.ppiyung.common.entity.PagingEntity;
 
 public interface BoardService {
@@ -42,5 +43,10 @@ public interface BoardService {
 	
 	// 게시글 개수 세기
 	public int getArticlesCount();
+	
+	// 좋아요 여부 확인
+	public List<Like> getLikedCheck(Like like);
+	// 댓글 조회
+	public List<ReplyDetail> getListReply(int articleId);
 	
 }

@@ -7,6 +7,7 @@ import org.ppiyung.ppiyung.board.vo.Board;
 import org.ppiyung.ppiyung.board.vo.BoardList;
 import org.ppiyung.ppiyung.board.vo.Like;
 import org.ppiyung.ppiyung.board.vo.Reply;
+import org.ppiyung.ppiyung.board.vo.ReplyDetail;
 import org.ppiyung.ppiyung.common.entity.PagingEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -133,6 +134,18 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public int getArticlesCount() {
 		return dao.totalCount();
+	}
+	
+	// 좋아요 여부 확인
+	@Override
+	public List<Like> getLikedCheck(Like like) {
+		return dao.getLikedCheck(like);
+	}
+
+	//댓글 조회 목록
+	@Override
+	public List<ReplyDetail> getListReply(int articleId) {
+		return dao.getListReplt(articleId);
 	}
 
 }

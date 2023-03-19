@@ -9,6 +9,7 @@ import org.ppiyung.ppiyung.board.vo.Board;
 import org.ppiyung.ppiyung.board.vo.BoardList;
 import org.ppiyung.ppiyung.board.vo.Like;
 import org.ppiyung.ppiyung.board.vo.Reply;
+import org.ppiyung.ppiyung.board.vo.ReplyDetail;
 import org.ppiyung.ppiyung.common.entity.PagingEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -128,6 +129,19 @@ public class BoardDaoImpl implements BoardDao {
 		if(count != 1) {
 			throw new Exception();
 		}
+	}
+	
+	// 좋아요 여부 확인
+	@Override
+	public List<Like> getLikedCheck(Like like) {
+		
+		return session.selectList("org.ppiyung.ppiyung.board.getliked",like);
+	}
+	
+	// 댓글 목록 조회
+	@Override
+	public List<ReplyDetail> getListReplt(int articleId) {
+		return session.selectList("org.ppiyung.ppiyung.board.getListReply", articleId);
 	}
 	
 }

@@ -20,14 +20,15 @@
 		<result property="memberPhone" column="member_phone" />
 		<result property="memberEmail" column="member_email" />
 		<result property="memberName" column="member_name" />
-		<result property="resumeFilename" column="resume_filename" />
-		<result property="recruitId" column="recruit_id" />
-		<result property="applyCreatedAt" column="apply_created_at" javaType="java.util.Date" />
-		<result property="resumeFiletype" column="resume_filetype" />
-		<result property="resumeLocation" column="resume_location" />
-		<result property="applyId" column="apply_id" />
 		<result property="memberBirth" column="member_birth" />
 		<result property="memberGender" column="member_gender" />
+		<result property="applyCreatedAt" column="apply_created_at" javaType="java.util.Date" />
+		<result property="applyId" column="apply_id" />
+		<result property="applyResult" column="apply_result" />
+		<result property="recruitId" column="recruit_id" />
+		<result property="resumeFilename" column="resume_filename" />
+		<result property="resumeFiletype" column="resume_filetype" />
+		<result property="resumeLocation" column="resume_location" />
 	</resultMap>
 
 	<resultMap id="ApplyExtendedMapped" type="ApplyExtended">
@@ -82,6 +83,15 @@
       ]]>
     </insert>
     
+    <!-- 기업회원 - 합불통보 -->
+    <update id="update" parameterType="Apply">
+      <![CDATA[
+      UPDATE apply_tb
+      SET apply_result = #{applyResult}
+      WHERE apply_id = #{applyId}
+      ]]>
+    </update>
+    
     <!-- 일반회원 -지원 현황 조회 -->
     <select id="selectByMember" parameterType="String" resultMap="ApplyExtendedMapped">
       <![CDATA[
@@ -107,5 +117,6 @@
       WHERE recruit_id=#{recruitId}
       ]]>
     </select>
+    
   </mapper>
   

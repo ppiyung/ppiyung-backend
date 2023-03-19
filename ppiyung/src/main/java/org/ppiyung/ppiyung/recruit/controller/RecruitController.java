@@ -416,6 +416,42 @@ public class RecruitController {
 
 	}
     
+    // 기업회원 - 지원자 합불통보
+    @PutMapping(value="/apply/{applyId}")
+    public ResponseEntity<BasicResponseEntity<Object>> 
+    setApplyResult(@RequestBody Apply param, @PathVariable("applyId") int applyId, 
+    		Authentication authentication) {
+        
+		BasicResponseEntity<Object> respBody = null;
+		int respCode = 0;
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+		
+		
+		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
+		
+		if (userDetails.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_COMPANY"))) {
+			param.setApplyId(applyId);
+			boolean result = service.setApplyResult(param);
+			
+			if (result) {
+				log.debug("합불통보 성공");
+				respBody = new BasicResponseEntity<Object>(true, "합불통보 성공하였습니다.", null);
+				respCode = HttpServletResponse.SC_OK;
+			} else {
+				log.debug("합불통보 실패");
+				respBody = new BasicResponseEntity<Object>(false, "합불통보 실패하였습니다.", null);
+				respCode = HttpServletResponse.SC_BAD_REQUEST;
+			}
+			
+		} else {
+			log.debug("합불통보 실패");
+			respBody = new BasicResponseEntity<Object>(false, "합불통보 실패하였습니다.", null);
+			respCode = HttpServletResponse.SC_BAD_REQUEST;
+		}
+		return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
+
+	}
     
     // 기업회원 - 입사 제안 보내기
     @PostMapping(value="/suggest/{member_id}")

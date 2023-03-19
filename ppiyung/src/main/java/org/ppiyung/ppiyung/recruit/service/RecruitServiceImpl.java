@@ -6,6 +6,7 @@ import java.util.List;
 import org.ppiyung.ppiyung.common.entity.PagingEntity;
 import org.ppiyung.ppiyung.recruit.dao.RecruitDaoImpl;
 import org.ppiyung.ppiyung.recruit.vo.Apply;
+import org.ppiyung.ppiyung.recruit.vo.ApplyExtended;
 import org.ppiyung.ppiyung.recruit.vo.BookMark;
 import org.ppiyung.ppiyung.recruit.vo.Recruit;
 import org.ppiyung.ppiyung.recruit.vo.RecruitBookMark;
@@ -107,8 +108,8 @@ public class RecruitServiceImpl implements RecruitService{
     }
     
     @Override
-    public List<Apply> getApplyListOfMember(String memberId) {
-    	List<Apply> list = dao.selectByMember(memberId);
+    public List<ApplyExtended> getApplyListOfMember(String memberId) {
+    	List<ApplyExtended> list = dao.selectByMember(memberId);
     	return list;
     }
     

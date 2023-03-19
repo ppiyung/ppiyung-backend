@@ -162,6 +162,14 @@
 		]]>
 	</delete>
 
+	<!-- 커뮤니티 게시글 회원ID별 게시글 조회 -->
+	<select id="selectListCommmunityList" parameterType="String" resultMap="BoardListMapped">
+			<![CDATA[
+				SELECT * FROM community_article_tb
+				WHERE member_id = #{memberId}
+				ORDER BY article_created_at 
+			]]>
+	</select>
 
 
 </mapper>

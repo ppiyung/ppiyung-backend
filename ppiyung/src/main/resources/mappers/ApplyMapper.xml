@@ -12,7 +12,7 @@
 		<result property="recruitId" column="recruit_id" />
 		<result property="applyCreatedAt" column="apply_created_at" />
     </resultMap>
-    
+
 	<resultMap id="ApplyExteneded" type="HashMap">
 		<result property="memberId" column="member_id" />
 		<result property="memberAddr" column="member_addr" />
@@ -29,21 +29,68 @@
 		<result property="memberBirth" column="member_birth" />
 		<result property="memberGender" column="member_gender" />
 	</resultMap>
+
+	<resultMap id="ApplyExtendedMapped" type="ApplyExtended">
+		<result property="applyId" column="apply_id" />
+		<result property="applyResult" column="apply_result" />
+		<result property="memberId" column="member_id" />
+		<result property="recruitId" column="recruit_id" />
+		<result property="applyCreatedAt" column="apply_created_at" />
+		<association property="applyRecruit" resultMap="RecruitMapped" />
+   	    <association property="applyMember" resultMap="MemberMapped" />
+    </resultMap>
+    
+    
+    <resultMap id="MemberMapped" type="Member">
+	    <result property="memberId" column="member_id" />
+	    <result property="memberPw" column="member_pw" />
+	    <result property="memberName" column="member_name" />
+	    <result property="memberBirth" column="member_birth" />
+	    <result property="memberGender" column="member_gender" />
+	    <result property="memberPhone" column="member_phone" />
+   	    <result property="memberAddr" column="member_addr" />
+	    <result property="memberCoordX" column="member_coord_x" />
+	    <result property="memberCoordY" column="member_coord_y" />
+	    <result property="memberNickname" column="member_nickname" />
+	    <result property="memberEmail" column="member_email" />
+	    <result property="memberType" column="member_type" />
+   	    <result property="memberRegNum" column="member_reg_num" />
+	    <result property="memberInfo" column="member_info" />
+	    <result property="memberActive" column="member_active" />
+	    <result property="memberCreatedAt" column="member_created_at" />
+	    <result property="workAreaId" column="work_area_id" />
+   	    <result property="memberVerified" column="member_verified" />
+    </resultMap>
+    
+   	<resultMap id="RecruitMapped" type="Recruit">
+		<result property="recruitId" column="recruit_id" />
+		<result property="companyId" column="company_id" />
+		<result property="recruitTitle" column="recruit_title" />
+		<result property="recruitDetail" column="recruit_detail" />
+		<result property="workAreaId" column="work_area_id" />
+		<result property="recruitStartAt" column="recruit_start_at" />
+		<result property="recruitEndAt" column="recruit_end_at" />
+		<result property="companyName" column="member_name" />
+	</resultMap>
     
     <!-- 일반회원 - 지원하기 -->
     <insert id="insert" parameterType="Apply" >
       <![CDATA[
+      
       INSERT INTO apply_tb (member_id, recruit_id)
       VALUES (#{memberId}, #{recruitId})
       ]]>
     </insert>
     
     <!-- 일반회원 -지원 현황 조회 -->
-    <select id="selectByMember" parameterType="String" resultMap="ApplyMapped">
+    <select id="selectByMember" parameterType="String" resultMap="ApplyExtendedMapped">
       <![CDATA[
-      SELECT * FROM apply_tb
-      WHERE member_id = #{memberId}
-      ]]>
+	    SELECT  A.apply_id,A.apply_result,R.company_id,R.recruit_title ,A.member_id , M.member_name , R.recruit_start_at ,R.recruit_end_at from apply_tb AS A
+		join recruit_tb AS R
+		ON R.recruit_id = A.recruit_id JOIN
+		member_tb AS M ON R.company_id  = M.member_id
+		WHERE A.member_id = #{memberId}; 
+		]]>
     </select>
     
     <!-- 기업회원-채용 공고별 지원자 목록 조회 -->

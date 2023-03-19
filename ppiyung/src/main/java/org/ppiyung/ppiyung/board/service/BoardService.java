@@ -42,5 +42,8 @@ public interface BoardService {
 	
 	// 게시글 개수 세기
 	public int getArticlesCount();
+
+	//회원ID별 게시글 조회 
+	public List<BoardList> getCommunityByMember(String memberId);
 	
 }

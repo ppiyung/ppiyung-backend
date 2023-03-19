@@ -129,5 +129,11 @@ public class BoardDaoImpl implements BoardDao {
 			throw new Exception();
 		}
 	}
+
+	@Override
+	public List<BoardList> selectListCommmunityList(String memberId) {
+		 List<BoardList> list = session.selectList("org.ppiyung.ppiyung.board.selectListCommmunityList" , memberId);
+		return list;
+	}
 	
 }

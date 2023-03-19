@@ -385,7 +385,7 @@ public class RecruitController {
     // 기업회원 - 채용공고별 지원자 리스트 조회
     @GetMapping(value="/apply/company")
     public ResponseEntity<BasicResponseEntity<Object>> 
-    getApplicantsByRecruitNotice(@RequestParam("recruitid") int recruitId, @RequestParam("companyid") String companyId, 
+    getApplicantsByRecruitNotice(@RequestParam("recruitId") int recruitId, 
     		Authentication authentication) {
         
 		BasicResponseEntity<Object> respBody = null;
@@ -398,8 +398,7 @@ public class RecruitController {
 		
 		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
 		
-		if (userDetails.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_COMPANY")) 
-				&& userDetails.getUsername().equals(companyId)) {
+		if (userDetails.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_COMPANY"))) {
 			
 			result = service.getApplicantsByRecruitNotice(recruitId);
 			

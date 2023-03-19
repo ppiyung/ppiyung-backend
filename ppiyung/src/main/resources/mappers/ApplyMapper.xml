@@ -13,6 +13,23 @@
 		<result property="applyCreatedAt" column="apply_created_at" />
     </resultMap>
     
+	<resultMap id="ApplyExteneded" type="HashMap">
+		<result property="memberId" column="member_id" />
+		<result property="memberAddr" column="member_addr" />
+		<result property="workAreaId" column="work_area_id" />
+		<result property="memberPhone" column="member_phone" />
+		<result property="memberEmail" column="member_email" />
+		<result property="memberName" column="member_name" />
+		<result property="resumeFilename" column="resume_filename" />
+		<result property="recruitId" column="recruit_id" />
+		<result property="applyCreatedAt" column="apply_created_at" javaType="java.util.Date" />
+		<result property="resumeFiletype" column="resume_filetype" />
+		<result property="resumeLocation" column="resume_location" />
+		<result property="applyId" column="apply_id" />
+		<result property="memberBirth" column="member_birth" />
+		<result property="memberGender" column="member_gender" />
+	</resultMap>
+    
     <!-- 일반회원 - 지원하기 -->
     <insert id="insert" parameterType="Apply" >
       <![CDATA[
@@ -30,7 +47,7 @@
     </select>
     
     <!-- 기업회원-채용 공고별 지원자 목록 조회 -->
-    <select id="selectByRecruit" parameterType="Integer" resultType="HashMap">
+    <select id="selectByRecruit" parameterType="Integer" resultMap="ApplyExteneded">
       <![CDATA[
       SELECT a.apply_id, a.apply_result, a.member_id, a.recruit_id, a.apply_created_at, 
       m.member_name, m.member_birth, m.member_gender, m.member_phone, m.member_addr, m.member_email, m.work_area_id, 

@@ -69,10 +69,10 @@
 	</insert>
 
 	<!-- 회원별 알림 목록 조회 -->
-	<select id="selectNotifyList" parameterType="String" resultMap="NotifyExtendedMapped"> 
+   <select id="selectNotifyList" parameterType="String" resultMap="NotifyExtendedMapped"> 
 		<![CDATA[
 			select *,
-				(select member_name from member_tb m where n.member_id = m.member_id)
+				(select member_name from member_tb m where n.member_id = m.member_id) as member_name
 			from notification_tb n
 			left join apply_tb as a on a.apply_id = n.apply_id
 			left join recruit_tb as r on  r.recruit_id = a.recruit_id
@@ -80,6 +80,19 @@
 			where n.member_id = #{memberId};
 		]]>
 	</select>
+	
+	<!-- <select id="selectNotifyList" parameterType="String" resultMap="NotifyExtendedMapped"> 
+		<![CDATA[
+			select *,
+				(select member_name from member_tb m where n.member_id = m.member_id) as member_name
+			from notification_tb as n
+			left join apply_tb as a on a.apply_id = n.apply_id
+			left join recruit_tb as r on  r.recruit_id = a.recruit_id
+			left join suggest_tb as s on  n.suggest_id = s.suggest_id
+			where n.member_id = #{memberId}
+			and n.apply_id is not null;
+		]]>
+	</select> -->
 	
 	<!-- 알림 세부내역 조회 -->
 	<select id="detailNotify" parameterType="Integer" resultType="HashMap"> 

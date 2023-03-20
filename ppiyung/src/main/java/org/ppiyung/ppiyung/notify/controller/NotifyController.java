@@ -112,7 +112,8 @@ public class NotifyController {
 	
 	// 회원별 알림리스트 조회
 	@GetMapping(value="/{memberId}")
-	public ResponseEntity<BasicResponseEntity<Object>> viewNotificationListByMember(@PathVariable("memberId") String memberId,Authentication authentication){
+	public ResponseEntity<BasicResponseEntity<Object>> 
+	viewNotificationListByMember(@PathVariable("memberId") String memberId,Authentication authentication){
 		
 		BasicResponseEntity<Object> respBody = null;
 		
@@ -122,7 +123,7 @@ public class NotifyController {
 		headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 		
 		List<NotificationExtended> notify = service.getNotificationList(memberId);
-		
+		log.debug(notify);
 		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
 		
 		//권한이 관리자일 때

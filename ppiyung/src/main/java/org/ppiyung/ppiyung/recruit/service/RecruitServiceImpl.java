@@ -177,4 +177,15 @@ public class RecruitServiceImpl implements RecruitService{
 		List<HashMap<String,Object>>  list = dao.selectBookmarkList(memberId);
 			return list;
 	}
+
+	@Override
+	public boolean setApplyResult(Apply apply) {
+		try {
+			dao.updateApply(apply);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
 }

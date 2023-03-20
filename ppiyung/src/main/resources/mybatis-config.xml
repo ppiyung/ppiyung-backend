@@ -29,6 +29,7 @@
 	 	<typeAlias type="org.ppiyung.ppiyung.recruit.vo.ApplyExtended" alias="ApplyExtended"/>
 	 	<typeAlias type="org.ppiyung.ppiyung.recruit.vo.BookMark" alias="BookMark"/>
 	 	<typeAlias type="org.ppiyung.ppiyung.recruit.vo.RecruitBookMark" alias="RecruitBookMark"/>
+	 	<typeAlias type="org.ppiyung.ppiyung.board.vo.ReplyDetail" alias="ReplyDetail"/>
 
 	 </typeAliases>
 

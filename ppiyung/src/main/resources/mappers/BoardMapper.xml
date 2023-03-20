@@ -33,7 +33,17 @@
 	    <result property="memberId" column="member_id" />
 	    <result property="replyCreatedAt" column="reply_created_at" />
     </resultMap>
-
+    
+    
+ 	<resultMap id="ReplyDetailMapped" type="ReplyDetail">
+	    <result property="replyId" column="reply_id" />
+	    <result property="replyContent" column="reply_content" />
+	    <result property="articleId" column="article_id" />
+	    <result property="memberNickname" column="memberNickname"/>
+	    <result property="memberId" column="member_id" />
+	    <result property="replyCreatedAt" column="reply_created_at" />
+    </resultMap>
+	
    	<resultMap id="LikeMapped" type="Like">
 	    <result property="articleId" column="article_id" />
 	    <result property="memberId" column="member_id" />
@@ -115,7 +125,7 @@
 	<!-- 커뮤니티 게시글 수정 -->
 	<update id="updateBoard" parameterType="Board">
 		<![CDATA[
-			UPDATE community_article_tb
+			UPDATE community_article_tb 
 			SET article_title=#{articleTitle}, article_content = #{articleContent}, article_created_at = #{articleCreatedAt}
 			WHERE article_id = #{articleId}
 		]]>
@@ -161,6 +171,25 @@
 			WHERE member_id=#{memberId} and article_id=#{articleId}
 		]]>
 	</delete>
+	
+	<!-- 좋아요 여부 확인 -->
+	<select id="getliked" parameterType="like" resultMap="LikeMapped">
+		<![CDATA[
+			select * 
+			from community_like_tb
+			WHERE member_id=#{memberId} and article_id=#{articleId}
+		]]>
+	</select>
+	<!-- 댓글 조회  -->
+	<select id="getListReply" parameterType="Integer" resultMap="ReplyDetailMapped">
+		<![CDATA[
+			select reply_id, reply_content, article_id, reply_created_at, member_id,
+			(select member_nickname from member_tb as m where m.member_id = community_reply_tb.member_id) as memberNickname
+			from community_reply_tb 
+			WHERE article_id=#{articleId}
+		]]>
+	</select>
+
 
 	<!-- 커뮤니티 게시글 회원ID별 게시글 조회 -->
 	<select id="selectListCommmunityList" parameterType="String" resultMap="BoardListMapped">
@@ -170,6 +199,5 @@
 				ORDER BY article_created_at 
 			]]>
 	</select>
-
 
 </mapper>

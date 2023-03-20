@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.print.attribute.standard.DateTimeAtCompleted;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.logging.log4j.LogManager;
@@ -16,6 +17,7 @@ import org.ppiyung.ppiyung.board.vo.Board;
 import org.ppiyung.ppiyung.board.vo.BoardList;
 import org.ppiyung.ppiyung.board.vo.Like;
 import org.ppiyung.ppiyung.board.vo.Reply;
+import org.ppiyung.ppiyung.board.vo.ReplyDetail;
 import org.ppiyung.ppiyung.common.entity.BasicResponseEntity;
 import org.ppiyung.ppiyung.common.entity.PagingEntity;
 import org.ppiyung.ppiyung.member.vo.MemberOption;
@@ -61,7 +63,7 @@ public class BoardController {
 		int respCode = 0;
 
 		if (result != null) {
-			log.debug("전체 게시글 조회 성공");
+			log.debug("전체 게시글   성공");
 			
 			Map<String, Object> payload = new HashMap<String, Object>();
 			payload.put("total", total);
@@ -131,15 +133,15 @@ public class BoardController {
 		
 	}
 	
-	// 커뮤니티 게시글 삽입
+	// 커뮤니티 게시글 등록
 	@PostMapping("/article")
 	public ResponseEntity<BasicResponseEntity<Object>> writeCommunityPosts(@RequestBody Board boardContent) {
 
 		log.debug(boardContent);
-		Date date = java.sql.Timestamp.valueOf(LocalDateTime.now()); // 현재 시스템의 현재 시간 가져오기
-		boardContent.setArticleCreatedAt(date);
-		
-		log.debug(date);
+//		Date date = java.sql.Timestamp.valueOf(LocalDateTime.now()); // 현재 시스템의 현재 시간 가져오기
+//		boardContent.setArticleCreatedAt(date);
+//		
+//		log.debug(date);
 		boolean result = service.writeCommunit(boardContent);
 		int respCode = 0;
 
@@ -165,10 +167,11 @@ public class BoardController {
 	}
 	
 	// 커뮤니티 게시글 삭제
-	@DeleteMapping(value="/article/{article_id}")
-	public ResponseEntity<BasicResponseEntity<Object>> deleteCommunityPost(@PathVariable("article_id") int article_id) {
-		log.debug(article_id);
-		boolean result = service.deleteCommunit(article_id);
+	@DeleteMapping(value="/article/{articleId}")
+	public ResponseEntity<BasicResponseEntity<Object>> deleteCommunityPost(@PathVariable("articleId") int articleId,
+			Authentication authentication) {
+		log.debug(articleId);
+		boolean result = service.deleteCommunit(articleId);
 
 		BasicResponseEntity<Object> respBody = null;
 		int respCode = 0;
@@ -192,12 +195,11 @@ public class BoardController {
 	// 커뮤니티 게시글 수정
 	@PutMapping(value = "/article/{article_id}")
 	public ResponseEntity<BasicResponseEntity<Object>> editCommunityPosts(@RequestBody Board boardContent,
-			@PathVariable("article_id") int article_id) {
+			@PathVariable("article_id") int articleId) {
 	
-		Date date = java.sql.Timestamp.valueOf(LocalDateTime.now()); // 현재 시스템의 현재 시간 가져오기
-		log.debug(date);
-		boardContent.setArticleId(article_id);
-		boardContent.setArticleCreatedAt(date);
+//		Date date = java.sql.Timestamp.valueOf(LocalDateTime.now()); // 현재 시스템의 현재 시간 가져오기
+//		log.debug(date);
+		boardContent.setArticleId(articleId);
 
 		boolean result = service.editCommunit(boardContent);
 
@@ -309,7 +311,7 @@ public class BoardController {
 	// 좋아요 생성 기능
 	@PostMapping(value = "/like")
 	public ResponseEntity<BasicResponseEntity<Object>>
-			insertLikeHandler(@RequestBody Like likeContent){
+			insertLikeHandler(@RequestBody Like likeContent ,Authentication authentication){
 		
 		boolean result = service.insetLike(likeContent);
 		
@@ -365,6 +367,59 @@ public class BoardController {
 		return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
 		
 	}
-	
+		// 해당 개시글에 좋아요 여부 확인 
+		@GetMapping(value = "/like/{articleId}/{memberId}")
+		public ResponseEntity<BasicResponseEntity<Object>> detailsLike(@PathVariable("articleId") int articleId,
+				@PathVariable("memberId") String memberId, Authentication authentication){
+			Like like = new Like();
+			like.setArticleId(articleId);
+			like.setMemberId(memberId);
+				
+			List<Like> result = service.getLikedCheck(like);
+			BasicResponseEntity<Object> respBody = null;
+			int respCode = 0;
+
+			if (result != null) {
+				log.debug("좋아요 여부 조회 성공");
+				respBody = new BasicResponseEntity<Object>(true, "좋아요 여부 확인 완료",result);
+				respCode = HttpServletResponse.SC_OK;
+			} else {
+				log.debug("좋아요 여부 조회 실폐");
+				respBody = new BasicResponseEntity<Object>(false, "좋아요 여부 조회 실패", result);
+				respCode = HttpServletResponse.SC_BAD_REQUEST;
+			}
+
+			HttpHeaders headers = new HttpHeaders();
+			headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+			return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
+			
+		}
+		// 댓글 조회
+		@GetMapping(value="/reply/{articleId}")
+		public ResponseEntity<BasicResponseEntity<Object>> getListReply(@PathVariable("articleId") int articleId
+				,Authentication authentication){
+				
+			List<ReplyDetail> result = service.getListReply(articleId);
+			BasicResponseEntity<Object> respBody = null;
+			int respCode = 0;
+
+			if (result != null) {
+				log.debug("댓글 조회 성공");
+				respBody = new BasicResponseEntity<Object>(true, "댓글 조회 성공",result);
+				respCode = HttpServletResponse.SC_OK;
+			} else {
+				log.debug("댓글 조회 실폐");
+				respBody = new BasicResponseEntity<Object>(false, "댓글 조회 실패", result);
+				respCode = HttpServletResponse.SC_BAD_REQUEST;
+			}
+
+			HttpHeaders headers = new HttpHeaders();
+			headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+			return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
+			
+		}
+		
 	
 }

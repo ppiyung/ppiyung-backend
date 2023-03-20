@@ -44,8 +44,6 @@
 	   
    	   <select id="countTotal" parameterType="RecruitOption" resultType="Integer">
          SELECT COUNT(*) FROM recruit_tb AS r
-         JOIN member_tb AS m
-            ON r.company_id=m.member_id
          <where>
          	<if test="recruitId != 0">
          		recruit_id = #{recruitId}
@@ -71,9 +69,9 @@
    	   <select id="select" parameterType="RecruitOption" resultMap="RecruitMapped">
          SELECT r.*, m.member_name, i.img_location
          FROM recruit_tb AS r
-         JOIN member_tb AS m
+         LEFT JOIN member_tb AS m
             ON r.company_id=m.member_id
-         JOIN img_tb AS i
+         LEFT JOIN img_tb AS i
             ON m.member_id=i.member_id
          <where>
          	<if test="recruitId != 0">
@@ -200,9 +198,9 @@
 	   	  <![CDATA[
             SELECT r.*, m.member_name, i.img_location
             FROM recruit_tb AS r
-            JOIN member_tb AS m
+            LEFT JOIN member_tb AS m
                ON r.company_id=m.member_id
-            JOIN img_tb AS i
+            LEFT JOIN img_tb AS i
                ON m.member_id=i.member_id
             WHERE recruit_id = #{recruitId}
 	   	  ]]>

@@ -77,7 +77,8 @@
 			left join apply_tb as a on a.apply_id = n.apply_id
 			left join recruit_tb as r on  r.recruit_id = a.recruit_id
 			left join suggest_tb as s on  n.suggest_id = s.suggest_id
-			where n.member_id = #{memberId};
+			where n.member_id = #{memberId}
+			order by n.notification_created_at desc
 		]]>
 	</select>
 	

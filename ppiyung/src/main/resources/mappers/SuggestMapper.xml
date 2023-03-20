@@ -14,7 +14,8 @@
     </resultMap>
     
     <!-- 기업회원 -입사 제안보내기 -->
-    <insert id="insert" parameterType="Suggest">
+    <insert id="insert" parameterType="Suggest" useGeneratedKeys="true"
+    keyProperty="suggestId">
         <![CDATA[
           INSERT INTO suggest_tb (company_id, member_id)
           VALUES (#{companyId}, #{memberId})

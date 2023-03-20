@@ -3,23 +3,32 @@ package org.ppiyung.ppiyung.recruit.service;
 import java.util.HashMap;
 import java.util.List;
 
-import org.ppiyung.ppiyung.common.entity.PagingEntity;
+import org.ppiyung.ppiyung.notify.dao.NotifyDao;
+import org.ppiyung.ppiyung.notify.vo.Notification;
 import org.ppiyung.ppiyung.recruit.dao.RecruitDaoImpl;
 import org.ppiyung.ppiyung.recruit.vo.Apply;
 import org.ppiyung.ppiyung.recruit.vo.ApplyExtended;
 import org.ppiyung.ppiyung.recruit.vo.BookMark;
 import org.ppiyung.ppiyung.recruit.vo.Recruit;
-import org.ppiyung.ppiyung.recruit.vo.RecruitBookMark;
 import org.ppiyung.ppiyung.recruit.vo.RecruitOption;
 import org.ppiyung.ppiyung.recruit.vo.Suggest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 @Service
 public class RecruitServiceImpl implements RecruitService{
 
 	@Autowired
 	private RecruitDaoImpl dao;
+	
+	@Autowired
+	private NotifyDao notifyDao;
+	
+	@Autowired
+	private PlatformTransactionManager transactionManager;
 	
 	@Override
 	public boolean insertRecruitNotice(Recruit recruit) {
@@ -98,13 +107,24 @@ public class RecruitServiceImpl implements RecruitService{
     
     @Override
     public boolean applyForJob(Apply apply) {
+        TransactionStatus txStatus =
+                transactionManager.getTransaction(new DefaultTransactionDefinition());
+        
     	try {
 			dao.insertApply(apply);
-			return true;
+			
+			Recruit recruit = dao.selectAllDetailRecruit(String.valueOf(apply.getRecruitId())).get(0);
+			
+    		Notification noti = new Notification(0, recruit.getCompanyId(), 0, apply.getApplyId(), null);
+			notifyDao.insertApplyNotify(noti);
 		} catch (Exception e) {
+			transactionManager.rollback(txStatus);
 			e.printStackTrace();
 			return false;
 		}
+    	
+    	transactionManager.commit(txStatus);
+		return true;
     }
     
     @Override
@@ -121,13 +141,21 @@ public class RecruitServiceImpl implements RecruitService{
     
     @Override
     public boolean jobOffer(Suggest suggest) {
+        TransactionStatus txStatus =
+                transactionManager.getTransaction(new DefaultTransactionDefinition());
+        
     	try {
 			dao.insertSuggest(suggest);
-			return true;
+    		Notification noti = new Notification(0, suggest.getMemberId(), 0, suggest.getSuggestId(), null);
+			notifyDao.insertApplyNotify(noti);
 		} catch (Exception e) {
+			transactionManager.rollback(txStatus);
 			e.printStackTrace();
 			return false;
 		}
+    	
+    	transactionManager.commit(txStatus);
+		return true;
     }
     
     @Override

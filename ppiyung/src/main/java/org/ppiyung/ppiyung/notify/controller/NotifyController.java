@@ -11,6 +11,7 @@ import org.apache.logging.log4j.Logger;
 import org.ppiyung.ppiyung.common.entity.BasicResponseEntity;
 import org.ppiyung.ppiyung.notify.service.NotifyService;
 import org.ppiyung.ppiyung.notify.vo.Notification;
+import org.ppiyung.ppiyung.notify.vo.NotificationExtended;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -18,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,6 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(value = "/notify")
+@CrossOrigin(origins = "${auth.allowOrigin}", allowCredentials = "true", exposedHeaders = {"Content-Disposition"})
 public class NotifyController {
 	
 	private Logger log = LogManager.getLogger("base");
@@ -80,6 +83,7 @@ public class NotifyController {
 		notification.setMemberId(memberId);
 		notification.setSuggestId(suggestId);
 		
+		
 		boolean result = service.insertSuggestNotify(notification);
 		
 		BasicResponseEntity<Object> respBody = null;
@@ -108,7 +112,8 @@ public class NotifyController {
 	
 	// 회원별 알림리스트 조회
 	@GetMapping(value="/{memberId}")
-	public ResponseEntity<BasicResponseEntity<Object>> viewNotificationListByMember(@PathVariable("memberId") String memberId,Authentication authentication){
+	public ResponseEntity<BasicResponseEntity<Object>> 
+	viewNotificationListByMember(@PathVariable("memberId") String memberId,Authentication authentication){
 		
 		BasicResponseEntity<Object> respBody = null;
 		
@@ -117,9 +122,8 @@ public class NotifyController {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 		
-		List<HashMap<String,Object>> notify = null;
-		notify = service.getNotificationList(memberId);
-		
+		List<NotificationExtended> notify = service.getNotificationList(memberId);
+		log.debug(notify);
 		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
 		
 		//권한이 관리자일 때

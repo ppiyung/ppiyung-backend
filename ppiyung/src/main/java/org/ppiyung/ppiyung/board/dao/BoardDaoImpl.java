@@ -23,7 +23,7 @@ public class BoardDaoImpl implements BoardDao {
 	SqlSession session;
 	
 		
-	// 커뮤니티 전체 게시글 목록 (페이징 수행)
+	// 커뮤니티 전체 게시글 목록 조회 (페이징 수행)
 	@Override
 	public List<BoardList> pagingInsertBoard(PagingEntity criteria) {
 		

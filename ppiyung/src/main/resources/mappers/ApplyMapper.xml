@@ -75,9 +75,9 @@
 	</resultMap>
     
     <!-- 일반회원 - 지원하기 -->
-    <insert id="insert" parameterType="Apply" >
+    <insert id="insert" parameterType="Apply" useGeneratedKeys="true"
+    keyProperty="applyId">
       <![CDATA[
-      
       INSERT INTO apply_tb (member_id, recruit_id)
       VALUES (#{memberId}, #{recruitId})
       ]]>

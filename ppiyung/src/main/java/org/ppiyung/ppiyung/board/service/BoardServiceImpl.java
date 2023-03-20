@@ -9,6 +9,7 @@ import org.ppiyung.ppiyung.board.vo.Like;
 import org.ppiyung.ppiyung.board.vo.Reply;
 import org.ppiyung.ppiyung.board.vo.ReplyDetail;
 import org.ppiyung.ppiyung.common.entity.PagingEntity;
+import org.ppiyung.ppiyung.recruit.vo.Recruit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -146,6 +147,13 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public List<ReplyDetail> getListReply(int articleId) {
 		return dao.getListReplt(articleId);
+	}
+
+	//커뮤니티 게시글 회원ID별 게시글 조회
+	@Override
+	public List<BoardList> getCommunityByMember(String memberId) {
+		List<BoardList> list = dao.selectListCommmunityList(memberId);
+		return list;
 	}
 
 }

@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.ppiyung.ppiyung.common.entity.PagingEntity;
 import org.ppiyung.ppiyung.recruit.vo.Apply;
+import org.ppiyung.ppiyung.recruit.vo.ApplyExtended;
 import org.ppiyung.ppiyung.recruit.vo.BookMark;
 import org.ppiyung.ppiyung.recruit.vo.Recruit;
 import org.ppiyung.ppiyung.recruit.vo.RecruitBookMark;
@@ -43,7 +44,7 @@ public interface RecruitService {
 
 	public List<HashMap<String, Object>> getMyBookmarkList(String memberId);
 
-	public List<Apply> getApplyListOfMember(String memberId);
+	public List<ApplyExtended> getApplyListOfMember(String memberId);
 
 	public List<HashMap<String, Object>> getApplicantsByRecruitNotice(int recruitId);
 
@@ -54,6 +55,8 @@ public interface RecruitService {
 	public HashMap<String, Object> getRecruitStatus();
 
 	public int getRecruitListTotal(RecruitOption option);
+
+	public boolean setApplyResult(Apply param);
 
 
 	

@@ -13,6 +13,8 @@ import org.ppiyung.ppiyung.common.entity.PagingEntity;
 
 public interface BoardDao  {
 	
+
+
 	// 커뮤니티 게시글 (페이징 수행)
 	public List<BoardList> pagingInsertBoard(PagingEntity criteria);
 	
@@ -44,6 +46,7 @@ public interface BoardDao  {
 	void deleteLike(Like like) throws Exception;
 
 	public int totalCount();
+
 	
 	// 좋아요 여부 확인
 	public List<Like> getLikedCheck(Like like);
@@ -51,4 +54,8 @@ public interface BoardDao  {
 	// 댓글 목록 조회
 	public List<ReplyDetail> getListReplt(int articleId);
 	
-}
+
+	//커뮤니티 게시글 회원ID별 게시글 조회
+	public List<BoardList> selectListCommmunityList(String memberId);
+	}
+

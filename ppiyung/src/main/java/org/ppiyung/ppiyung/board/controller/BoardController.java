@@ -20,6 +20,7 @@ import org.ppiyung.ppiyung.board.vo.Reply;
 import org.ppiyung.ppiyung.board.vo.ReplyDetail;
 import org.ppiyung.ppiyung.common.entity.BasicResponseEntity;
 import org.ppiyung.ppiyung.common.entity.PagingEntity;
+import org.ppiyung.ppiyung.member.vo.MemberOption;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -62,7 +63,7 @@ public class BoardController {
 		int respCode = 0;
 
 		if (result != null) {
-			log.debug("전체 게시글 조회 성공");
+			log.debug("전체 게시글   성공");
 			
 			Map<String, Object> payload = new HashMap<String, Object>();
 			payload.put("total", total);
@@ -82,6 +83,31 @@ public class BoardController {
 		return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
 	}
 
+	// 커뮤니티 게시글 회원ID별 게시글 조회
+		@GetMapping(value="/{member_id}")
+		public ResponseEntity<BasicResponseEntity<Object>> getCommunityByMember(@PathVariable("member_id") String memberId,
+	    		Authentication authentication) {
+
+			List<BoardList> result = service.getCommunityByMember(memberId);
+			BasicResponseEntity<Object> respBody = null;
+			int respCode = 0;
+
+			if (result != null) {
+				log.debug("회원ID별 게시글 조회 성공");
+				respBody = new BasicResponseEntity<Object>(true, "회원ID별 게시글 조회완료",result);
+				respCode = HttpServletResponse.SC_OK;
+			} else {
+				log.debug("회원ID별 게시글 조회 실패");
+				respBody = new BasicResponseEntity<Object>(false, "회원ID별 게시글 조회 실패", result);
+				respCode = HttpServletResponse.SC_BAD_REQUEST;
+			}
+
+			HttpHeaders headers = new HttpHeaders();
+			headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+			return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
+			
+		}
 	// 커뮤니티 게시글 개별 상세조회
 	@GetMapping("/article/{articleId}")
 	public ResponseEntity<BasicResponseEntity<Object>> detailsCommunity(@PathVariable("articleId") int articleId ,@RequestParam("page") int page, @RequestParam("size") int size){
@@ -107,7 +133,7 @@ public class BoardController {
 		
 	}
 	
-	// 커뮤니티 게시글 삽입
+	// 커뮤니티 게시글 등록
 	@PostMapping("/article")
 	public ResponseEntity<BasicResponseEntity<Object>> writeCommunityPosts(@RequestBody Board boardContent) {
 

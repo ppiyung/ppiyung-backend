@@ -125,7 +125,7 @@
 	<!-- 커뮤니티 게시글 수정 -->
 	<update id="updateBoard" parameterType="Board">
 		<![CDATA[
-			UPDATE community_article_tb
+			UPDATE community_article_tb 
 			SET article_title=#{articleTitle}, article_content = #{articleContent}, article_created_at = #{articleCreatedAt}
 			WHERE article_id = #{articleId}
 		]]>

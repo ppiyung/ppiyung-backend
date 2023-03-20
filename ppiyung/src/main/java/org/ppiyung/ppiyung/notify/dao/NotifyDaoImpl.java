@@ -7,6 +7,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.ppiyung.ppiyung.notify.vo.Notification;
+import org.ppiyung.ppiyung.notify.vo.NotificationExtended;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -40,9 +41,9 @@ public class NotifyDaoImpl implements NotifyDao {
 
 	// 회원별 알림 조회
 	@Override
-	public List<HashMap<String, Object>>  getNotificationList(String param) {
+	public List<NotificationExtended>  getNotificationList(String param) {
 		
-		List<HashMap<String, Object>> list = session.selectList("org.ppiyung.ppiyung.notify.selectNotifyList",param);
+		List<NotificationExtended> list = session.selectList("org.ppiyung.ppiyung.notify.selectNotifyList",param);
 		return list;
 	}		
 

@@ -11,7 +11,45 @@
 	    <result property="memberId" column="member_id" />
 	    <result property="suggestId" column="suggest_id" />
 	    <result property="applyId" column="apply_id" />
-	    <result property="notificationCreatedAt" column="notification_create_at" />
+	    <result property="notificationCreatedAt" column="notification_created_at" />
+    </resultMap>
+    
+   	<resultMap id="RecruitMapped" type="Recruit">
+		<result property="recruitId" column="recruit_id" />
+		<result property="companyId" column="company_id" />
+		<result property="recruitTitle" column="recruit_title" />
+		<result property="recruitDetail" column="recruit_detail" />
+		<result property="workAreaId" column="work_area_id" />
+		<result property="recruitStartAt" column="recruit_start_at" />
+		<result property="recruitEndAt" column="recruit_end_at" />
+		<result property="companyName" column="member_name" />
+	</resultMap>
+	
+	<resultMap id="ApplyMapped" type="Apply">
+		<result property="applyId" column="apply_id" />
+		<result property="applyResult" column="apply_result" />
+		<result property="memberId" column="member_id" />
+		<result property="recruitId" column="recruit_id" />
+		<result property="applyCreatedAt" column="apply_created_at" />
+    </resultMap>
+    
+	<resultMap id="SuggestMapped" type="Suggest">
+		<result property="suggestId" column="suggest_id" />
+		<result property="suggestCreatedAt" column="suggest_created_at" />
+		<result property="memberId" column="member_id" />
+		<result property="companyId" column="company_id" />
+    </resultMap>
+    
+   	<resultMap id="NotifyExtendedMapped" type="NotifyExtended">
+	    <result property="notificationId" column="notification_id" />
+	    <result property="memberId" column="member_id" />
+	    <result property="memberName" column="member_name" />
+	    <result property="suggestId" column="suggest_id" />
+	    <result property="applyId" column="apply_id" />
+	    <result property="notificationCreatedAt" column="notification_created_at" />
+   	    <association property="recruit" resultMap="RecruitMapped" />
+   	    <association property="apply" resultMap="ApplyMapped" />
+   	    <association property="suggest" resultMap="SuggestMapped" />
     </resultMap>
 
 	<!-- 지원 알림 생성 -->
@@ -31,17 +69,30 @@
 	</insert>
 
 	<!-- 회원별 알림 목록 조회 -->
-	<select id="selectNotifyList" parameterType="String" resultType="HashMap"> 
+   <select id="selectNotifyList" parameterType="String" resultMap="NotifyExtendedMapped"> 
 		<![CDATA[
-			select m.member_name, n.notification_created_at, a.apply_result, r.company_id,r.recruit_detail,r.recruit_title, s.company_id, s.suggest_id
-			from notification_tb as n
-			join apply_tb as a on a.apply_id = n.apply_id
-			join recruit_tb as r on  r.recruit_id = a.recruit_id
-			join suggest_tb as s on  n.suggest_id = s.suggest_id
-			join member_tb as m on m.member_id = n.member_id
+			select *,
+				(select member_name from member_tb m where n.member_id = m.member_id) as member_name
+			from notification_tb n
+			left join apply_tb as a on a.apply_id = n.apply_id
+			left join recruit_tb as r on  r.recruit_id = a.recruit_id
+			left join suggest_tb as s on  n.suggest_id = s.suggest_id
 			where n.member_id = #{memberId};
 		]]>
 	</select>
+	
+	<!-- <select id="selectNotifyList" parameterType="String" resultMap="NotifyExtendedMapped"> 
+		<![CDATA[
+			select *,
+				(select member_name from member_tb m where n.member_id = m.member_id) as member_name
+			from notification_tb as n
+			left join apply_tb as a on a.apply_id = n.apply_id
+			left join recruit_tb as r on  r.recruit_id = a.recruit_id
+			left join suggest_tb as s on  n.suggest_id = s.suggest_id
+			where n.member_id = #{memberId}
+			and n.apply_id is not null;
+		]]>
+	</select> -->
 	
 	<!-- 알림 세부내역 조회 -->
 	<select id="detailNotify" parameterType="Integer" resultType="HashMap"> 

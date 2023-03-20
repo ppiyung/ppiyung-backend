@@ -20,5 +20,6 @@ public class Recruit {
 	private Date recruitStartAt ; 
 	private Date recruitEndAt;
 	private String companyName;
+	private String imgLocation;
 	
 }

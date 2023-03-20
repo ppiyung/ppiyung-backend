@@ -30,7 +30,6 @@
 			ON  S.company_id = M.member_id
 			WHERE S.member_id = #{memberId}
 			ORDER BY S.suggest_created_at DESC
-			LIMIT #{skip}, #{amount}
         ]]>
    </select>
   

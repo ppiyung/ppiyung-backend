@@ -61,7 +61,7 @@ public class MemberServiceImpl implements MemberService {
 
 			// 3. 인증 정보를 기반으로 JWT 토큰 생성
 			HashMap<String, Object> result = jwtTokenUtil.generateToken(authentication);
-			return result;
+			return result; 
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;

@@ -47,7 +47,7 @@
 	<select id="selectBookmarkList" resultMap="BookmarkExtended">
 		<![CDATA[
 		    SELECT A.company_id , A.recruit_title, A.recruit_detail, A.work_area_id, A.recruit_start_at,A.recruit_end_at,
-			B.member_id , C.member_name , A.recrut_id
+			B.member_id , C.member_name , A.recruit_id
  			FROM recruit_tb AS A JOIN bookmark AS B
 			ON  A.recruit_id = B.recruit_id
   			JOIN member_tb AS C ON B.member_id = C.member_id  WHERE B.member_id = #{memberId}

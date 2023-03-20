@@ -12,6 +12,16 @@
 			column="bookmark_created_at" />
 	</resultMap>
 
+	<resultMap id="BookmarkExtended" type="HashMap">
+		<result property="company_id" column="company_id" />
+		<result property="recruit_title" column="recruit_title" />
+		<result property="recruit_detail" column="recruit_detail" />
+		<result property="recruit_id" column="recruit_id" />
+		<result property="work_area_id" column="work_area_id" />
+		<result property="recruit_start_at" column="recruit_start_at" javaType="java.util.Date" />
+		<result property="recruit_end_at" column="recruit_end_at" javaType="java.util.Date" />
+	</resultMap>
+
 
 	<!-- 북마크 생성 -->
 	<insert id="insertBookMark" parameterType="BookMark">   
@@ -34,10 +44,10 @@
 	</insert>
 
 	<!-- 회원별 북마크 리스트 -->
-	<select id="selectBookmarkList" resultType="HashMap">
+	<select id="selectBookmarkList" resultMap="BookmarkExtended">
 		<![CDATA[
 		    SELECT A.company_id , A.recruit_title, A.recruit_detail, A.work_area_id, A.recruit_start_at,A.recruit_end_at,
-			B.member_id , C.member_name
+			B.member_id , C.member_name , A.recrut_id
  			FROM recruit_tb AS A JOIN bookmark AS B
 			ON  A.recruit_id = B.recruit_id
   			JOIN member_tb AS C ON B.member_id = C.member_id  WHERE B.member_id = #{memberId}

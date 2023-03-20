@@ -23,6 +23,7 @@
 	 	<typeAlias type="org.ppiyung.ppiyung.board.vo.Reply" alias="Reply"/>
 	 	<typeAlias type="org.ppiyung.ppiyung.board.vo.Like" alias="Like"/>
 	 	<typeAlias type="org.ppiyung.ppiyung.notify.vo.Notification" alias="Notify"/>
+	 	<typeAlias type="org.ppiyung.ppiyung.notify.vo.NotificationExtended" alias="NotifyExtended"/>
 	 	<typeAlias type="org.ppiyung.ppiyung.recruit.vo.Suggest" alias="Suggest"/>
 	 	<typeAlias type="org.ppiyung.ppiyung.recruit.vo.Apply" alias="Apply"/>
 	 	<typeAlias type="org.ppiyung.ppiyung.recruit.vo.ApplyExtended" alias="ApplyExtended"/>

@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.ppiyung.ppiyung.notify.dao.NotifyDao;
 import org.ppiyung.ppiyung.notify.vo.Notification;
+import org.ppiyung.ppiyung.notify.vo.NotificationExtended;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,8 +43,8 @@ public class NotifyServiceImpl implements NotifyService {
 
 	// 회원별 알람 리스트 조회
 	@Override
-	public List<HashMap<String, Object>>  getNotificationList(String memberId) {
-		 List<HashMap<String, Object>> list = dao.getNotificationList(memberId);
+	public List<NotificationExtended>  getNotificationList(String memberId) {
+		 List<NotificationExtended> list = dao.getNotificationList(memberId);
 		return list;
 	}
 	

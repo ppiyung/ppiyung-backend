@@ -13,6 +13,7 @@ import org.ppiyung.ppiyung.common.entity.BasicResponseEntity;
 import org.ppiyung.ppiyung.common.entity.PagingEntity;
 import org.ppiyung.ppiyung.recruit.service.RecruitService;
 import org.ppiyung.ppiyung.recruit.vo.Apply;
+import org.ppiyung.ppiyung.recruit.vo.ApplyExtended;
 import org.ppiyung.ppiyung.recruit.vo.BookMark;
 import org.ppiyung.ppiyung.recruit.vo.Recruit;
 import org.ppiyung.ppiyung.recruit.vo.RecruitOption;
@@ -353,7 +354,7 @@ public class RecruitController {
 		headers.setContentType(new MediaType("application", "json",
 				Charset.forName("UTF-8")));
 		
-		List<Apply> result = null;
+		List<ApplyExtended> result = null;
 		
 		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
 		
@@ -364,6 +365,7 @@ public class RecruitController {
 		    
 			if(result != null) {   
 			log.debug("회원별 지원 현황 조회 성공");
+			log.debug(result);
 			respBody = new BasicResponseEntity<Object> (true, "공고 조회 완료", result);
 			respCode = HttpServletResponse.SC_OK;
 		    } else {
@@ -385,7 +387,7 @@ public class RecruitController {
     // 기업회원 - 채용공고별 지원자 리스트 조회
     @GetMapping(value="/apply/company")
     public ResponseEntity<BasicResponseEntity<Object>> 
-    getApplicantsByRecruitNotice(@RequestParam("recruitid") int recruitId, @RequestParam("companyid") String companyId, 
+    getApplicantsByRecruitNotice(@RequestParam("recruitId") int recruitId, 
     		Authentication authentication) {
         
 		BasicResponseEntity<Object> respBody = null;
@@ -398,8 +400,7 @@ public class RecruitController {
 		
 		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
 		
-		if (userDetails.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_COMPANY")) 
-				&& userDetails.getUsername().equals(companyId)) {
+		if (userDetails.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_COMPANY"))) {
 			
 			result = service.getApplicantsByRecruitNotice(recruitId);
 			
@@ -415,6 +416,42 @@ public class RecruitController {
 
 	}
     
+    // 기업회원 - 지원자 합불통보
+    @PutMapping(value="/apply/{applyId}")
+    public ResponseEntity<BasicResponseEntity<Object>> 
+    setApplyResult(@RequestBody Apply param, @PathVariable("applyId") int applyId, 
+    		Authentication authentication) {
+        
+		BasicResponseEntity<Object> respBody = null;
+		int respCode = 0;
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+		
+		
+		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
+		
+		if (userDetails.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_COMPANY"))) {
+			param.setApplyId(applyId);
+			boolean result = service.setApplyResult(param);
+			
+			if (result) {
+				log.debug("합불통보 성공");
+				respBody = new BasicResponseEntity<Object>(true, "합불통보 성공하였습니다.", null);
+				respCode = HttpServletResponse.SC_OK;
+			} else {
+				log.debug("합불통보 실패");
+				respBody = new BasicResponseEntity<Object>(false, "합불통보 실패하였습니다.", null);
+				respCode = HttpServletResponse.SC_BAD_REQUEST;
+			}
+			
+		} else {
+			log.debug("합불통보 실패");
+			respBody = new BasicResponseEntity<Object>(false, "합불통보 실패하였습니다.", null);
+			respCode = HttpServletResponse.SC_BAD_REQUEST;
+		}
+		return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
+
+	}
     
     // 기업회원 - 입사 제안 보내기
     @PostMapping(value="/suggest/{member_id}")
@@ -459,8 +496,8 @@ public class RecruitController {
     @GetMapping(value="/suggest/member/{member_id}")
     public ResponseEntity<BasicResponseEntity<Object>> 
     getJobOfferOfMember(@PathVariable("member_id") String memberId,
-    		@RequestParam("page") int pageNum,
-			@RequestParam("size") int amount,
+    		@RequestParam(value = "page", defaultValue = "1") int pageNum,
+			@RequestParam(value = "size", defaultValue = "15") int amount,
     		Authentication authentication) {
         
 		BasicResponseEntity<Object> respBody = null;
@@ -475,12 +512,11 @@ public class RecruitController {
 		if (userDetails.getUsername().equals(memberId)) {
 			
 			result = service.getJobOfferOfMember(memberId);
-			
 			respBody = new BasicResponseEntity<Object>(true, "개별회원 입사제안 조회 성공하였습니다.", result);
 			respCode = HttpServletResponse.SC_OK;
 
 		} else {
-			
+			log.debug(memberId + ", " + userDetails.getUsername());
 			respBody = new BasicResponseEntity<Object>(false, "개별회원입사제안 조회 실패하였습니다.", result);
 			respCode = HttpServletResponse.SC_BAD_REQUEST;
 		}
@@ -505,7 +541,7 @@ public class RecruitController {
 		if (userDetails.getUsername().equals(companyId)) {
 			
 			result = service.getJobOfferOfCompany(companyId);
-			
+			log.debug("개별회원 입사제안 조회"+ result);
 			respBody = new BasicResponseEntity<Object>(true, "개별회원 입사제안 조회 성공하였습니다.", result);
 			respCode = HttpServletResponse.SC_OK;
 

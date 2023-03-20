@@ -10,6 +10,7 @@
 		<result property="suggestCreatedAt" column="suggest_created_at" />
 		<result property="memberId" column="member_id" />
 		<result property="companyId" column="company_id" />
+		<result property="companyName" column="company_name"/>
     </resultMap>
     
     <!-- 기업회원 -입사 제안보내기 -->
@@ -21,10 +22,15 @@
     </insert>
    
    <!-- 일반회원-회원별 받은 입사제안 조회 -->
-   <select id="selectByMember" parameterType="String" resultMap="SuggestMapped">
+   <select id="selectSuggestByMember" parameterType="String" resultMap="SuggestMapped">
         <![CDATA[
-          SELECT * FROM suggest_tb
-          WHERE member_id = #{memberId}
+          SELECT S.suggest_id , S.suggest_created_at, S.company_id, S.member_id, M.member_name as company_name
+			FROM suggest_tb AS S
+			JOIN member_tb AS M
+			ON  S.company_id = M.member_id
+			WHERE S.member_id = #{memberId}
+			ORDER BY S.suggest_created_at DESC
+			LIMIT #{skip}, #{amount}
         ]]>
    </select>
   

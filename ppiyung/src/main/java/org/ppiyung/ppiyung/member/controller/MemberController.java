@@ -51,6 +51,7 @@ public class MemberController {
 	@PostMapping(value = "signin")
 	public ResponseEntity<BasicResponseEntity<Object>> signinHandler(@RequestBody Member reqSigninInfo) {
 
+		log.debug("회원가입 요청: " + reqSigninInfo);
 		boolean result = service.signin(reqSigninInfo);
 		
 		BasicResponseEntity<Object> respBody = null;
@@ -223,12 +224,15 @@ public class MemberController {
 		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
 		boolean hasAuthority = userDetails.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"));
 		
+		log.debug("회원정보수정 요청: " + reqUpdateInfo);
+		
 		if (userDetails.getUsername().equals(memberId) ||
 				hasAuthority) { // 자신의 정보를 수정하는 경우이거나 관리자인 경우
 			log.debug("회원정보수정 - 권한 확인됨");
 			
 			reqUpdateInfo.setMemberId(memberId);
 			if (reqUpdateInfo.getMemberPw() != null && reqUpdateInfo.getMemberPw().equals("")) {
+				log.debug("회원 수정 - 비밀번호 변경 안함");
 				reqUpdateInfo.setMemberPw(null);
 			}
 			
@@ -352,6 +356,7 @@ public class MemberController {
 		return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
 	}
 	
+	//이력서 
 	@PostMapping(value="/resume")
 	public ResponseEntity<BasicResponseEntity<Object>>
 		uploadResumeHandler(@RequestParam("file") MultipartFile file, Authentication authentication) {

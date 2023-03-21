@@ -21,5 +21,5 @@ public class Recruit {
 	private Date recruitEndAt;
 	private String companyName;
 	private String imgLocation;
-	
+	private boolean recruitExpose;
 }

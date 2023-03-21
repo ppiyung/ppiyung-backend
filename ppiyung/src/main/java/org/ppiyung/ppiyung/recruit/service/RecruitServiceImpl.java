@@ -64,6 +64,17 @@ public class RecruitServiceImpl implements RecruitService{
 	}
 	
 	@Override
+	public boolean exposeToMainBanner(Recruit recruit) {
+		try {
+			dao.updateRecruitExpose(recruit);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	@Override
 	public List<Recruit> getRecruitList(RecruitOption option) {
 		List<Recruit> list = dao.selectAll(option);
 		return list;

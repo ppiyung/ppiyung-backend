@@ -1,8 +1,10 @@
 -- 삐융 베이스 SQL 스크립트
--- Version: v0.5.1
+-- Version: v0.5.2
 -- Author: @initbyran, @silver-hee, @schdevv, @0tak2, @gkswotjd45
 --
 -- 변경 사항
+-- v0.5.2 notification_tb의 suggest_id, apply_id NULL 가능하도록 수정
+--        recruit_tb에 recruit_expose 컬럼 추가 (상단 노출 여부)
 -- v0.5.1 img_tb.img_updated_at에 기본값 현재 시간으로 지정
 -- v0.5 member_tb에서 member_img 속성 삭제 및 img_tb 추가
 -- v0.4.1 member_tb의 샘플 데이터의 member_pw 값을 해싱된 값으로 교체
@@ -53,7 +55,7 @@ CREATE TABLE `member_tb` (
     FOREIGN KEY (work_area_id) REFERENCES work_area_tb (work_area_id)
 );
 INSERT INTO `member_tb` VALUES ('admin','$2y$04$G92ppy9s0BVNuuqbLjo.k.4M.EiVMOId0Dm2hYUJgJe13a.pa0lzS','관리자','2000-01-01',NULL,'010-1234-5678',NULL,NULL,NULL,'관리자','admin@gmail.com','A',NULL,NULL,1,NULL,1,NULL),
-        ('carrot','$2y$04$G92ppy9s0BVNuuqbLjo.k.4M.EiVMOId0Dm2hYUJgJe13a.pa0lzS','당근마켓','2000-01-01',NULL,'010-1234-5678','서울',NULL,NULL,'당근당근','carrot@gmail.com','C','000-00-00000','바니바니당근당근',1,NULL,1,1),
+        ('carrot','$2y$04$G92ppy9s0BVNuuqbLjo.k.4M.EiVMOId0Dm2hYUJgJe13a.pa0lzS','당근마켓','2000-01-01',NULL,'010-1234-5678','서울 서초구 강남대로 465', 37.5, 127.0,'당근당근','carrot@gmail.com','C','000-00-00000','바니바니당근당근',1,NULL,1,1),
         ('gang','$2y$04$G92ppy9s0BVNuuqbLjo.k.4M.EiVMOId0Dm2hYUJgJe13a.pa0lzS','강감찬','2000-01-01','M','010-1234-5678','인천',NULL,NULL,'강강강','gang@gmail.com','N',NULL,'강감찬입니다~~',1,NULL,1,NULL),
         ('hello','$2y$04$G92ppy9s0BVNuuqbLjo.k.4M.EiVMOId0Dm2hYUJgJe13a.pa0lzS','헬로마켓','2000-01-01',NULL,'010-1234-5678','경기',NULL,NULL,'헬로헬로','hello@gmail.com','C','000-00-00000','바니바니당근당근',1,NULL,1,1),
         ('hong','$2y$04$G92ppy9s0BVNuuqbLjo.k.4M.EiVMOId0Dm2hYUJgJe13a.pa0lzS','홍길동','2000-01-01','M','010-1234-5678','서울',NULL,NULL,'홍홍홍','hong@gmail.com','N',NULL,'홍길동입니당~잘부탁드려요홍홍홍',1,NULL,1,NULL),
@@ -71,10 +73,11 @@ CREATE TABLE `recruit_tb` (
     `work_area_id`        int                         NOT NULL,
     `recruit_start_at`    datetime  DEFAULT now()     NOT NULL,
     `recruit_end_at`      datetime  DEFAULT now()     NOT NULL,
+    `recruit_expose`      boolean DEFAULT FALSE      NOT NULL,
     FOREIGN KEY (company_id) REFERENCES member_tb (member_id),
     FOREIGN KEY (work_area_id) REFERENCES work_area_tb (work_area_id)
 );
-insert into recruit_tb values (1,'carrot','개발할 사람~','개발하쟝','1','2023-03-01 00:00:00','2023-03-15 00:00:00');
+insert into recruit_tb values (1,'carrot','개발할 사람~','개발하쟝','1','2023-03-01 00:00:00','2023-03-15 00:00:00', false);
 select * from recruit_tb;
 
 -- 채용공고 북마크 
@@ -143,14 +146,14 @@ select * from suggest_tb;
 CREATE TABLE `notification_tb` (
     `notification_id`            int                       NOT NULL  AUTO_INCREMENT PRIMARY KEY,
     `member_id`                  varchar(20)               NOT NULL,
-    `suggest_id`                 int                       NOT NULL    COMMENT '둘 중에 NULL이 아닌 것에 대해 처리',
-    `apply_id`                   int                       NOT NULL,
+    `suggest_id`                 int                       NULL    COMMENT '둘 중에 NULL이 아닌 것에 대해 처리',
+    `apply_id`                   int                       NULL,
     `notification_created_at`    datetime  DEFAULT now()   NOT NULL,
     FOREIGN KEY (member_id) REFERENCES member_tb (member_id),
     FOREIGN KEY (suggest_id) REFERENCES suggest_tb (suggest_id),
     FOREIGN KEY (apply_id) REFERENCES apply_tb (apply_id)
 );
-insert into notification_tb values(default, 'hong', 1 , 1, default);
+insert into notification_tb values(default, 'hong', 1 , NULL, default);
 select * from notification_tb ;
 
 -- 커뮤니티 게시글
@@ -198,6 +201,7 @@ CREATE TABLE `community_reply_tb` (
 );
 insert into community_reply_tb values (default, '좋은 게시글이네요' , 1, 'hong', default);
 select * from community_reply_tb;
+
 
 
 

@@ -117,6 +117,13 @@ public class RecruitDaoImpl implements RecruitDao {
 	
 		return list;
 	}
+
+	@Override
+	public Apply selectApplyByApplyId(int applyId) {
+		Apply apply = session.selectOne("org.ppiyung.ppiyung.apply.selectByApplyId",applyId);
+		
+		return apply;
+	}
 	
 	@Override
 	public List<HashMap<String, Object>> selectByRecruit(int recruitId) {

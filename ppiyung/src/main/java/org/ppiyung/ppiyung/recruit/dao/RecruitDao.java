@@ -33,4 +33,5 @@ public interface RecruitDao {
 	public List<Suggest> selectSuggestByMember(String memberId);
 	public List<Suggest> selectSuggestByCompany(String companyId);
 	void updateApply(Apply apply) throws Exception;
+	Apply selectApplyByApplyId(int applyId);
 }

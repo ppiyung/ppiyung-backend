@@ -7,6 +7,7 @@ import org.ppiyung.ppiyung.common.entity.PagingEntity;
 import org.ppiyung.ppiyung.recruit.vo.Apply;
 import org.ppiyung.ppiyung.recruit.vo.ApplyExtended;
 import org.ppiyung.ppiyung.recruit.vo.BookMark;
+import org.ppiyung.ppiyung.recruit.vo.ProposalsList;
 import org.ppiyung.ppiyung.recruit.vo.Recruit;
 import org.ppiyung.ppiyung.recruit.vo.RecruitBookMark;
 import org.ppiyung.ppiyung.recruit.vo.RecruitOption;
@@ -50,13 +51,15 @@ public interface RecruitService {
 
 	public List<Suggest> getJobOfferOfMember(String memberId);
 
-	public List<Suggest> getJobOfferOfCompany(String companyId);
+	public List<ProposalsList> getJobOfferOfCompany(String companyId);
 
 	public HashMap<String, Object> getRecruitStatus();
 
 	public int getRecruitListTotal(RecruitOption option);
 
 	public boolean setApplyResult(Apply param);
+
+	public boolean exposeToMainBanner(Recruit recruit);
 
 
 	

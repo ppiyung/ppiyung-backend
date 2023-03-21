@@ -8,6 +8,7 @@ import org.ppiyung.ppiyung.common.entity.PagingEntity;
 import org.ppiyung.ppiyung.recruit.vo.Apply;
 import org.ppiyung.ppiyung.recruit.vo.ApplyExtended;
 import org.ppiyung.ppiyung.recruit.vo.BookMark;
+import org.ppiyung.ppiyung.recruit.vo.ProposalsList;
 import org.ppiyung.ppiyung.recruit.vo.Recruit;
 import org.ppiyung.ppiyung.recruit.vo.RecruitBookMark;
 import org.ppiyung.ppiyung.recruit.vo.RecruitOption;
@@ -44,6 +45,14 @@ public class RecruitDaoImpl implements RecruitDao {
 			throw new Exception();
 		}
 
+	}
+
+	@Override
+	public void updateRecruitExpose(Recruit recruit) throws Exception {
+		int count = session.update("org.ppiyung.ppiyung.recruit.updateExpose", recruit);
+		if (count != 1) {
+			throw new Exception();
+		}
 	}
 
 	@Override
@@ -149,8 +158,8 @@ public class RecruitDaoImpl implements RecruitDao {
 	}
 
 	@Override
-	public List<Suggest> selectSuggestByCompany(String companyId) {
-		List<Suggest> list = session.selectList("org.ppiyung.ppiyung.suggest.selectByCompany", companyId);		  
+	public List<ProposalsList> selectSuggestByCompany(String companyId) {
+		List<ProposalsList> list = session.selectList("org.ppiyung.ppiyung.suggest.selectByCompany", companyId);		  
 		return list;
 	}
 

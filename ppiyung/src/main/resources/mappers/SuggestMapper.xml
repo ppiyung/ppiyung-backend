@@ -13,6 +13,18 @@
 		<result property="companyName" column="company_name"/>
     </resultMap>
     
+    <resultMap id="ProposalsListMapped" type="proposal">
+    	<result property="suggestId" column="suggest_id" />
+    	<result property="companyId" column="company_id" />
+		<result property="suggestCreatedAt" column="suggest_created_at" />
+		<result property="memberId" column="member_id" />
+		<result property="companyName" column="company_name" />
+		<result property="memberName" column="member_name" />
+		<result property="memberPhone" column="member_phone" />
+		<result property="memberAddr" column="member_addr" />
+		<result property="workAreaName" column="work_area_name" />
+	</resultMap>
+    
     <!-- 기업회원 -입사 제안보내기 -->
     <insert id="insert" parameterType="Suggest" useGeneratedKeys="true"
     keyProperty="suggestId">
@@ -35,10 +47,15 @@
    </select>
   
    <!-- 기업회원-기업별 보낸 입사제안 조회 -->
-   <select id="selectByCompany" parameterType="String" resultMap="SuggestMapped">
+   <select id="selectByCompany" parameterType="String" resultMap="ProposalsListMapped">
         <![CDATA[
-          SELECT * FROM suggest_tb
-          WHERE company_id = #{companyId}
+        	SELECT s.company_id, m.member_name, (select member_name from  member_tb as m where s.company_id = member_id) as company_name, s.suggest_created_at, member_phone
+			,(select m.member_addr from  member_tb as m where s.company_id = member_id) as member_addr,
+			(select w.work_area_name from recruit_tb as r join work_area_tb as w on w.work_area_id = r.work_area_id where r.company_id = s.company_id) as work_area_name
+			,s.member_id
+			FROM suggest_tb as s
+			join member_tb as m on s.member_id = m.member_id
+			WHERE company_id = #{companyId}
         ]]>
    </select>
  </mapper>  

@@ -15,6 +15,7 @@ import org.ppiyung.ppiyung.recruit.service.RecruitService;
 import org.ppiyung.ppiyung.recruit.vo.Apply;
 import org.ppiyung.ppiyung.recruit.vo.ApplyExtended;
 import org.ppiyung.ppiyung.recruit.vo.BookMark;
+import org.ppiyung.ppiyung.recruit.vo.ProposalsList;
 import org.ppiyung.ppiyung.recruit.vo.Recruit;
 import org.ppiyung.ppiyung.recruit.vo.RecruitOption;
 import org.ppiyung.ppiyung.recruit.vo.Suggest;
@@ -136,6 +137,47 @@ public class RecruitController {
 	
 	}
 	
+	// 관리자회원 - 상단 배너 노출
+	@PutMapping(value="/expose/{recruit_id}")
+	public ResponseEntity<BasicResponseEntity<Object>> 
+		exposeToMainBanner(@PathVariable("recruit_id") int recruitId,
+				@RequestBody Recruit recruitParam,
+				Authentication authentication){ 
+		log.debug(recruitParam);
+		log.debug(recruitId);
+		
+		BasicResponseEntity<Object> respBody = null;
+		int respCode=0;
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(new MediaType("application", "json",
+				Charset.forName("UTF-8")));
+		
+		if(!authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
+			log.debug("공고 상단 노출 설정 실패 - 권한 없음");
+			respBody = new BasicResponseEntity<Object> (false, "권한이 없습니다.", null);
+			respCode = HttpServletResponse.SC_BAD_REQUEST;
+			
+			return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
+		}
+		
+		recruitParam.setRecruitId(recruitId);
+		
+		boolean result = service.exposeToMainBanner(recruitParam);
+		
+		if(result == true) {
+			log.debug("공고 상단 노출 설정 성공");
+			respBody = new BasicResponseEntity<Object> (true, "공고 상단 노출 설정 성공", result);
+			respCode = HttpServletResponse.SC_OK;
+		} else {
+			log.debug("공고 상단 노출 설정 실패");
+			respBody = new BasicResponseEntity<Object> (false, "공고 상단 노출 설정 실패", result);
+			respCode = HttpServletResponse.SC_BAD_REQUEST;
+		}
+		
+		return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
+	
+	}
+	
 	// 전체 채용 공고 조회 
 	@GetMapping(value="")
 	public ResponseEntity<BasicResponseEntity<Object>> getRecruitList(@RequestParam("page") int pageNum,
@@ -143,11 +185,14 @@ public class RecruitController {
 			@RequestParam(value = "workArea", defaultValue = "0") int workAreaId,
 			@RequestParam(value = "company", defaultValue = "") String companyId,
 			@RequestParam(value = "keyword", defaultValue = "") String keyword,
-			@RequestParam(value = "closed", defaultValue = "false") boolean closed){ 
+			@RequestParam(value = "closed", defaultValue = "false") boolean closed,
+			@RequestParam(value = "exposed", defaultValue = "false") boolean exposed){ 
   		
 		RecruitOption option = new RecruitOption(pageNum, amount);
 		option.setRecruitId(0);
 		option.setIncludeClosed(closed);
+		option.setOnlyExposed(exposed);
+		
 		if (workAreaId != 0) {
 			option.setWorkAreaId(workAreaId);
 		}
@@ -543,9 +588,9 @@ public class RecruitController {
 
 	}
     //기업회원 - 기업별 보낸 입사제안 목록 조회
-    @GetMapping(value="/suggest/company/{company_id}")
+    @GetMapping(value="/suggest/company/{companyId}")
     public ResponseEntity<BasicResponseEntity<Object>> 
-    getJobOfferOfCompany(@PathVariable("company_id") String companyId, 
+    getJobOfferOfCompany(@PathVariable("companyId") String companyId, 
     		Authentication authentication) {
         
 		BasicResponseEntity<Object> respBody = null;
@@ -553,12 +598,12 @@ public class RecruitController {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 		
-		List<Suggest> result = null;
+		List<ProposalsList> result = null;
 		
 		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
 		
 		if (userDetails.getUsername().equals(companyId)) {
-			
+			log.debug(companyId);
 			result = service.getJobOfferOfCompany(companyId);
 			log.debug("개별회원 입사제안 조회"+ result);
 			respBody = new BasicResponseEntity<Object>(true, "개별회원 입사제안 조회 성공하였습니다.", result);

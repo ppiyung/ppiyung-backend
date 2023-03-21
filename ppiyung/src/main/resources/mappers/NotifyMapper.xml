@@ -65,6 +65,9 @@
 		<![CDATA[
 		INSERT INTO notification_tb (suggest_id, member_id)
 		VALUES (#{suggestId}, #{memberId})
+        <if test="memberId != null">
+            #{memberId}
+        </if>
 		]]>
 	</insert>
 

@@ -102,6 +102,15 @@
 		WHERE A.member_id = #{memberId}; 
 		]]>
     </select>
+
+    <!-- apply_id로 지원 이력 조회 -->
+    <select id="selectByApplyId" parameterType="int" resultMap="ApplyMapped">
+      <![CDATA[
+	    SELECT apply_id, apply_result, member_id, recruit_id, apply_created_at
+	    FROM apply_tb
+		WHERE apply_id = #{applyId}; 
+		]]>
+    </select>
     
     <!-- 기업회원-채용 공고별 지원자 목록 조회 -->
     <select id="selectByRecruit" parameterType="Integer" resultMap="ApplyExteneded">

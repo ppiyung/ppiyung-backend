@@ -15,6 +15,7 @@ import org.ppiyung.ppiyung.recruit.service.RecruitService;
 import org.ppiyung.ppiyung.recruit.vo.Apply;
 import org.ppiyung.ppiyung.recruit.vo.ApplyExtended;
 import org.ppiyung.ppiyung.recruit.vo.BookMark;
+import org.ppiyung.ppiyung.recruit.vo.ProposalsList;
 import org.ppiyung.ppiyung.recruit.vo.Recruit;
 import org.ppiyung.ppiyung.recruit.vo.RecruitOption;
 import org.ppiyung.ppiyung.recruit.vo.Suggest;
@@ -524,9 +525,9 @@ public class RecruitController {
 
 	}
     //기업회원 - 기업별 보낸 입사제안 목록 조회
-    @GetMapping(value="/suggest/company/{company_id}")
+    @GetMapping(value="/suggest/company/{companyId}")
     public ResponseEntity<BasicResponseEntity<Object>> 
-    getJobOfferOfCompany(@PathVariable("company_id") String companyId, 
+    getJobOfferOfCompany(@PathVariable("companyId") String companyId, 
     		Authentication authentication) {
         
 		BasicResponseEntity<Object> respBody = null;
@@ -534,12 +535,12 @@ public class RecruitController {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 		
-		List<Suggest> result = null;
+		List<ProposalsList> result = null;
 		
 		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
 		
 		if (userDetails.getUsername().equals(companyId)) {
-			
+			log.debug(companyId);
 			result = service.getJobOfferOfCompany(companyId);
 			log.debug("개별회원 입사제안 조회"+ result);
 			respBody = new BasicResponseEntity<Object>(true, "개별회원 입사제안 조회 성공하였습니다.", result);

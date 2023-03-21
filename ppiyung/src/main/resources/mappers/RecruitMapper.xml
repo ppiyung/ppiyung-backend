@@ -70,7 +70,7 @@
          		AND r.work_area_id = #{workAreaId}
          	</if>
          	<if test="onlyExposed == true">
-         		AND r.recruit_expose = #{recruitExpose}
+         		AND r.recruit_expose = #{onlyExposed}
          	</if>
          	<if test="includeClosed == false">
          		<![CDATA[
@@ -100,6 +100,9 @@
          	</if>
          	<if test="workAreaId != 0">
          		AND r.work_area_id = #{workAreaId}
+         	</if>
+         	<if test="onlyExposed == true">
+         		AND r.recruit_expose = #{onlyExposed}
          	</if>
          	<if test="includeClosed == false">
          		<![CDATA[

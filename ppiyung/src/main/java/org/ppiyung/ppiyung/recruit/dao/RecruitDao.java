@@ -32,6 +32,8 @@ public interface RecruitDao {
 	public List<HashMap<String, Object>> selectByRecruit(int recruitId);
 	public List<Suggest> selectSuggestByMember(String memberId);
 	public List<Suggest> selectSuggestByCompany(String companyId);
-	void updateApply(Apply apply) throws Exception;
-	void updateRecruitExpose(Recruit recruit) throws Exception;
+	public void updateApply(Apply apply) throws Exception;
+	public void updateRecruitExpose(Recruit recruit) throws Exception;
+	public Apply selectApplyByApplyId(int applyId);
+	
 }

@@ -218,13 +218,40 @@ public class RecruitServiceImpl implements RecruitService{
 	}
 
 	@Override
-	public boolean setApplyResult(Apply apply) {
+	public boolean setApplyResult(Apply applyParam) {
+
+        TransactionStatus txStatus =
+                transactionManager.getTransaction(new DefaultTransactionDefinition());
 		try {
-			dao.updateApply(apply);
-			return true;
+			dao.updateApply(applyParam);
+			
+			Apply apply = dao.selectApplyByApplyId(applyParam.getApplyId());
+			
+			Notification noti = new Notification(0, apply.getMemberId(), 0, apply.getApplyId(), null);
+			
+			notifyDao.insertApplyNotify(noti);
+			
 		} catch (Exception e) {
+			transactionManager.rollback(txStatus);
 			e.printStackTrace();
 			return false;
+			
 		}
+		transactionManager.commit(txStatus);
+		return true;
+		
+//    	try {
+//			dao.insertApply(apply);
+//			
+//			Recruit recruit = dao.selectAllDetailRecruit(String.valueOf(apply.getRecruitId())).get(0);
+//			
+//    		Notification noti = new Notification(0, recruit.getCompanyId(), 0, apply.getApplyId(), null);
+//			notifyDao.insertApplyNotify(noti);
+//		} catch (Exception e) {
+//			transactionManager.rollback(txStatus);
+//			e.printStackTrace();
+//			return false;
+//		}
+
 	}
 }

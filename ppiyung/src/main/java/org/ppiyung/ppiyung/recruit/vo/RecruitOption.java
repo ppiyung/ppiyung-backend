@@ -16,6 +16,7 @@ public class RecruitOption {
 	private String keyword;
 	private int workAreaId;
 	private boolean includeClosed;
+	private boolean onlyExposed; 
 	
 	/* 현재 페이지 */
 	private int pageNum;

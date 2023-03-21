@@ -59,6 +59,8 @@ public interface RecruitService {
 
 	public boolean setApplyResult(Apply param);
 
+	public boolean exposeToMainBanner(Recruit recruit);
+
 
 	
 }

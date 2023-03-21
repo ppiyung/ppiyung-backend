@@ -48,6 +48,14 @@ public class RecruitDaoImpl implements RecruitDao {
 	}
 
 	@Override
+	public void updateRecruitExpose(Recruit recruit) throws Exception {
+		int count = session.update("org.ppiyung.ppiyung.recruit.updateExpose", recruit);
+		if (count != 1) {
+			throw new Exception();
+		}
+	}
+
+	@Override
 	public List<Recruit> selectByWorkAreaId(int workAreaId) {
 		List<Recruit> list = session.selectList("org.ppiyung.ppiyung.recruit.selectByWorkAreaId", workAreaId);
 

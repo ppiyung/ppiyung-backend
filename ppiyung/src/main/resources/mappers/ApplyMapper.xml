@@ -35,6 +35,7 @@
 		<result property="applyId" column="apply_id" />
 		<result property="applyResult" column="apply_result" />
 		<result property="memberId" column="member_id" />
+		<result property="companyId" column="company_id" />
 		<result property="recruitId" column="recruit_id" />
 		<result property="applyCreatedAt" column="apply_created_at" />
 		<association property="applyRecruit" resultMap="RecruitMapped" />
@@ -95,7 +96,7 @@
     <!-- 일반회원 -지원 현황 조회 -->
     <select id="selectByMember" parameterType="String" resultMap="ApplyExtendedMapped">
       <![CDATA[
-	    SELECT  A.apply_id,A.apply_result,R.company_id,R.recruit_title ,A.member_id , M.member_name, R.recruit_id, R.recruit_start_at ,R.recruit_end_at from apply_tb AS A
+	    SELECT R.company_id, A.apply_id,A.apply_result,R.company_id,R.recruit_title ,A.member_id , M.member_name, R.recruit_id, R.recruit_start_at ,R.recruit_end_at from apply_tb AS A
 		join recruit_tb AS R
 		ON R.recruit_id = A.recruit_id JOIN
 		member_tb AS M ON R.company_id  = M.member_id

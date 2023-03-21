@@ -39,7 +39,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping(value = "/member")
-@CrossOrigin(origins = "${auth.allowOrigin}", allowCredentials = "true", exposedHeaders = {"Content-Disposition"})
+@CrossOrigin(origins = "${auth.allowOrigin}", allowCredentials = "true", exposedHeaders = { "Content-Disposition" })
 public class MemberController {
 
 	private Logger log = LogManager.getLogger("base");
@@ -53,7 +53,7 @@ public class MemberController {
 
 		log.debug("회원가입 요청: " + reqSigninInfo);
 		boolean result = service.signin(reqSigninInfo);
-		
+
 		BasicResponseEntity<Object> respBody = null;
 		int respCode = 0;
 		HttpHeaders headers = new HttpHeaders();
@@ -70,40 +70,36 @@ public class MemberController {
 
 		return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
 	}
-	
+
 	// 아이디 중복 조회
 	@GetMapping(value = "/exist/{memberId}")
-	public ResponseEntity<BasicResponseEntity<Object>>
-	checkExistMemberHandler(@PathVariable("memberId") String memberIdFromUri,
-			Authentication authentication) {
+	public ResponseEntity<BasicResponseEntity<Object>> checkExistMemberHandler(
+			@PathVariable("memberId") String memberIdFromUri, Authentication authentication) {
 
 		BasicResponseEntity<Object> respBody = null;
 		int respCode = HttpServletResponse.SC_OK;
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-		
+
 		Member param = new Member();
 		param.setMemberId(memberIdFromUri);
 		Member result = service.getMemberInfo(param);
 		log.debug(result);
-		
+
 		if (result == null) {
-			respBody = new BasicResponseEntity<Object>(true,
-						memberIdFromUri + "(이)라는 아이디는 존재하지 않습니다. 회원가입이 가능합니다.",
-						null);
+			respBody = new BasicResponseEntity<Object>(true, memberIdFromUri + "(이)라는 아이디는 존재하지 않습니다. 회원가입이 가능합니다.",
+					null);
 		} else {
-			respBody = new BasicResponseEntity<Object>(false,
-					memberIdFromUri + "(이)라는 아이디가 이미 존재합니다. 회원가입이 불가능합니다.",
+			respBody = new BasicResponseEntity<Object>(false, memberIdFromUri + "(이)라는 아이디가 이미 존재합니다. 회원가입이 불가능합니다.",
 					null);
 		}
-		
+
 		return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
 	}
 
 	// 개별회원조회
 	@GetMapping(value = "/{memberId}")
-	public ResponseEntity<BasicResponseEntity<Object>>
-	getMember(@PathVariable("memberId") String memberIdFromUri,
+	public ResponseEntity<BasicResponseEntity<Object>> getMember(@PathVariable("memberId") String memberIdFromUri,
 			@RequestParam(value = "isCompany", defaultValue = "false") boolean isCompany,
 			Authentication authentication) {
 
@@ -111,17 +107,17 @@ public class MemberController {
 		int respCode = 0;
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-		
+
 		MemberExtended result = null;
-		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
-		
+		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+
 		if (userDetails.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
 			log.debug("개별회원조회 성공");
 			Member param = new Member();
 			param.setMemberId(memberIdFromUri);
 			result = service.getMemberInfoJoinned(param);
 			result.setMemberPw("");
-			
+
 			respBody = new BasicResponseEntity<Object>(true, "개별회원조회 성공하였습니다.", result);
 			respCode = HttpServletResponse.SC_OK;
 
@@ -130,7 +126,7 @@ public class MemberController {
 			param.setMemberId(memberIdFromUri);
 			result = service.getMemberInfoJoinned(param);
 			result.setMemberPw("");
-			
+
 			respBody = new BasicResponseEntity<Object>(true, "개별회원조회 성공하였습니다.", result);
 			respCode = HttpServletResponse.SC_OK;
 		} else if (isCompany) {
@@ -138,7 +134,7 @@ public class MemberController {
 			param.setMemberId(memberIdFromUri);
 			result = service.getMemberInfoJoinned(param);
 			result.setMemberPw("");
-			
+
 			if (result.getMemberType() == 'C') {
 				respBody = new BasicResponseEntity<Object>(true, "개별회원조회 성공하였습니다.", result);
 				respCode = HttpServletResponse.SC_OK;
@@ -147,7 +143,7 @@ public class MemberController {
 				respBody = new BasicResponseEntity<Object>(false, "개별회원조회 실패하였습니다.", result);
 				respCode = HttpServletResponse.SC_BAD_REQUEST;
 			}
-			
+
 		} else {
 			log.debug("개별회원조회 실패");
 			respBody = new BasicResponseEntity<Object>(false, "개별회원조회 실패하였습니다.", result);
@@ -159,13 +155,12 @@ public class MemberController {
 	// 관리자 회원 전체조회
 	@GetMapping(value = "")
 	public ResponseEntity<BasicResponseEntity<Object>> getAllMember(@RequestParam("page") int pageNum,
-			@RequestParam("size") int amount,
-			@RequestParam(value="memberType", defaultValue = "") String memberType,
-			@RequestParam(value="memberId", defaultValue = "") String memberId,
-			@RequestParam(value="memberName", defaultValue = "") String memberName,
-			@RequestParam(value="noVerified", defaultValue = "false") boolean noVerified,
+			@RequestParam("size") int amount, @RequestParam(value = "memberType", defaultValue = "") String memberType,
+			@RequestParam(value = "memberId", defaultValue = "") String memberId,
+			@RequestParam(value = "memberName", defaultValue = "") String memberName,
+			@RequestParam(value = "noVerified", defaultValue = "false") boolean noVerified,
 			Authentication authentication) {
-		
+
 		MemberOption option = new MemberOption(pageNum, amount);
 		if (!memberType.equals("")) {
 			option.setMemberType(memberType);
@@ -182,10 +177,10 @@ public class MemberController {
 		int respCode = 0;
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-		
-		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
-		if(userDetails.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
-			
+
+		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+		if (userDetails.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
+
 			List<Member> list = service.getAllMember(option);
 			int total = service.getAllMemberCount(option);
 			if (list != null) {
@@ -193,15 +188,15 @@ public class MemberController {
 				Map<String, Object> payload = new HashMap<String, Object>();
 				payload.put("total", total);
 				payload.put("list", list);
-				
+
 				respBody = new BasicResponseEntity<Object>(true, "전체회원조회 성공하였습니다.", payload);
 				respCode = HttpServletResponse.SC_OK;
 			} else {
-				log.debug("관리자-회원전체조회 실패"); 
+				log.debug("관리자-회원전체조회 실패");
 				respBody = new BasicResponseEntity<Object>(false, "전체회원조회 실패하였습니다.", null);
 				respCode = HttpServletResponse.SC_BAD_REQUEST;
 			}
-		}else {
+		} else {
 			log.debug("관리자-회원전체조회 실패 - 권한 없음");
 			respBody = new BasicResponseEntity<Object>(false, "전체회원조회 실패하였습니다. 권한이 없습니다.", null);
 			respCode = HttpServletResponse.SC_BAD_REQUEST;
@@ -212,8 +207,7 @@ public class MemberController {
 	// 회원수정
 	@PutMapping(value = "/{memberId}")
 	public ResponseEntity<BasicResponseEntity<Object>> modifyMember(@RequestBody Member reqUpdateInfo,
-			@PathVariable("memberId") String memberId,
-			Authentication authentication) {
+			@PathVariable("memberId") String memberId, Authentication authentication) {
 
 		boolean result = false;
 		BasicResponseEntity<Object> respBody = null;
@@ -221,24 +215,23 @@ public class MemberController {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
-		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
+		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 		boolean hasAuthority = userDetails.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"));
-		
+
 		log.debug("회원정보수정 요청: " + reqUpdateInfo);
-		
-		if (userDetails.getUsername().equals(memberId) ||
-				hasAuthority) { // 자신의 정보를 수정하는 경우이거나 관리자인 경우
+
+		if (userDetails.getUsername().equals(memberId) || hasAuthority) { // 자신의 정보를 수정하는 경우이거나 관리자인 경우
 			log.debug("회원정보수정 - 권한 확인됨");
-			
+
 			reqUpdateInfo.setMemberId(memberId);
 			if (reqUpdateInfo.getMemberPw() != null && reqUpdateInfo.getMemberPw().equals("")) {
 				log.debug("회원 수정 - 비밀번호 변경 안함");
 				reqUpdateInfo.setMemberPw(null);
 			}
-			
+
 			result = service.modifyMember(reqUpdateInfo);
 		}
-		
+
 		if (result == true) {
 			log.debug("회원정보수정 성공");
 			respBody = new BasicResponseEntity<Object>(true, "회원정보수정에 성공하였습니다.", result);
@@ -250,64 +243,57 @@ public class MemberController {
 		}
 		return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
 	}
-	
-	
-	
-	//회원탈퇴 - 일반유저 + 관리자 회원탈퇴 가능
+
+	// 회원탈퇴 - 일반유저 + 관리자 회원탈퇴 가능
 	@DeleteMapping(value = "/{memberId}")
-	public ResponseEntity<BasicResponseEntity<Object>> dropMember(
-			@PathVariable("memberId") String memberId,
+	public ResponseEntity<BasicResponseEntity<Object>> dropMember(@PathVariable("memberId") String memberId,
 			Authentication authentication) {
-		
+
 		boolean result = false;
 		BasicResponseEntity<Object> respBody = null;
 		int respCode = 0;
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-		
-		
-		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
 
-	
+		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+
 		if (userDetails.getUsername().equals(memberId)
-			|| userDetails.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
+				|| userDetails.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
 			log.debug("회원탈퇴 - 권한 확인됨" + memberId);
 			result = service.leaveMember(memberId);
-			
+
 		}
-			if (result == true) {
-				log.debug("회원탈퇴 성공");
-				respBody = new BasicResponseEntity<Object>(true, "회원탈퇴에 성공하였습니다.", result);
-				respCode = HttpServletResponse.SC_OK;
-			} else {
-				log.debug("회원탈퇴 실패");
-				respBody = new BasicResponseEntity<Object>(false, "회원탈퇴에 실패하였습니다..", result);
-				respCode = HttpServletResponse.SC_BAD_REQUEST;
-			}
-			return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
-		
+		if (result == true) {
+			log.debug("회원탈퇴 성공");
+			respBody = new BasicResponseEntity<Object>(true, "회원탈퇴에 성공하였습니다.", result);
+			respCode = HttpServletResponse.SC_OK;
+		} else {
+			log.debug("회원탈퇴 실패");
+			respBody = new BasicResponseEntity<Object>(false, "회원탈퇴에 실패하였습니다..", result);
+			respCode = HttpServletResponse.SC_BAD_REQUEST;
+		}
+		return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
+
 	}
-	
-	//직무 분야별 이력서 공개한 회원 목록 조회 
-	@GetMapping(value="/resume/{workAreaId}")
-	public ResponseEntity<BasicResponseEntity<Object>> 
-				workAreaOpenMember(@PathVariable("workAreaId") int workAreaId,
-				Authentication authentication,
-				@RequestParam(value="page", defaultValue = "1") int page,
-				@RequestParam(value="size", defaultValue = "10") int size) {
+
+	// 직무 분야별 이력서 공개한 회원 목록 조회
+	@GetMapping(value = "/resume/{workAreaId}")
+	public ResponseEntity<BasicResponseEntity<Object>> workAreaOpenMember(@PathVariable("workAreaId") int workAreaId,
+			Authentication authentication, @RequestParam(value = "page", defaultValue = "1") int page,
+			@RequestParam(value = "size", defaultValue = "10") int size) {
 		BasicResponseEntity<Object> respBody = null;
 		int respCode = 0;
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-		
-		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
-		if(userDetails.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_COMPANY"))) {	
+
+		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+		if (userDetails.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_COMPANY"))) {
 			OpenResumeOption option = new OpenResumeOption(page, size);
 			option.setWorkAreaId(workAreaId);
 			option.setCompanyId(userDetails.getUsername());
-			
+
 			List<MemberExtended> list = service.getResumeOpenMember(option);
-			
+
 			log.debug(" 공개한 회원 목록 조회 성공");
 			respBody = new BasicResponseEntity<Object>(true, " 공개한 회원 목록 조회성공하였습니다.", list);
 			respCode = HttpServletResponse.SC_OK;
@@ -317,19 +303,18 @@ public class MemberController {
 			respCode = HttpServletResponse.SC_BAD_REQUEST;
 		}
 		return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
-		
-	}
-	
-	@PostMapping(value="/img")
-	public ResponseEntity<BasicResponseEntity<Object>>
-		uploadImageHandler(@RequestParam("file") MultipartFile file, Authentication authentication) {
-		
 
-		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
+	}
+
+	@PostMapping(value = "/img")
+	public ResponseEntity<BasicResponseEntity<Object>> uploadImageHandler(@RequestParam("file") MultipartFile file,
+			Authentication authentication) {
+
+		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 		final String memberId = userDetails.getUsername();
-		
+
 		Image result = null;
-		
+
 		Image param = new Image();
 		param.setMemberId(memberId);
 		if (service.getImageFileInfo(param) == null) {
@@ -342,7 +327,7 @@ public class MemberController {
 		int respCode = 0;
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-		
+
 		if (result != null) {
 			log.debug("이미지 업로드 성공");
 			respBody = new BasicResponseEntity<Object>(true, "이미지 업로드에 성공하였습니다.", result);
@@ -352,21 +337,20 @@ public class MemberController {
 			respBody = new BasicResponseEntity<Object>(false, "이미지 업로드에 실패하였습니다.", null);
 			respCode = HttpServletResponse.SC_BAD_REQUEST;
 		}
-		
+
 		return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
 	}
-	
-	//이력서 
-	@PostMapping(value="/resume")
-	public ResponseEntity<BasicResponseEntity<Object>>
-		uploadResumeHandler(@RequestParam("file") MultipartFile file, Authentication authentication) {
-		
 
-		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
+	// 이력서
+	@PostMapping(value = "/resume")
+	public ResponseEntity<BasicResponseEntity<Object>> uploadResumeHandler(@RequestParam("file") MultipartFile file,
+			Authentication authentication) {
+
+		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 		final String memberId = userDetails.getUsername();
-		
+
 		Resume result = null;
-		
+
 		Resume param = new Resume();
 		param.setMemberId(memberId);
 		if (service.getResumeFileInfo(param) == null) {
@@ -379,7 +363,7 @@ public class MemberController {
 		int respCode = 0;
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-		
+
 		if (result != null) {
 			log.debug("이력서 업로드 성공");
 			respBody = new BasicResponseEntity<Object>(true, "이력서 업로드에 성공하였습니다.", result);
@@ -389,17 +373,16 @@ public class MemberController {
 			respBody = new BasicResponseEntity<Object>(false, "이력서 업로드에 실패하였습니다.", null);
 			respCode = HttpServletResponse.SC_BAD_REQUEST;
 		}
-		
+
 		return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
 	}
-	
-	@GetMapping(value="/{memberId}/resume")
-	public void downloadResumeHandler(
-			@PathVariable("memberId") String memberId, Authentication authentication,
+
+	@GetMapping(value = "/{memberId}/resume")
+	public void downloadResumeHandler(@PathVariable("memberId") String memberId, Authentication authentication,
 			HttpServletResponse response) {
-		
+
 		Resume resume = null;
-		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
+		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 		if (userDetails.getUsername().equals(memberId)
 				|| userDetails.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))
 				|| userDetails.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_COMPANY"))) {
@@ -407,7 +390,38 @@ public class MemberController {
 			param.setMemberId(memberId);
 			resume = service.getResumeFileInfo(param);
 		}
-		
+
 		service.serveResumeFile(resume, response);
 	}
+
+	// 이력서 Open 수정
+	@PutMapping(value = "/resume/{memberId}")
+	public ResponseEntity<BasicResponseEntity<Object>> modifyResume(@RequestBody Resume reqUpdateInfo,
+			@PathVariable("memberId") String memberId, Authentication authentication) {
+
+		boolean result = false;
+		BasicResponseEntity<Object> respBody = null;
+		int respCode = 0;
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+		reqUpdateInfo.setMemberId(memberId);
+
+
+		if (userDetails.getUsername().equals(memberId)) {
+			log.debug("이력서수정 - 권한 확인됨");
+			result = service.modifyResume(reqUpdateInfo);
+		}
+		if (result == true) {
+			log.debug("이력서수정 성공");
+			respBody = new BasicResponseEntity<Object>(true, "이력서수정에 성공하였습니다.", result);
+			respCode = HttpServletResponse.SC_OK;
+		} else {
+			log.debug("이력서수정 실패");
+			respBody = new BasicResponseEntity<Object>(false, "이력서수정에 실패하였습니다..", result);
+			respCode = HttpServletResponse.SC_BAD_REQUEST;
+		}
+		return new ResponseEntity<BasicResponseEntity<Object>>(respBody, headers, respCode);
+	}
+
 }

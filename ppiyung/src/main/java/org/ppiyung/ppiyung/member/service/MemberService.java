@@ -54,4 +54,6 @@ public interface MemberService {
 	public Resume saveResumeFile(MultipartFile file, String memberId, boolean isUpdate);
 
 	public void serveResumeFile(Resume resume, HttpServletResponse response);
+
+	public boolean modifyResume(Resume reqUpdateInfo);
 }

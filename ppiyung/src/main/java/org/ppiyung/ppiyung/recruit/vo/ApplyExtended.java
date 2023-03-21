@@ -16,6 +16,7 @@ public class ApplyExtended {
 	private int applyId;
 	private boolean applyResult;
 	private String memberId;
+	private String companyId;
 	private int recruitId;
 	private Date applyCreatedAt;
 	private Recruit applyRecruit;

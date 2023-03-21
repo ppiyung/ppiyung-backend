@@ -133,4 +133,14 @@ public class MemberDaoImpl implements MemberDao {
 			throw new Exception();
 		}
 	}
+
+
+	@Override
+	public void updateResumeOpen(Resume resume) throws Exception  {
+		int count = session.update("org.ppiyung.ppiyung.member.updateResumeOpen", resume);
+		if (count != 1) {
+			throw new Exception();
+		}
+		
+	}
 }

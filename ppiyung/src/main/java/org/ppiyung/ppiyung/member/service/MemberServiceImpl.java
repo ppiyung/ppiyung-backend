@@ -341,4 +341,16 @@ public class MemberServiceImpl implements MemberService {
 			e.printStackTrace();
 		}
 	}
+
+	@Override
+	public boolean modifyResume(Resume resume) {
+		try {
+			dao.updateResumeOpen(resume);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	
+	}
 }

@@ -42,6 +42,8 @@ public interface MemberDao {
 	public void updateMemberResume(Resume resume) throws Exception;
 
 	public void insertMemberResume(Resume resume) throws Exception;
+
+	public void updateResumeOpen(Resume resume) throws Exception;
 	
 
 }

@@ -289,4 +289,13 @@
 		 ]]>
 	</select>
 	
+	<!-- 이력서 공개여부 수정 -->
+	<update id="updateResumeOpen" parameterType="Resume" >
+		<![CDATA[
+				UPDATE resume_tb
+				SET resume_open = #{resumeOpen}
+				WHERE member_id =  #{memberId}
+		 ]]>
+	</update>
+	
 </mapper>

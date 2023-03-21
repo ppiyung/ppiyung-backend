@@ -428,9 +428,28 @@ public class RecruitController {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 		
+//		appplyForJob(@PathVariable("recruit_id") int recruitId, Authentication authentication){
+//	    	 
+//    	    UserDetails userDetails = (UserDetails)authentication.getPrincipal();
+//    	    String memberId = userDetails.getUsername();
+//    	 
+//    	    Apply apply = new Apply();
+//    	    apply.setMemberId(memberId);
+//    	    apply.setRecruitId(recruitId);
+//    	    
+//    	    log.debug(apply);
+//    	    
+//    	    boolean result = service.applyForJob(apply);
+//    		
+//    		BasicResponseEntity<Object> respBody = null;
+//    		int respCode=0;
 		
 		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
+		String memberId = userDetails.getUsername();
 		
+		  Apply apply = new Apply();
+		  apply.setMemberId(memberId);
+		  
 		if (userDetails.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_COMPANY"))) {
 			param.setApplyId(applyId);
 			boolean result = service.setApplyResult(param);

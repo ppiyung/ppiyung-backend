@@ -7,6 +7,7 @@ import org.ppiyung.ppiyung.common.entity.PagingEntity;
 import org.ppiyung.ppiyung.recruit.vo.Apply;
 import org.ppiyung.ppiyung.recruit.vo.ApplyExtended;
 import org.ppiyung.ppiyung.recruit.vo.BookMark;
+import org.ppiyung.ppiyung.recruit.vo.ProposalsList;
 import org.ppiyung.ppiyung.recruit.vo.Recruit;
 import org.ppiyung.ppiyung.recruit.vo.RecruitOption;
 import org.ppiyung.ppiyung.recruit.vo.Suggest;
@@ -31,9 +32,15 @@ public interface RecruitDao {
 	public List<ApplyExtended> selectByMember(String memberId);
 	public List<HashMap<String, Object>> selectByRecruit(int recruitId);
 	public List<Suggest> selectSuggestByMember(String memberId);
+<<<<<<< HEAD
 	public List<Suggest> selectSuggestByCompany(String companyId);
 	public void updateApply(Apply apply) throws Exception;
 	public void updateRecruitExpose(Recruit recruit) throws Exception;
 	public Apply selectApplyByApplyId(int applyId);
 	
+=======
+	public List<ProposalsList> selectSuggestByCompany(String companyId);
+	void updateApply(Apply apply) throws Exception;
+	Apply selectApplyByApplyId(int applyId);
+>>>>>>> 406e6a472ce3b8ef08941ce091745744e941f948
 }

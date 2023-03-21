@@ -17,7 +17,7 @@
 		<result property="imgLocation" column="img_location" />
 		<result property="recruitExpose" column="recruit_expose" />
 	</resultMap>
-  
+
       <!-- 기업 회원 - 새 공고 게시 -->
       <insert id="insert" parameterType="Recruit" >
          <![CDATA[

@@ -9,6 +9,7 @@ import org.ppiyung.ppiyung.recruit.dao.RecruitDaoImpl;
 import org.ppiyung.ppiyung.recruit.vo.Apply;
 import org.ppiyung.ppiyung.recruit.vo.ApplyExtended;
 import org.ppiyung.ppiyung.recruit.vo.BookMark;
+import org.ppiyung.ppiyung.recruit.vo.ProposalsList;
 import org.ppiyung.ppiyung.recruit.vo.Recruit;
 import org.ppiyung.ppiyung.recruit.vo.RecruitOption;
 import org.ppiyung.ppiyung.recruit.vo.Suggest;
@@ -177,8 +178,8 @@ public class RecruitServiceImpl implements RecruitService{
     }
     
     @Override
-    public List<Suggest> getJobOfferOfCompany(String companyId) {
-        List<Suggest> list = dao.selectSuggestByCompany(companyId);
+    public List<ProposalsList> getJobOfferOfCompany(String companyId) {
+        List<ProposalsList> list = dao.selectSuggestByCompany(companyId);
     	
     	return list;    
     }

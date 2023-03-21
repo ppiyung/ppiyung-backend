@@ -205,7 +205,7 @@ public class RecruitController {
 		
 		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
 		
-		if (userDetails.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
+		if (userDetails.getUsername().equals(companyId)) {
 			
 			result = service.getRecruitStatusOfCompany(companyId);
 		    log.debug(result);

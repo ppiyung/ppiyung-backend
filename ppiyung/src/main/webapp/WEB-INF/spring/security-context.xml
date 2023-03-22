@@ -26,6 +26,7 @@
 	    <intercept-url pattern="/resources/images/**" access="permitAll" />
     	<intercept-url pattern="/auth/**" access="permitAll" />
     	<intercept-url pattern="/recruit" method="GET" access="permitAll" />
+    	<intercept-url pattern="/recruit/workarea" method="GET" access="permitAll" />
     	<intercept-url pattern="/member/signin" method="POST" access="permitAll" />
 	    <intercept-url pattern="/member/exist/**" method="GET" access="permitAll" />
     	<intercept-url pattern="/recruit" method="POST" access="hasAnyRole('ROLE_COMPANY', 'ROLE_ADMIN')" />

@@ -207,7 +207,7 @@
 	         SELECT r.*, m.member_name FROM recruit_tb AS r
 	         JOIN member_tb AS m
              ON r.company_id=m.member_id
-	         WHERE company_id = #{companyId}
+	         WHERE company_id = #{companyId} AND recruit_end_at > now() ORDER BY recruit_start_at
 	      ]]>
 	   </select>
 	   

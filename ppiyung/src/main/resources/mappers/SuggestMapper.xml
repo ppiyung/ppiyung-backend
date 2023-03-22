@@ -49,13 +49,19 @@
    <!-- 기업회원-기업별 보낸 입사제안 조회 -->
    <select id="selectByCompany" parameterType="String" resultMap="ProposalsListMapped">
         <![CDATA[
-        	SELECT s.company_id, m.member_name, (select member_name from  member_tb as m where s.company_id = member_id) as company_name, s.suggest_created_at, member_phone
-			,(select m.member_addr from  member_tb as m where s.company_id = member_id) as member_addr,
-			(select w.work_area_name from recruit_tb as r join work_area_tb as w on w.work_area_id = r.work_area_id where r.company_id = s.company_id) as work_area_name
-			,s.member_id
-			FROM suggest_tb as s
-			join member_tb as m on s.member_id = m.member_id
-			WHERE company_id = #{companyId}
+			SELECT s.suggest_id, s.suggest_created_at, s.company_id, s.member_id,
+				m.member_name, m.member_phone, m.work_area_id, m.member_addr,
+				(SELECT c.member_name
+					FROM member_tb c
+					WHERE c.member_id = s.company_id
+				) AS company_name,
+				(SELECT w.work_area_name 
+					FROM work_area_tb w
+					WHERE w.work_area_id = m.work_area_id
+				) AS work_area_name
+			FROM suggest_tb s
+				JOIN member_tb m
+				ON s.member_id = m.member_id
         ]]>
    </select>
  </mapper>  

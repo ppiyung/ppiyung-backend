@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 public class Apply {
 
 	private int applyId;
-	private boolean applyResult;
+	private Boolean applyResult;
 	private String memberId;
 	private int recruitId;
 	private Date applyCreatedAt;

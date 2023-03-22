@@ -10,7 +10,11 @@
     <beans:bean id ="bcryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
     <beans:bean id="userDetailService" class="org.ppiyung.ppiyung.member.service.SecurityUserDetailService" />
     <beans:bean id="jwtAuthenticationFilter" class="org.ppiyung.ppiyung.common.security.JwtAuthenticationFilter"/>
-    <beans:bean id="jwtAuthenticationEntryPoint" class="org.ppiyung.ppiyung.common.security.JwtAuthenticationEntryPoint"/>
+    <beans:bean id="jwtAuthenticationEntryPoint" class="org.ppiyung.ppiyung.common.security.JwtAuthenticationEntryPoint">
+    	<beans:constructor-arg
+    		index="0"
+    		value="http://localhost:9090"></beans:constructor-arg>
+    </beans:bean>
     <beans:bean id="jwtTokenUtil" class="org.ppiyung.ppiyung.common.util.JwtTokenUtil">
     	<beans:constructor-arg
     		index="0"

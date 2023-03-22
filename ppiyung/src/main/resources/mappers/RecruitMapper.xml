@@ -18,6 +18,12 @@
 		<result property="recruitExpose" column="recruit_expose" />
 	</resultMap>
 
+	<resultMap id="WorkareaMapped" type="HashMap">
+		<result property="workAreaId" column="work_area_id" />
+		<result property="workAreaName" column="work_area_name" />
+		<result property="workAreaComment" column="work_area_comment" />
+	</resultMap>
+
       <!-- 기업 회원 - 새 공고 게시 -->
       <insert id="insert" parameterType="Recruit" >
          <![CDATA[
@@ -224,7 +230,14 @@
 	   	  ]]>
 	   </select>
 	   
-
+	   <!-- 직무 분야 코드 테이블 조회 -->
+	   <select id="selectWorkAreaId" resultMap="WorkareaMapped">
+	      <![CDATA[
+	        SELECT
+				work_area_id, work_area_name, work_area_comment
+			FROM work_area_tb;
+	      ]]>
+	   </select>
 	   
   </mapper>
   

@@ -200,5 +200,9 @@ public class RecruitDaoImpl implements RecruitDao {
 		}
 	}
 
+	public List<HashMap<String, String>> selectWorkAreaId() {
+		return session.selectList("org.ppiyung.ppiyung.recruit.selectWorkAreaId");
+	}
+
 
 }

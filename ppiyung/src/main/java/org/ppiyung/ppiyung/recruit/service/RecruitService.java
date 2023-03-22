@@ -61,6 +61,8 @@ public interface RecruitService {
 
 	public boolean exposeToMainBanner(Recruit recruit);
 
+	public List<HashMap<String, String>> getWorkareaId();
+
 
 	
 }

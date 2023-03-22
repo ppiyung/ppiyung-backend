@@ -47,6 +47,34 @@ public class RecruitController {
 	@Autowired
 	private RecruitService service; 
 	
+	// 채용 분야 코드 테이블 조회
+	@GetMapping(value="/workarea")
+	public ResponseEntity<BasicResponseEntity<Object>> getWorkareaId() {
+		List<HashMap<String, String>> result = service.getWorkareaId();
+		
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(new MediaType("application", "json",
+				Charset.forName("UTF-8")));
+		
+		if (result != null) {
+			BasicResponseEntity<Object> respBody = new BasicResponseEntity<Object>(true,
+					"직무분야 조회에 성공했습니다.",
+					result);
+			
+			return ResponseEntity.ok()
+					.headers(headers)
+					.body(respBody);
+		} else {
+			BasicResponseEntity<Object> respBody = new BasicResponseEntity<Object>(true,
+					"직무분야 조회에 실패했습니다.",
+					null);
+			
+			return ResponseEntity.ok()
+					.headers(headers)
+					.body(respBody);
+		}		
+	}
+	
 	// 기업회원 - 새 공고 게시
 	@PostMapping(value="")
 	public ResponseEntity<BasicResponseEntity<Object>> insertRecruitNotice(@RequestBody Recruit recruitNoticeContent){ 

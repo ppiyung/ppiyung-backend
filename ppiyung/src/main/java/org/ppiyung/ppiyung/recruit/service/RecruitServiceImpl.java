@@ -158,8 +158,8 @@ public class RecruitServiceImpl implements RecruitService{
         
     	try {
 			dao.insertSuggest(suggest);
-    		Notification noti = new Notification(0, suggest.getMemberId(), 0, suggest.getSuggestId(), null);
-			notifyDao.insertApplyNotify(noti);
+		    Notification noti = new Notification(0, suggest.getMemberId(), suggest.getSuggestId(), 0, null);
+		    notifyDao.insertSuggestNotify(noti);
 		} catch (Exception e) {
 			transactionManager.rollback(txStatus);
 			e.printStackTrace();
@@ -254,5 +254,10 @@ public class RecruitServiceImpl implements RecruitService{
 //			return false;
 //		}
 
+	}
+
+	@Override
+	public List<HashMap<String, String>> getWorkareaId() {
+		return dao.selectWorkAreaId();
 	}
 }

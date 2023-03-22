@@ -20,7 +20,8 @@ public class NotificationExtended {
 	private int suggestId;
 	private int applyId;
 	private Date notificationCreatedAt;
-
+	private String companyNickName;
+	
 	private Recruit recruit;
 	private Apply apply;
 	private Suggest suggest;

@@ -44,6 +44,7 @@
 	    <result property="notificationId" column="notification_id" />
 	    <result property="memberId" column="member_id" />
 	    <result property="memberName" column="member_name" />
+	    <result property="companyNickName" column="company_nick_name"/>
 	    <result property="suggestId" column="suggest_id" />
 	    <result property="applyId" column="apply_id" />
 	    <result property="notificationCreatedAt" column="notification_created_at" />
@@ -71,13 +72,13 @@
 	<!-- 회원별 알림 목록 조회 -->
    <select id="selectNotifyList" parameterType="String" resultMap="NotifyExtendedMapped"> 
 		<![CDATA[
-			select *,
-				(select member_name from member_tb m where n.member_id = m.member_id) as member_name
+			select *,(select member_name from member_tb m where n.member_id = m.member_id) as member_name, 
+			 (select member_name from member_tb m where s.company_id = m.member_id) as company_nick_name
 			from notification_tb n
 			left join apply_tb as a on a.apply_id = n.apply_id
 			left join recruit_tb as r on  r.recruit_id = a.recruit_id
 			left join suggest_tb as s on  n.suggest_id = s.suggest_id
-			where n.member_id = #{memberId}
+			where n.member_id = #{member_id}
 			order by n.notification_created_at desc
 		]]>
 	</select>
